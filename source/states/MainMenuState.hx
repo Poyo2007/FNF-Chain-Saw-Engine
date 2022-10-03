@@ -189,10 +189,13 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 			#if FUTURE_POLYMOD
-			else if ((FlxG.keys.justPressed.SEVEN #if mobile || virtualPad.buttonC.justPressed #end) && ModCore.trackedMods != [])
-				MusicBeatState.switchState(new ModsMenuState());
-			else if ((FlxG.keys.justPressed.SEVEN #if mobile || virtualPad.buttonC.justPressed #end) && ModCore.trackedMods == [])
-				Main.toast.create('No Mods Installed!', 0xffd64400, 'Please add mods to be able to access the menu!');
+			else if (FlxG.keys.justPressed.SEVEN #if mobile || virtualPad.buttonC.justPressed #end)
+			{
+				if (ModCore.trackedMods != [])
+					MusicBeatState.switchState(new ModsMenuState());
+				else
+					Main.toast.create('No Mods Installed!', 0xffd64400, 'Please add mods to be able to access the menu!');
+			}
 			#end
 		}
 

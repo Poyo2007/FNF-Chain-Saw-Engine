@@ -44,7 +44,7 @@ class StoryMenuState extends MusicBeatState
 		#end
 
 		if (!FlxG.sound.music.playing)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
 
 		persistentUpdate = persistentDraw = true;
 
@@ -238,8 +238,7 @@ class StoryMenuState extends MusicBeatState
 
 			trace(PlayState.storyPlaylist);
 
-			PlayState.SONG = Song.loadJson(HighScore.formatSong(StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase(), curDifficulty),
-				StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase());
+			PlayState.SONG = Song.loadJson(HighScore.formatSong(PlayState.storyPlaylist[0].toLowerCase(), curDifficulty), PlayState.storyPlaylist[0].toLowerCase());
 			PlayState.isStoryMode = true;
 			PlayState.storyDifficulty = curDifficulty;
 			PlayState.storyWeek = curWeek;

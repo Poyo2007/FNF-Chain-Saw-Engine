@@ -2,8 +2,6 @@ package substates;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 
@@ -51,7 +49,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 
 			if (options[i].type == 'bool')
 			{
-				var valueText:AttachedAlphabet = new AttachedAlphabet(options[i].getValue() == true ? 'Enabled' : 'Disabled', optionText.width + 50, 50, true);
+				var valueText:AttachedAlphabet = new AttachedAlphabet(options[i].getValue() == true ? 'On' : 'Off', optionText.width + 50, 50, true);
 				valueText.sprTracker = optionText;
 				valueText.ID = i;
 				options[i].setChild(valueText);
@@ -253,7 +251,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 	private function updateTextFrom(option:Option, isBool:Bool = false)
 	{
 		if (isBool)
-			option.text = option.getValue() == true ? 'Enabled' : 'Disabled';
+			option.text = option.getValue() == true ? 'On' : 'Off';
 		else
 		{
 			var text:String = option.displayFormat;

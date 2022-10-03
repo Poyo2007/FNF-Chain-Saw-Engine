@@ -123,7 +123,7 @@ class PlayState extends MusicBeatState
 
 		if (SONG.stage == null || SONG.stage.length < 1)
 		{
-			switch (SONG.song.toLowerCase())
+			switch (Paths.formatName(SONG.song.toLowerCase()))
 			{
 				case 'spookeez' | 'south' | 'monster':
 					SONG.stage = 'spooky';
@@ -174,7 +174,7 @@ class PlayState extends MusicBeatState
 				case 'school' | 'schoolEvil':
 					SONG.gfVersion = 'gf-pixel';
 				case 'tank':
-					if (SONG.song.toLowerCase() != 'stress')
+					if (Paths.formatName(SONG.song.toLowerCase()) != 'stress')
 						SONG.gfVersion = 'gf-tankmen';
 					else
 						SONG.gfVersion = 'pico-speaker';
@@ -252,8 +252,8 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		scoreTxt = new FlxText(0, healthBarBG.y + 40, 0, 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks, 19);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 19, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt = new FlxText(0, healthBarBG.y + 40, 0, 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks, 20);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.screenCenter(X);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
@@ -273,30 +273,30 @@ class PlayState extends MusicBeatState
 		addMobileControls(false);
 		#end
 
-		if (Assets.exists(Paths.hx('songs/' + SONG.song.toLowerCase() + '/script')))
-			scriptArray.push(new ScriptCore(Paths.hx('songs/' + SONG.song.toLowerCase() + '/script')));
+		if (Assets.exists(Paths.hx('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/script')))
+			scriptArray.push(new ScriptCore(Paths.hx('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/script')));
 
 		startingSong = true;
 
 		if (isStoryMode && !seenCutscene)
 		{
-			switch (SONG.song.toLowerCase())
+			switch (Paths.formatName(SONG.song.toLowerCase()))
 			{
 				case 'senpai':
-					var doof:DialogueBox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('songs/' + SONG.song.toLowerCase() + '/dialogue')));
+					var doof:DialogueBox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/dialogue')));
 					doof.scrollFactor.set();
 					doof.finishThing = startCountdown;
 					doof.cameras = [camHUD];
 					schoolIntro(doof);
 				case 'roses':
 					FlxG.sound.play(Paths.sound('ANGRY'));
-					var doof:DialogueBox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('songs/' + SONG.song.toLowerCase() + '/dialogue')));
+					var doof:DialogueBox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/dialogue')));
 					doof.scrollFactor.set();
 					doof.finishThing = startCountdown;
 					doof.cameras = [camHUD];
 					schoolIntro(doof);
 				case 'thorns':
-					var doof:DialogueBox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('songs/' + SONG.song.toLowerCase() + '/dialogue')));
+					var doof:DialogueBox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/dialogue')));
 					doof.scrollFactor.set();
 					doof.finishThing = startCountdown;
 					doof.cameras = [camHUD];
@@ -332,10 +332,10 @@ class PlayState extends MusicBeatState
 		senpaiEvil.scrollFactor.set();
 		senpaiEvil.screenCenter();
 
-		if (SONG.song.toLowerCase() == 'roses' || SONG.song.toLowerCase() == 'thorns')
+		if (Paths.formatName(SONG.song.toLowerCase()) == 'roses' || Paths.formatName(SONG.song.toLowerCase()) == 'thorns')
 		{
 			remove(black);
-			if (SONG.song.toLowerCase() == 'thorns')
+			if (Paths.formatName(SONG.song.toLowerCase()) == 'thorns')
 			{
 				add(red);
 				camHUD.visible = false;
@@ -354,7 +354,7 @@ class PlayState extends MusicBeatState
 				{
 					inCutscene = true;
 
-					if (SONG.song.toLowerCase() == 'thorns')
+					if (Paths.formatName(SONG.song.toLowerCase()) == 'thorns')
 					{
 						add(senpaiEvil);
 						senpaiEvil.alpha = 0;
@@ -428,9 +428,7 @@ class PlayState extends MusicBeatState
 			}
 
 			startedCountdown = true;
-			Conductor.songPosition = 0;
-			Conductor.songPosition -= Conductor.crochet * 5;
-
+			Conductor.songPosition = -Conductor.crochet * 5;
 			doIntro(Conductor.crochet / 1000);
 		}
 	}
@@ -695,8 +693,6 @@ class PlayState extends MusicBeatState
 		}
 
 		super.openSubState(SubState);
-
-		Paths.clearUnusedMemory();
 	}
 
 	override function closeSubState()
@@ -731,8 +727,6 @@ class PlayState extends MusicBeatState
 		}
 
 		super.closeSubState();
-
-		Paths.clearUnusedMemory();
 	}
 
 	#if FUTURE_DISCORD_RCP
@@ -819,18 +813,18 @@ class PlayState extends MusicBeatState
 		iconP1.animation.curAnim.curFrame = healthBar.percent < 20 ? 1 : 0;
 		iconP2.animation.curAnim.curFrame = healthBar.percent > 80 ? 1 : 0;
 
+		if (startedCountdown)
+			Conductor.songPosition += elapsed * 1000;
+
 		if (startingSong)
 		{
-			if (startedCountdown)
-			{
-				Conductor.songPosition += elapsed * 1000;
-				if (Conductor.songPosition >= 0)
-					startSong();
-			}
+			if (startedCountdown && Conductor.songPosition >= 0)
+				startSong();
+			else if (!startedCountdown)
+				Conductor.songPosition = -Conductor.crochet * 5;
 		}
 		else
 		{
-			Conductor.songPosition += elapsed * 1000;
 			if (!paused && Conductor.lastSongPos != Conductor.songPosition)
 				Conductor.lastSongPos = Conductor.songPosition;
 		}
@@ -866,8 +860,16 @@ class PlayState extends MusicBeatState
 
 		notes.forEachAlive(function(daNote:Note)
 		{
-			if (generatedMusic)
-				noteCalls(daNote);
+			if (generatedMusic && !inCutscene)
+			{
+				if (startedCountdown)
+					noteCalls(daNote);
+				else
+				{
+					daNote.canBeHit = false;
+					daNote.wasGoodHit = false;
+				}
+			}
 		});
 
 		if (!inCutscene && !endingSong)

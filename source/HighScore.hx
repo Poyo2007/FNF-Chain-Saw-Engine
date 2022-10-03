@@ -32,16 +32,7 @@ class HighScore
 	}
 
 	public static function formatSong(song:String, diff:Int):String
-	{
-		var daSong:String = song;
-
-		if (diff == 0)
-			daSong += '-easy';
-		else if (diff == 2)
-			daSong += '-hard';
-
-		return daSong;
-	}
+		return Paths.formatName(song) + CoolUtil.difficultyArray[diff][1];
 
 	public static function getScore(song:String, diff:Int):Int
 	{

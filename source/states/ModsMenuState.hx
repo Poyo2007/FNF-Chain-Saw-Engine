@@ -14,8 +14,10 @@ import openfl.display.BitmapData;
 class ModsMenuState extends MusicBeatState
 {
 	public static var mustResetMusic:Bool = false;
+
 	private var daMods:FlxTypedGroup<Alphabet>;
 	private var iconArray:Array<ModIcon> = [];
+	private var description:FlxText;
 	private var curSelected:Int = 0;
 
 	override function create()
@@ -29,7 +31,7 @@ class ModsMenuState extends MusicBeatState
 		#end
 
 		if (!FlxG.sound.music.playing)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
 
 		persistentUpdate = true;
 
@@ -44,6 +46,7 @@ class ModsMenuState extends MusicBeatState
 		{
 			var text:Alphabet = new Alphabet(0, (70 * i) + 30, ModCore.trackedMods[i].title, false, false);
 			text.isMenuItem = true;
+			text.forceX = 70;
 			text.targetY = i;
 			daMods.add(text);
 
@@ -52,6 +55,12 @@ class ModsMenuState extends MusicBeatState
 			iconArray.push(icon);
 			add(icon);
 		}
+
+		description = new FlxText(0, FlxG.height * 0.1, 600, '', 32);
+		description.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		description.screenCenter(X);
+		description.scrollFactor.set();
+		add(description);
 
 		changeSelection();
 
@@ -64,8 +73,11 @@ class ModsMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (FlxG.sound.music.volume < 0.7)
-			FlxG.sound.music.volume += 0.5 * elapsed;
+		if (ModCore.trackedMods[curSelected].description != null)
+		{
+			description.text = ModCore.trackedMods[curSelected].description;
+			description.screenCenter(X);
+		}
 
 		if (controls.UI_UP_P)
 			changeSelection(-1);
@@ -78,7 +90,10 @@ class ModsMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			ModCore.reload();
-			ModsMenuState.mustResetMusic = true;
+			FlxG.sound.music.fadeOut(0.7, 0, function(tween:FlxTween)
+			{
+				ModsMenuState.mustResetMusic = true;
+			});
 			MusicBeatState.switchState(new MainMenuState());
 		}
 		else if (controls.ACCEPT)

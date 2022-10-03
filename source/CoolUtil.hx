@@ -7,10 +7,14 @@ using StringTools;
 
 class CoolUtil
 {
-	public static var difficultyArray:Array<String> = ['Easy', "Normal", "Hard"];
+	public static var difficultyArray:Array<Dynamic> = [
+		['Easy', '-easy'],
+		['Normal', ''],
+		['Hard', '-hard']
+	];
 
 	public static function difficultyString(curDifficulty:Int):String
-		return difficultyArray[curDifficulty];
+		return difficultyArray[curDifficulty][0];
 
 	public static function coolTextFile(path:String):Array<String>
 	{

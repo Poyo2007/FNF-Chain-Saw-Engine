@@ -106,6 +106,8 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		super.update(elapsed);
+
 		if (animation.curAnim != null)
 		{
 			if (specialAnim && animation.curAnim.finished)
@@ -142,8 +144,6 @@ class Character extends FlxSprite
 			if (curCharacter == 'gf' && animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
 				dance();
 		}
-
-		super.update(elapsed);
 	}
 
 	private var danced:Bool = false;

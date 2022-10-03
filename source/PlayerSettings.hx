@@ -6,12 +6,8 @@ import flixel.util.FlxSignal;
 class PlayerSettings
 {
 	static public var numPlayers(default, null) = 0;
-	static public var numAvatars(default, null) = 0;
 	static public var player1(default, null):PlayerSettings;
 	static public var player2(default, null):PlayerSettings;
-
-	static public final onAvatarAdd = new FlxTypedSignal<PlayerSettings->Void>();
-	static public final onAvatarRemove = new FlxTypedSignal<PlayerSettings->Void>();
 
 	public var id(default, null):Int;
 	public final controls:Controls;

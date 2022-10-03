@@ -4,11 +4,7 @@ import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.media.Sound;
-import openfl.system.System;
 import openfl.utils.Assets;
-#if FUTURE_POLYMOD
-import polymod.Polymod;
-#end
 
 using StringTools;
 
@@ -39,10 +35,20 @@ class Paths
 			}
 		}
 
-		#if FUTURE_POLYMOD
-		Polymod.clearCache();
-		#end
-		System.gc();
+		for (key in currentTrackedSounds.keys())
+		{
+			if (!localTrackedAssets.contains(key) && key != null)
+			{
+				var obj = currentTrackedSounds.get(key);
+				if (obj != null)
+				{
+					Assets.cache.removeSound(key);
+					Assets.cache.clearSounds(key);
+					Assets.cache.clear(key);
+					currentTrackedSounds.remove(key);
+				}
+			}
+		}
 	}
 
 	public static function clearStoredMemory()
@@ -61,19 +67,20 @@ class Paths
 			}
 		}
 
-		for (key in currentTrackedSounds.keys())
+		@:privateAccess
+		for (key in Assets.cache.getSoundKeys())
 		{
-			if (!localTrackedAssets.contains(key) && key != null)
+			if (key != null && !currentTrackedSounds.exists(key))
 			{
-				Assets.cache.removeSound(key);
-				Assets.cache.clearSounds(key);
-				currentTrackedSounds.remove(key);
+				var obj = Assets.cache.getSound(key);
+				if (obj != null)
+				{
+					Assets.cache.removeSound(key);
+					Assets.cache.clearSounds(key);
+					Assets.cache.clear(key);
+				}
 			}
 		}
-
-		for (key in Assets.cache.getKeys())
-			if (!localTrackedAssets.contains(key) && key != null)
-				Assets.cache.clear(key);
 
 		localTrackedAssets = [];
 	}
@@ -106,10 +113,10 @@ class Paths
 		return returnSound('music/$key', cache);
 
 	inline static public function voices(song:String, ?cache:Bool = true):Sound
-		return returnSound('songs/' + song.replace(' ', '-').toLowerCase() + '/Voices', cache);
+		return returnSound('songs/' + formatName(song) + '/Voices', cache);
 
 	inline static public function inst(song:String, ?cache:Bool = true):Sound
-		return returnSound('songs/' + song.replace(' ', '-').toLowerCase() + '/Inst', cache);
+		return returnSound('songs/' + formatName(song) + '/Inst', cache);
 
 	inline static public function image(key:String, ?cache:Bool = true):FlxGraphic
 		return returnGraphic('images/$key', cache);
@@ -119,6 +126,9 @@ class Paths
 
 	inline static public function getPackerAtlas(key:String, ?cache:Bool = true):FlxAtlasFrames
 		return FlxAtlasFrames.fromSpriteSheetPacker(returnGraphic('images/$key', cache), txt('images/$key'));
+
+	inline static public function formatName(name:String):String
+		return name.replace(' ', '-').toLowerCase();
 
 	public static function returnGraphic(key:String, ?cache:Bool = true):FlxGraphic
 	{
@@ -136,7 +146,7 @@ class Paths
 			return currentTrackedAssets.get(path);
 		}
 
-		trace('oh no $key its returning null NOOOO');
+		trace('$key its null');
 		return null;
 	}
 
@@ -152,7 +162,7 @@ class Paths
 			return currentTrackedSounds.get(path);
 		}
 
-		trace('oh no $key its returning null NOOOO');
+		trace('$key its null');
 		return null;
 	}
 }

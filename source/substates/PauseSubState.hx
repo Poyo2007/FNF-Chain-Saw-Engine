@@ -37,7 +37,7 @@ class PauseSubState extends MusicBeatSubstate
 		super();
 
 		for (i in 0...CoolUtil.difficultyArray.length)
-			difficultyChoices.push(CoolUtil.difficultyArray[i]);
+			difficultyChoices.push(CoolUtil.difficultyArray[i][0]);
 
 		difficultyChoices.push('BACK');
 

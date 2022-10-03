@@ -67,7 +67,7 @@ class OutdatedState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		if (controls.ACCEPT)
-			FlxG.openURL("https://ninja-muffin24.itch.io/funkin");
+			FlxG.openURL("https://github.com/MAJigsaw77/FNF-Chain-Saw-Engine");
 		else if (controls.BACK)
 		{
 			leftState = true;

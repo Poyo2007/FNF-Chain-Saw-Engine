@@ -82,8 +82,8 @@
 			"flipX": false,
 			"flipY": false,
 			"offset": [
-				98,
-				-90
+				1,
+				16
 			]
 		},
 		{
@@ -95,8 +95,8 @@
 			"flipX": false,
 			"flipY": false,
 			"offset": [
-				24,
-				56
+				-31,
+				4
 			]
 		}
 	],
