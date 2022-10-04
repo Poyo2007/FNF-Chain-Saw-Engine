@@ -1,14 +1,13 @@
 import('Paths');
 import('flixel.FlxG');
 import('flixel.FlxSprite');
-import('flixel.group.FlxSpriteGroup');
 import('flixel.util.FlxTimer');
 import('flixel.graphics.frames.FlxAtlasFrames');
 import('states.PlayState');
 
 var limo:FlxSprite;
-var grpLimoDancers:FlxSpriteGroup;
 var fastCar:FlxSprite;
+var grpLimoDancers:Array<FlxSprite>;
 var fastCarCanDrive:Bool = true;
 
 function create()
@@ -26,8 +25,7 @@ function create()
 	bgLimo.scrollFactor.set(0.4, 0.4);
 	PlayState.instance.add(bgLimo);
 
-	grpLimoDancers = new FlxSpriteGroup();
-	grpLimoDancers.scrollFactor.set(0.4, 0.4);
+	grpLimoDancers = [];
 	PlayState.instance.add(grpLimoDancers);
 
 	for (i in 0...5)
@@ -37,7 +35,9 @@ function create()
 		dancer.animation.addByIndices('danceLeft', 'bg dancer sketch PINK', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		dancer.animation.addByIndices('danceRight', 'bg dancer sketch PINK', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		dancer.animation.play('danceLeft');
-		grpLimoDancers.add(dancer);
+		dancer.scrollFactor.set(0.4, 0.4);
+		PlayState.instance.add(dancer);
+		grpLimoDancers.push(dancer);
 	}
 
 	fastCar = new FlxSprite(-300, 160).loadGraphic(Paths.returnGraphic('stages/limo/images/fastCarLol'));
@@ -77,10 +77,10 @@ var danceDir:Bool = false;
 
 function beatHit(curBeat:Int)
 {
-	grpLimoDancers.forEach(function(dancer:FlxSprite)
-	{
-		danceDir = !danceDir;
+	danceDir = !danceDir;
 
+	for (dancer in grpLimoDancers)
+	{
 		if (danceDir)
 			dancer.animation.play('danceRight', true);
 		else
