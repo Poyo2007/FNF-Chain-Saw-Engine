@@ -90,10 +90,7 @@ class ModsMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			ModCore.reload();
-			FlxG.sound.music.fadeOut(0.7, 0, function(tween:FlxTween)
-			{
-				ModsMenuState.mustResetMusic = true;
-			});
+			ModsMenuState.mustResetMusic = true;
 			MusicBeatState.switchState(new MainMenuState());
 		}
 		else if (controls.ACCEPT)
@@ -129,7 +126,6 @@ class ModsMenuState extends MusicBeatState
 		for (i in 0...iconArray.length)
 		{
 			iconArray[i].alpha = 0.6;
-
 			if (!FlxG.save.data.disabledMods.contains(ModCore.trackedMods[i].id))
 				iconArray[i].alpha = 1;
 		}
@@ -141,7 +137,6 @@ class ModsMenuState extends MusicBeatState
 			bullShit++;
 
 			daMods.members[i].alpha = 0.6;
-
 			if (!FlxG.save.data.disabledMods.contains(ModCore.trackedMods[i].id))
 				daMods.members[i].alpha = 1;
 		}

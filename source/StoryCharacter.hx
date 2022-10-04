@@ -2,9 +2,9 @@ package;
 
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
+import openfl.Lib;
 import openfl.utils.Assets;
 import parsers.StoryCharacter as StoryCharacterParse;
-import parsers.StoryCharacter.SwagStoryAnimation;
 import parsers.StoryCharacter.SwagStoryCharacter;
 
 /**
@@ -13,6 +13,7 @@ import parsers.StoryCharacter.SwagStoryCharacter;
 class StoryCharacter extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>> = [];
+	public var danceAnimation:Array<String> = ['idle'];
 
 	public function new(x:Float, y:Float, name:String = 'bf')
 	{
@@ -50,11 +51,9 @@ class StoryCharacter extends FlxSprite
 				frames = FlxAtlasFrames.fromTexturePackerJson(Paths.returnGraphic('images/menucharacters/' + char + '/spritesheet'),
 					Paths.json('images/menucharacters/' + char + '/spritesheet'));
 	
-			final animations:Array<SwagStoryAnimation> = daCharacter.animations;
-	
-			if (animations != null && animations.length > 0)
+			if (daCharacter.animations != null && daCharacter.animations.length > 0)
 			{
-				for (anim in animations)
+				for (anim in daCharacter.animations)
 				{
 					final animAnimation:String = anim.animation;
 					final animPrefix:String = anim.prefix;
@@ -77,7 +76,12 @@ class StoryCharacter extends FlxSprite
 				}
 			}
 			else
-				animation.addByPrefix('idle', 'idle', 24, false);
+				animation.addByPrefix(danceAnimation[0], 'idle', 24, false);
+
+			if (daCharacter.danceAnimation != null)
+				danceAnimation = daCharacter.danceAnimation;
+			else if (daCharacter.danceAnimation != null && daCharacter.danceAnimation.length >= 2)
+				Lib.application.window.alert("The Character $char can't use more then 2 animations for the default animations", "StoryCharacter Error!");
 
 			if (daCharacter.scale != 1)
 			{
@@ -94,24 +98,26 @@ class StoryCharacter extends FlxSprite
 			flipY = daCharacter.flipY;
 	
 			dance();
+			animation.finish();
 		}
 	}
 
 	private var danced:Bool = false;
 
-	public function dance():Void
+	public function dance()
 	{
-		if (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null)
+		if ((danceAnimation[0] != null && animation.getByName(danceAnimation[0]) != null)
+			&& (danceAnimation[1] != null && animation.getByName(danceAnimation[1]) != null))
 		{
 			danced = !danced;
 
 			if (danced)
-				playAnim('danceRight');
+				playAnim(danceAnimation[0]);
 			else
-				playAnim('danceLeft');
+				playAnim(danceAnimation[1]);
 		}
-		else if (animation.getByName('idle') != null)
-			playAnim('idle');
+		else if (danceAnimation[0] != null && animation.getByName(danceAnimation[0]) != null)
+			playAnim(danceAnimation[0]);
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
@@ -124,6 +130,6 @@ class StoryCharacter extends FlxSprite
 			offset.set(0, 0);
 	}
 
-	public function addOffset(name:String, x:Float = 0, y:Float = 0):Void
-		animOffsets[name] = [x, y];
+	public function addOffset(Name:String, X:Float = 0, Y:Float = 0)
+		animOffsets[Name] = [X, Y];
 }

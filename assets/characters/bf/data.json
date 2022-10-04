@@ -191,6 +191,9 @@
 			]
 		}
 	],
+	"danceAnimation": [
+		"idle"
+	],
 	"scale": 1,
 	"singDuration": 4,
 	"antialiasing": true,

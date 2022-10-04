@@ -208,6 +208,7 @@ class PlayState extends MusicBeatState
 				scriptArray.push(new ScriptCore(script));
 
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
+		grpNoteSplashes.cameras = [camHUD];
 		add(grpNoteSplashes);
 
 		var splash:NoteSplash = new NoteSplash(100, 100, 0);
@@ -215,10 +216,16 @@ class PlayState extends MusicBeatState
 		grpNoteSplashes.add(splash);
 
 		playerStrums = new FlxTypedGroup<StrumNote>();
+		playerStrums.cameras = [camHUD];
 		add(playerStrums);
 
 		opponentStrums = new FlxTypedGroup<StrumNote>();
+		opponentStrums.cameras = [camHUD];
 		add(opponentStrums);
+
+		notes = new FlxTypedGroup<Note>();
+		notes.cameras = [camHUD];
+		add(notes);
 
 		generateSong();
 
@@ -235,6 +242,7 @@ class PlayState extends MusicBeatState
 		healthBarBG = new FlxSprite(0, PreferencesData.downScroll ? FlxG.height * 0.1 : FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
+		healthBarBG.cameras = [camHUD];
 		add(healthBarBG);
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
@@ -242,32 +250,26 @@ class PlayState extends MusicBeatState
 		healthBar.scrollFactor.set();
 		healthBar.createFilledBar(FlxColor.fromRGB(dad.colors[0], dad.colors[1], dad.colors[2]),
 			FlxColor.fromRGB(boyfriend.colors[0], boyfriend.colors[1], boyfriend.colors[2]));
+		healthBar.cameras = [camHUD];
 		add(healthBar);
 
 		iconP1 = new HealthIcon(boyfriend.curCharacter, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
+		iconP1.cameras = [camHUD];
 		add(iconP1);
 
 		iconP2 = new HealthIcon(dad.curCharacter, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
+		iconP2.cameras = [camHUD];
 		add(iconP2);
 
-		scoreTxt = new FlxText(0, healthBarBG.y + 40, 0, 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks, 20);
+		scoreTxt = new FlxText(0, healthBarBG.y + 35, 0, 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks, 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.screenCenter(X);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
-		add(scoreTxt);
-
-		grpNoteSplashes.cameras = [camHUD];
-		playerStrums.cameras = [camHUD];
-		opponentStrums.cameras = [camHUD];
-		notes.cameras = [camHUD];
-		healthBar.cameras = [camHUD];
-		healthBarBG.cameras = [camHUD];
-		iconP1.cameras = [camHUD];
-		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+		add(scoreTxt);
 
 		#if mobile
 		addMobileControls(false);
@@ -283,20 +285,23 @@ class PlayState extends MusicBeatState
 			switch (Paths.formatName(SONG.song.toLowerCase()))
 			{
 				case 'senpai':
-					var doof:DialogueBox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/dialogue')));
+					var doof:DialogueBox = new DialogueBox(false,
+						CoolUtil.coolTextFile(Paths.txt('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/dialogue')));
 					doof.scrollFactor.set();
 					doof.finishThing = startCountdown;
 					doof.cameras = [camHUD];
 					schoolIntro(doof);
 				case 'roses':
 					FlxG.sound.play(Paths.sound('ANGRY'));
-					var doof:DialogueBox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/dialogue')));
+					var doof:DialogueBox = new DialogueBox(false,
+						CoolUtil.coolTextFile(Paths.txt('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/dialogue')));
 					doof.scrollFactor.set();
 					doof.finishThing = startCountdown;
 					doof.cameras = [camHUD];
 					schoolIntro(doof);
 				case 'thorns':
-					var doof:DialogueBox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/dialogue')));
+					var doof:DialogueBox = new DialogueBox(false,
+						CoolUtil.coolTextFile(Paths.txt('songs/' + Paths.formatName(SONG.song.toLowerCase()) + '/dialogue')));
 					doof.scrollFactor.set();
 					doof.finishThing = startCountdown;
 					doof.cameras = [camHUD];
@@ -438,13 +443,19 @@ class PlayState extends MusicBeatState
 		var swagCounter:Int = 0;
 		var startTimer:FlxTimer = new FlxTimer().start(startTime, function(tmr:FlxTimer)
 		{
-			if (tmr.loopsLeft % Math.round(gfSpeed * 2) == 0 && !gf.animation.curAnim.name.startsWith("sing") && !gf.stunned)
+			if (tmr.loopsLeft % Math.round(gfSpeed * 2) == 0
+				&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing"))
+				&& !gf.stunned)
 				gf.dance();
 
-			if (tmr.loopsLeft % 2 == 0 && !boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.stunned)
+			if (tmr.loopsLeft % 2 == 0
+				&& (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith("sing"))
+				&& !boyfriend.stunned)
 				boyfriend.dance();
 
-			if (tmr.loopsLeft % 2 == 0 && !dad.animation.curAnim.name.startsWith('sing') && !dad.stunned)
+			if (tmr.loopsLeft % 2 == 0
+				&& (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith("sing"))
+				&& !dad.stunned)
 				dad.dance();
 
 			switch (swagCounter)
@@ -583,9 +594,6 @@ class PlayState extends MusicBeatState
 			vocals = new FlxSound();
 
 		FlxG.sound.list.add(vocals);
-
-		notes = new FlxTypedGroup<Note>();
-		add(notes);
 
 		for (section in SONG.notes)
 		{
@@ -810,8 +818,11 @@ class PlayState extends MusicBeatState
 		if (health > 2)
 			health = 2;
 
-		iconP1.animation.curAnim.curFrame = healthBar.percent < 20 ? 1 : 0;
-		iconP2.animation.curAnim.curFrame = healthBar.percent > 80 ? 1 : 0;
+		if (iconP1.animation.curAnim != null)
+			iconP1.animation.curAnim.curFrame = healthBar.percent < 20 ? 1 : 0;
+
+		if (iconP2.animation.curAnim != null)
+			iconP2.animation.curAnim.curFrame = healthBar.percent > 80 ? 1 : 0;
 
 		if (startedCountdown)
 			Conductor.songPosition += elapsed * 1000;
@@ -878,8 +889,8 @@ class PlayState extends MusicBeatState
 				keyShit();
 			else if (boyfriend.animation.curAnim != null
 				&& boyfriend.holdTimer > 0.001 * boyfriend.singDuration * Conductor.stepCrochet
-				&& boyfriend.animation.curAnim.name.startsWith('sing')
-				&& !boyfriend.animation.curAnim.name.endsWith('miss'))
+				&& (boyfriend.animation.curAnim != null && boyfriend.animation.curAnim.name.startsWith('sing')
+				&& !boyfriend.animation.curAnim.name.endsWith('miss')))
 				boyfriend.dance();
 		}
 	}
@@ -1331,8 +1342,8 @@ class PlayState extends MusicBeatState
 		if (boyfriend.animation.curAnim != null
 			&& boyfriend.holdTimer > 0.001 * boyfriend.singDuration * Conductor.stepCrochet
 			&& !holdingArray.contains(true)
-			&& boyfriend.animation.curAnim.name.startsWith('sing')
-			&& !boyfriend.animation.curAnim.name.endsWith('miss'))
+			&& (boyfriend.animation.curAnim != null &&  boyfriend.animation.curAnim.name.startsWith('sing')
+			&& !boyfriend.animation.curAnim.name.endsWith('miss')))
 			boyfriend.dance();
 
 		playerStrums.forEach(function(spr:StrumNote)
@@ -1445,7 +1456,7 @@ class PlayState extends MusicBeatState
 			}
 
 			var time:Float = 0.15;
-			if (daNote.sustainNote && !daNote.animation.curAnim.name.endsWith('end'))
+			if (daNote.sustainNote && (daNote.animation.curAnim != null && !daNote.animation.curAnim.name.endsWith('end')))
 				time += 0.15;
 
 			playerStrums.forEach(function(spr:StrumNote)
@@ -1496,7 +1507,7 @@ class PlayState extends MusicBeatState
 		dad.holdTimer = 0;
 
 		var time:Float = 0.15;
-		if (daNote.sustainNote && !daNote.animation.curAnim.name.endsWith('end'))
+		if (daNote.sustainNote && (daNote.animation.curAnim != null && !daNote.animation.curAnim.name.endsWith('end')))
 			time += 0.15;
 
 		opponentStrums.forEach(function(spr:StrumNote)
@@ -1568,13 +1579,17 @@ class PlayState extends MusicBeatState
 		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
 		iconP2.updateHitbox();
 
-		if (curBeat % Math.round(gfSpeed * 2) == 0 && !gf.animation.curAnim.name.startsWith("sing") && !gf.stunned)
+		if (curBeat % Math.round(gfSpeed * 2) == 0
+			&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing"))
+			&& !gf.stunned)
 			gf.dance();
 
-		if (curBeat % 2 == 0 && !boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.stunned)
+		if (curBeat % 2 == 0
+			&& (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith("sing"))
+			&& !boyfriend.stunned)
 			boyfriend.dance();
 
-		if (curBeat % 2 == 0 && !dad.animation.curAnim.name.startsWith('sing') && !dad.stunned)
+		if (curBeat % 2 == 0 && (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith("sing")) && !dad.stunned)
 			dad.dance();
 
 		lastBeatHit = curBeat;

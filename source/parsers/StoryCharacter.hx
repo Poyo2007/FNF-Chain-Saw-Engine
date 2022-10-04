@@ -6,6 +6,7 @@ import openfl.utils.Assets;
 typedef SwagStoryCharacter =
 {
 	var animations:Array<SwagStoryAnimation>;
+	var danceAnimation:Array<String>;
 	var scale:Float;
 	var antialiasing:Bool;
 	var flipX:Bool;

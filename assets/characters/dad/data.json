@@ -74,6 +74,9 @@
 			]
 		}
 	],
+	"danceAnimation": [
+		"idle"
+	],
 	"scale": 1,
 	"singDuration": 6.1,
 	"antialiasing": true,

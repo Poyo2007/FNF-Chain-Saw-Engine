@@ -28,32 +28,33 @@ class Overlay extends TextField
 
 		addEventListener(Event.ENTER_FRAME, function(e:Event)
 		{
-			if (visible)
-			{
-				var now = Timer.stamp();
-				times.push(now);
-				while (times[0] < now - 1)
-					times.shift();
+			var now = Timer.stamp();
+			times.push(now);
+			while (times[0] < now - 1)
+				times.shift();
 
-				var currentFrames:Int = times.length;
-				if (currentFrames > PreferencesData.framerate)
-					currentFrames = PreferencesData.framerate;
+			var currentFrames:Int = times.length;
+			if (currentFrames > PreferencesData.framerate)
+				currentFrames = PreferencesData.framerate;
 
+			if (currentFrames <= PreferencesData.framerate / 4)
+				textColor = 0xFFFF0000;
+			else if (currentFrames <= PreferencesData.framerate / 2)
+				textColor = 0xffd64400;
+			else
 				textColor = 0xFFFFFFFF;
-				if (currentFrames <= PreferencesData.framerate / 2)
-					textColor = 0xFFFF0000;
 
-				#if cpp
-				var mem:Float = cpp.vm.Gc.memInfo64(3);
-				#else
-				var mem:Float = openfl.system.System.totalMemory;
-				#end
+			#if cpp
+			var mem:Float = cpp.vm.Gc.memInfo64(3);
+			#else
+			var mem:Float = openfl.system.System.totalMemory;
+			#end
 
-				if (mem > memPeak)
+			if (mem > memPeak)
 				memPeak = mem;
 
+			if (visible)
 				text = currentFrames + ' FPS\n' + getInterval(mem) + ' / ' + getInterval(memPeak) + '\n';
-			}
 		});
 	}
 

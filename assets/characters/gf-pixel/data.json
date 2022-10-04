@@ -68,6 +68,10 @@
 			]
 		}
 	],
+	"danceAnimation": [
+		"danceLeft",
+		"danceRight"
+	],
 	"scale": 6,
 	"singDuration": 4,
 	"antialiasing": false,

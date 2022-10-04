@@ -2,9 +2,9 @@ package;
 
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
+import openfl.Lib;
 import openfl.utils.Assets;
 import parsers.Character as CharacterParse;
-import parsers.Character.SwagAnimation;
 import parsers.Character.SwagCharacter;
 
 using StringTools;
@@ -21,6 +21,7 @@ class Character extends FlxSprite
 
 	public var position:Array<Float> = [0, 0];
 	public var camPos:Array<Float> = [0, 0];
+	public var danceAnimation:Array<String> = ['idle'];
 	public var singDuration:Float = 4;
 	public var colors:Array<Int> = [146, 113, 253];
 
@@ -35,21 +36,22 @@ class Character extends FlxSprite
 
 		final character:SwagCharacter = CharacterParse.loadJson(curCharacter + '/data');
 
-		if (Assets.exists(Paths.xml('characters/' + curCharacter + '/spritesheet')))
-			frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('characters/' + curCharacter + '/spritesheet'),
-				Paths.xml('characters/' + curCharacter + '/spritesheet'));
-		else if (Assets.exists(Paths.txt('characters/' + curCharacter + '/spritesheet')))
-			frames = FlxAtlasFrames.fromSpriteSheetPacker(Paths.returnGraphic('characters/' + curCharacter + '/spritesheet'),
-				Paths.txt('characters/' + curCharacter + '/spritesheet'));
-		else if (Assets.exists(Paths.json('characters/' + curCharacter + '/spritesheet')))
-			frames = FlxAtlasFrames.fromTexturePackerJson(Paths.returnGraphic('characters/' + curCharacter + '/spritesheet'),
-				Paths.json('characters/' + curCharacter + '/spritesheet'));
+		if (Assets.exists(Paths.xml('characters/' + this.curCharacter + '/spritesheet')))
+			frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('characters/' + this.curCharacter + '/spritesheet'),
+				Paths.xml('characters/' + this.curCharacter + '/spritesheet'));
+		else if (Assets.exists(Paths.txt('characters/' + this.curCharacter + '/spritesheet')))
+			frames = FlxAtlasFrames.fromSpriteSheetPacker(Paths.returnGraphic('characters/' + this.curCharacter + '/spritesheet'),
+				Paths.txt('characters/' + this.curCharacter + '/spritesheet'));
+		else if (Assets.exists(Paths.json('characters/' + this.curCharacter + '/spritesheet')))
+			frames = FlxAtlasFrames.fromTexturePackerJson(Paths.returnGraphic('characters/' + this.curCharacter + '/spritesheet'),
+				Paths.json('characters/' + this.curCharacter + '/spritesheet'));
 
-		final animations:Array<SwagAnimation> = character.animations;
+		position = character.position;
+		camPos = character.camPos;
 
-		if (animations != null && animations.length > 0)
+		if (character.animations != null && character.animations.length > 0)
 		{
-			for (anim in animations)
+			for (anim in character.animations)
 			{
 				final animAnimation:String = anim.animation;
 				final animPrefix:String = anim.prefix;
@@ -72,7 +74,7 @@ class Character extends FlxSprite
 			}
 		}
 		else
-			animation.addByPrefix('idle', 'BF idle dance', 24, false);
+			animation.addByPrefix(danceAnimation[0], 'BF idle dance', 24, false);
 
 		if (character.scale != 1)
 		{
@@ -80,8 +82,11 @@ class Character extends FlxSprite
 			updateHitbox();
 		}
 
-		position = character.position;
-		camPos = character.camPos;
+		if (character.danceAnimation != null)
+			danceAnimation = character.danceAnimation;
+		else if (character.danceAnimation != null && character.danceAnimation.length >= 2)
+			Lib.application.window.alert("The Character $this.curCharacter can't use more then 2 animations for the default animations", "Character Error!");
+
 		singDuration = character.singDuration;
 
 		if (character.antialiasing == true)
@@ -135,7 +140,7 @@ class Character extends FlxSprite
 					holdTimer = 0;
 
 				if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
-					playAnim('idle', true, false, 10);
+					dance();
 
 				if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)
 					playAnim('deathLoop');
@@ -152,17 +157,18 @@ class Character extends FlxSprite
 	{
 		if (!debugMode && !specialAnim)
 		{
-			if (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null)
+			if ((danceAnimation[0] != null && animation.getByName(danceAnimation[0]) != null)
+				&& (danceAnimation[1] != null && animation.getByName(danceAnimation[1]) != null))
 			{
 				danced = !danced;
 
 				if (danced)
-					playAnim('danceRight');
+					playAnim(danceAnimation[0]);
 				else
-					playAnim('danceLeft');
+					playAnim(danceAnimation[1]);
 			}
-			else if (animation.getByName('idle') != null)
-				playAnim('idle');
+			else if (danceAnimation[0] != null && animation.getByName(danceAnimation[0]) != null)
+				playAnim(danceAnimation[0]);
 		}
 	}
 
@@ -189,6 +195,6 @@ class Character extends FlxSprite
 		}
 	}
 
-	public function addOffset(name:String, x:Float = 0, y:Float = 0)
-		animOffsets[name] = [x, y];
+	public function addOffset(Name:String, X:Float = 0, Y:Float = 0)
+		animOffsets[Name] = [X, Y];
 }
