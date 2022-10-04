@@ -21,6 +21,7 @@ class Includes {
         Compiler.include('Lambda');
         Compiler.include('StringBuf');
         Compiler.include('StringTools');
+        trace(Sys.getCwd);
         return macro $v{null};
         #else
         return macro $v{null};
