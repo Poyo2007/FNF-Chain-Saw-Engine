@@ -6,8 +6,8 @@ import('flixel.graphics.frames.FlxAtlasFrames');
 import('states.PlayState');
 
 var limo:FlxSprite;
-var fastCar:FlxSprite;
 var grpLimoDancers:Array<FlxSprite>;
+var fastCar:FlxSprite;
 var fastCarCanDrive:Bool = true;
 
 function create()
@@ -45,6 +45,10 @@ function create()
 	PlayState.instance.add(fastCar);
 
 	PlayState.instance.add(PlayState.instance.gf);
+
+	var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.returnGraphic('stages/limo/images/limoOverlay'));
+	overlayShit.alpha = 0.125;
+	PlayState.instance.add(overlayShit);
 
 	limo = new FlxSprite(-120, 550);
 	limo.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/limo/images/limoDrive'), Paths.xml('stages/limo/images/limoDrive'));
@@ -85,7 +89,7 @@ function beatHit(curBeat:Int)
 			dancer.animation.play('danceRight', true);
 		else
 			dancer.animation.play('danceLeft', true);
-	});
+	}
 
 	if (FlxG.random.bool(10) && fastCarCanDrive)
 		fastCarDrive();
