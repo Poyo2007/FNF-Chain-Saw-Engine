@@ -1,6 +1,5 @@
 package macros;
 
-#if macro
 import haxe.macro.Compiler;
 
 class Includes {
@@ -28,4 +27,3 @@ class Includes {
         #end
     }
 }
-#end
