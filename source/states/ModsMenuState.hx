@@ -57,11 +57,11 @@ class ModsMenuState extends MusicBeatState
 			add(icon);
 		}
 
-		description = new FlxText(0, FlxG.height * 0.1, 600, '', 28);
+		description = new FlxText(0, FlxG.height * 0.1, FlxG.width * 0.9, '', 28);
 		description.setFormat("VCR OSD Mono", 28, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		description.screenCenter(X);
 		description.scrollFactor.set();
-		description.borderSize = 1.25;
+		description.borderSize = 3;
 		add(description);
 
 		changeSelection();

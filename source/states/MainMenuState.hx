@@ -196,7 +196,7 @@ class MainMenuState extends MusicBeatState
 				if (ModCore.trackedMods != [])
 					MusicBeatState.switchState(new ModsMenuState());
 				else
-					Main.toast.create('No Mods Installed!', 0xffd64400, 'Please add mods to be able to access the menu!');
+					Main.toast.create('No Mods Installed!', 0xFFFFFF00, 'Please add mods to be able to access the menu!');
 			}
 			#end
 		}

@@ -38,7 +38,7 @@ class Overlay extends TextField
 			if (currentFrames <= PreferencesData.framerate / 4)
 				textColor = 0xFFFF0000;
 			else if (currentFrames <= PreferencesData.framerate / 2)
-				textColor = 0xffd64400;
+				textColor = 0xFFFFFF00;
 			else
 				textColor = 0xFFFFFFFF;
 

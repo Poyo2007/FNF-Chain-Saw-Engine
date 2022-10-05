@@ -64,13 +64,17 @@ class PlayState extends MusicBeatState
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
 	private var camZooming:Bool = true;
-	private var score:Int = 0;
 	private var scoreTxt:FlxText;
 	private var defaultCamZoom:Float = 1.05;
 	private var inCutscene:Bool = false;
 	private var gfSpeed:Int = 1;
 	private var combo:Int = 0;
+	private var score:Int = 0;
 	private var comboBreaks:Int = 0;
+	private var accuracy:Float = 1;
+	private var hitNotes:Float = 0;
+	private var totalNotes:Float = 0;
+	private var grade:String = Rank.gradeArray[0];
 	private var maxSongPos:Int = 14000;
 	private var minHealth:Int = 0;
 	private var paused:Bool = false;
@@ -104,6 +108,10 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
+
+		grade = Rank.gradeArray[0];
+		comboBreaks = 0;
+		accuracy = 1;
 
 		#if FUTURE_DISCORD_RCP
 		if (isStoryMode)
@@ -204,10 +212,6 @@ class PlayState extends MusicBeatState
 		add(dad);
 		add(boyfriend);
 
-		for (script in Assets.list(TEXT).filter(text -> text.contains('assets/scripts')))
-			if (script.endsWith('.hx'))
-				scriptArray.push(new ScriptCore(script));
-
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
 		grpNoteSplashes.cameras = [camHUD];
 		add(grpNoteSplashes);
@@ -229,6 +233,10 @@ class PlayState extends MusicBeatState
 		add(notes);
 
 		generateSong();
+
+		for (script in Assets.list(TEXT).filter(text -> text.contains('assets/scripts')))
+			if (script.endsWith('.hx'))
+				scriptArray.push(new ScriptCore(script));
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollow.setPosition(dad.getGraphicMidpoint().x + dad.camPos[0], dad.getGraphicMidpoint().y + dad.camPos[1]);
@@ -671,6 +679,16 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	private function updateAccuracy():Void
+	{
+		if (totalNotes == 0)
+			accuracy = 1;
+		else
+			accuracy = hitNotes / totalNotes;
+
+		grade = Rank.accuracyToGrade(accuracy);
+	}
+
 	override function openSubState(SubState:FlxSubState)
 	{
 		if (!paused)
@@ -793,7 +811,8 @@ class PlayState extends MusicBeatState
 		if (autoplayMode)
 			scoreTxt.text = 'Auto-Play';
 		else
-			scoreTxt.text = 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks;
+			scoreTxt.text = 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks + divider + 'Accuracy:' + CoolUtil.truncateFloat(accuracy * 100, 2)
+				+ '% - ' + grade;
 		scoreTxt.screenCenter(X);
 
 		if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
@@ -890,8 +909,9 @@ class PlayState extends MusicBeatState
 				keyShit();
 			else if (boyfriend.animation.curAnim != null
 				&& boyfriend.holdTimer > 0.001 * boyfriend.singDuration * Conductor.stepCrochet
-				&& (boyfriend.animation.curAnim != null && boyfriend.animation.curAnim.name.startsWith('sing')
-				&& !boyfriend.animation.curAnim.name.endsWith('miss')))
+				&& (boyfriend.animation.curAnim != null
+					&& boyfriend.animation.curAnim.name.startsWith('sing')
+					&& !boyfriend.animation.curAnim.name.endsWith('miss')))
 				boyfriend.dance();
 		}
 	}
@@ -1135,6 +1155,8 @@ class PlayState extends MusicBeatState
 	private function popUpScore(daNote:Note):Void
 	{
 		var noteDiff:Float = Math.abs(daNote.strumTime - Conductor.songPosition);
+
+		totalNotes++;
 		vocals.volume = 1;
 
 		var addedScore:Int = 350;
@@ -1164,7 +1186,10 @@ class PlayState extends MusicBeatState
 		}
 
 		if (!practiceMode && !autoplayMode)
+		{
+			hitNotes += Rank.ratingToHit(daRating);
 			score += addedScore;
+		}
 
 		var rating:FlxSprite = new FlxSprite(0, 0);
 		if (!PlayState.isPixelAssets)
@@ -1261,6 +1286,7 @@ class PlayState extends MusicBeatState
 			startDelay: Conductor.crochet * 0.001
 		});
 
+		updateAccuracy();
 		curSection += 1;
 	}
 
@@ -1345,8 +1371,9 @@ class PlayState extends MusicBeatState
 		if (boyfriend.animation.curAnim != null
 			&& boyfriend.holdTimer > 0.001 * boyfriend.singDuration * Conductor.stepCrochet
 			&& !holdingArray.contains(true)
-			&& (boyfriend.animation.curAnim != null &&  boyfriend.animation.curAnim.name.startsWith('sing')
-			&& !boyfriend.animation.curAnim.name.endsWith('miss')))
+			&& (boyfriend.animation.curAnim != null
+				&& boyfriend.animation.curAnim.name.startsWith('sing')
+				&& !boyfriend.animation.curAnim.name.endsWith('miss')))
 			boyfriend.dance();
 
 		playerStrums.forEach(function(spr:StrumNote)
@@ -1373,6 +1400,8 @@ class PlayState extends MusicBeatState
 				health = minHealth;
 			else
 				health -= 0.04;
+
+			totalNotes++;
 
 			if (combo > 5 && gf.animation.getByName('sad') != null)
 				gf.playAnim('sad');
@@ -1410,6 +1439,7 @@ class PlayState extends MusicBeatState
 			}
 
 			vocals.volume = 0;
+			updateAccuracy();
 
 			callScripts('noteMiss', [direction]);
 		}
@@ -1435,6 +1465,11 @@ class PlayState extends MusicBeatState
 			{
 				popUpScore(daNote);
 				combo += 1;
+			}
+			else
+			{
+				hitNotes++;
+				totalNotes++;
 			}
 
 			if (daNote.noteData >= 0)
