@@ -163,11 +163,9 @@ class ScriptCore extends FlxBasic
 	private var cryptMap:Map<String, String> = [];
 	
 	// (sirox) decode this is literally impossible without decode function, pog
-	public static function encode(input:String):String {
+	public function encode(input:String):String {
 		var resultThing:String = "";
-		if (cryptMap.length < 1) {
-			setupCryptMap();
-		}
+		setupCryptMap();
 		for (i in 0...input.length) {
 			resultThing += cryptMap.get(input.substr(i, 1));
 		}
@@ -176,9 +174,7 @@ class ScriptCore extends FlxBasic
 	
 	private function decode(input:String) {
 		var resultThing:String = "";
-		if (cryptMap.length < 1) {
-			setupCryptMap();
-		}
+		setupCryptMap();
 		resultThing = input;
 		for (i in cryptMap.keys()) {
 			resultThing = resultThing.replace(cryptMap.get(i), i);
