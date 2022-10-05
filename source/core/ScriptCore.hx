@@ -5,6 +5,7 @@ import hscript.Parser;
 import openfl.Lib;
 import openfl.utils.Assets;
 import haxe.crypto.Md5;
+import flixel.FlxBasic;
 
 using StringTools;
 
@@ -12,7 +13,7 @@ using StringTools;
  * Class based originaly from Wednesdays-Infidelty Mod.
  * Credits: lunarcleint.
  */
-class ScriptCore // (sirox) idk why FlxBasic was there, is useless for hscript though
+class ScriptCore extends FlxBasic
 {
 	public static var Function_Stop:Dynamic = 1;
 	public static var Function_Continue:Dynamic = 0;
