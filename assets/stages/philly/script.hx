@@ -2,13 +2,12 @@ import('Paths');
 import('Conductor');
 import('flixel.FlxG');
 import('flixel.FlxSprite');
-import('flixel.addons.display.FlxRuntimeShader');
+import('flixel.system.FlxSound');
+import('flixel.math.FlxMath');
 import('states.PlayState');
 
-var lightFadeShader:FlxRuntimeShader;
 var phillyCityLights:Array<FlxSprite>;
 var phillyTrain:FlxSprite;
-var curLight:Int = 0;
 var startedMoving:Bool = false;
 var trainMoving:Bool = false;
 var trainCars:Int = 8;
@@ -31,10 +30,6 @@ function create()
 	city.updateHitbox();
 	PlayState.instance.add(city);
 
-	lightFadeShader = new FlxRuntimeShader(Paths.frag('shaders/building'), Paths.vert('shaders/building'));
-	lightFadeShader.setFloat('alphaShit', 0);
-        lightFadeShader.setBool('hasColorTransform', true); // (theShaderGod) lmao, you can set uniform for vertex part of shader using same thing as in fragment
-
 	phillyCityLights = [];
 	PlayState.instance.add(phillyCityLights);
 
@@ -44,7 +39,6 @@ function create()
 		light.setGraphicSize(Std.int(light.width * 0.85));
 		light.updateHitbox();
 		light.scrollFactor.set(0.3, 0.3);
-		light.shader = lightFadeShader;
 		light.visible = false;
 		PlayState.instance.add(light);
 		phillyCityLights.push(light);
@@ -107,10 +101,10 @@ function trainReset()
 	startedMoving = false;
 }
 
-var shaderTime:Float = 0;
 function update(elapsed:Float)
 {
-	shaderTime += 1.5 * (Conductor.crochet / 1000) * elapsed;
+	for (light in phillyCityLights)
+		light.alpha = FlxMath.lerp(1, 0, ((Conductor.songPosition / Conductor.crochet / 4) % 1));
 
 	if (trainMoving)
 	{
@@ -122,8 +116,6 @@ function update(elapsed:Float)
 			trainFrameTiming = 0;
 		}
 	}
-
-	lightFadeShader.setFloat('alphaShit', shaderTime);
 }
 
 function beatHit(curBeat:Int)
@@ -133,14 +125,13 @@ function beatHit(curBeat:Int)
 
 	if (curBeat % 4 == 0)
 	{
-		lightFadeShader.setFloat('alphaShit', 0);
-
 		for (light in phillyCityLights)
+		{
+			light.alpha = 1;
 			light.visible = false;
+		}
 
-		curLight = FlxG.random.int(0, phillyCityLights.length - 1);
-
-		phillyCityLights.members[curLight].visible = true;
+		phillyCityLights[FlxG.random.int(0, phillyCityLights.length - 1)].visible = true;
 	}
 
 	if (curBeat % 8 == 4 && FlxG.random.bool(30) && !trainMoving && trainCooldown > 8)
