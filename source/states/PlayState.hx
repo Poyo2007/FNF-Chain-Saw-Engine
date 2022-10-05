@@ -908,7 +908,9 @@ class PlayState extends MusicBeatState
 			cam.bgColor.alpha = 0;
 			FlxG.cameras.add(cam, false);
 
-			openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			var pauseMenu:PauseSubState = new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y);
+			pauseMenu.camera = cam;
+			openSubState(pauseMenu);
 		}
 	}
 
