@@ -1,4 +1,4 @@
-package;
+package core;
 
 import flixel.FlxBasic;
 import hscript.Interp;
@@ -9,7 +9,7 @@ import openfl.utils.Assets;
 using StringTools;
 
 /**
- * Class based from Wednesdays-Infidelty Mod.
+ * Class based originaly from Wednesdays-Infidelty Mod.
  * Credits: lunarcleint.
  */
 class ScriptCore extends FlxBasic
@@ -17,61 +17,61 @@ class ScriptCore extends FlxBasic
 	public static var Function_Stop:Dynamic = 1;
 	public static var Function_Continue:Dynamic = 0;
 
-	public var interp:Interp;
-	public var parser:Parser;
+	private var parser:Parser;
+	private var interp:Interp;
 
 	public function new(file:String)
 	{
 		super();
 
-		interp = new Interp();
 		parser = new Parser();
 		parser.allowJSON = true;
 		parser.allowTypes = true;
+		parser.allowMetadata = true;
 
-		setVariable("this", this);
-		setVariable("import", function(className:String)
+		interp = new Interp();
+
+		setVariable('this', this);
+		setVariable('import', function(daClass:String)
 		{
-			final splitClassName:Array<String> = [for (e in className.split(".")) e.trim()];
-			final realClassName:String = splitClassName.join(".");
-			final daClass:Class<Dynamic> = Type.resolveClass(realClassName);
-			final daEnum:Enum<Dynamic> = Type.resolveEnum(realClassName);
+			final splitClassName:Array<String> = [for (e in daClass.split('.')) e.trim()];
+			final className:String = splitClassName.join('.');
+			final daClass:Class<Dynamic> = Type.resolveClass(className);
+			final daEnum:Enum<Dynamic> = Type.resolveEnum(className);
 
 			if (daClass == null && daEnum == null)
-				Lib.application.window.alert('Class / Enum at $realClassName does not exist.', "Hscript Error!");
+				Lib.application.window.alert('Class / Enum at $className does not exist.', 'Hscript Error!');
 			else
 			{
 				if (daEnum != null)
 				{
-					for (c in daEnum.getConstructors())
-						Reflect.setField({}, c, daEnum.createByName(c));
+					for (daConstructor in daEnum.getConstructors())
+						Reflect.setField({}, daConstructor, daEnum.createByName(daConstructor));
 					setVariable(splitClassName[splitClassName.length - 1], {});
 				}
 				else
 					setVariable(splitClassName[splitClassName.length - 1], daClass);
 			}
 		});
-
 		setVariable('Function_Stop', Function_Stop);
 		setVariable('Function_Continue', Function_Continue);
-
 		setVariable('Reflect', Reflect);
 		setVariable('Sys', Sys);
-		setVariable("Array", Array);
+		setVariable('Array', Array);
 		setVariable('Type', Type);
 		setVariable('Std', Std);
-		setVariable("DateTools", DateTools);
-		setVariable("Math", Math);
-		setVariable("StringTools", StringTools);
-		setVariable("Sys", Sys);
-		setVariable("Xml", Xml);
+		setVariable('DateTools', DateTools);
+		setVariable('Math', Math);
+		setVariable('StringTools', StringTools);
+		setVariable('Sys', Sys);
+		setVariable('Xml', Xml);
 
 		try
 		{
 			interp.execute(parser.parseString(Assets.getText(file)));
 		}
 		catch (e:Dynamic)
-			Lib.application.window.alert(e.message, "Hscript Error!");
+			Lib.application.window.alert(e, 'Hscript Error!');
 
 		trace('Script Loaded Succesfully: $file');
 
@@ -88,7 +88,7 @@ class ScriptCore extends FlxBasic
 			interp.variables.set(name, val);
 		}
 		catch (e:Dynamic)
-			Lib.application.window.alert(e.message, "Hscript Error!");
+			Lib.application.window.alert(e, 'Hscript Error!');
 	}
 
 	public function getVariable(name:String):Dynamic
@@ -101,7 +101,7 @@ class ScriptCore extends FlxBasic
 			return interp.variables.get(name);
 		}
 		catch (e:Dynamic)
-			Lib.application.window.alert(e.message, "Hscript Error!");
+			Lib.application.window.alert(e, 'Hscript Error!');
 
 		return null;
 	}
@@ -116,7 +116,7 @@ class ScriptCore extends FlxBasic
 			interp.variables.remove(name);
 		}
 		catch (e:Dynamic)
-			Lib.application.window.alert(e.message, "Hscript Error!");
+			Lib.application.window.alert(e, 'Hscript Error!');
 	}
 
 	public function existsVariable(name:String):Bool
@@ -129,7 +129,7 @@ class ScriptCore extends FlxBasic
 			return interp.variables.exists(name);
 		}
 		catch (e:Dynamic)
-			Lib.application.window.alert(e.message, "Hscript Error!");
+			Lib.application.window.alert(e, 'Hscript Error!');
 
 		return false;
 	}
@@ -143,10 +143,10 @@ class ScriptCore extends FlxBasic
 		{
 			try
 			{
-				return Reflect.callMethod(null, getVariable(funcName), args);
+				return Reflect.callMethod(this, getVariable(funcName), args);
 			}
 			catch (e:Dynamic)
-				Lib.application.window.alert(e, "Hscript Error!");
+				Lib.application.window.alert(e, 'Hscript Error!');
 		}
 
 		return null;
@@ -155,7 +155,7 @@ class ScriptCore extends FlxBasic
 	override function destroy()
 	{
 		super.destroy();
-		interp = null;
 		parser = null;
+		interp = null;
 	}
 }

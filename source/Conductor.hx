@@ -1,6 +1,6 @@
 package;
 
-import parsers.Song;
+import parse.Song;
 
 typedef BPMChangeEvent =
 {

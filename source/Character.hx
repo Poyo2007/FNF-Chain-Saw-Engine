@@ -4,8 +4,8 @@ import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.Lib;
 import openfl.utils.Assets;
-import parsers.Character as CharacterParse;
-import parsers.Character.SwagCharacter;
+import parse.Character as CharacterParse;
+import parse.Character.SwagCharacter;
 
 using StringTools;
 

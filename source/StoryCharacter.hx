@@ -4,8 +4,8 @@ import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.Lib;
 import openfl.utils.Assets;
-import parsers.StoryCharacter as StoryCharacterParse;
-import parsers.StoryCharacter.SwagStoryCharacter;
+import parse.StoryCharacter as StoryCharacterParse;
+import parse.StoryCharacter.SwagStoryCharacter;
 
 /**
 	Class based on Character.hx lmao

@@ -8,8 +8,8 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import parsers.Song;
-import parsers.Week;
+import parse.Song;
+import parse.Week;
 import states.PlayState;
 
 class StoryMenuState extends MusicBeatState
@@ -236,9 +236,7 @@ class StoryMenuState extends MusicBeatState
 			for (i in 0...daWeek.songs.length)
 				PlayState.storyPlaylist.push(daWeek.songs[i].name);
 
-			trace(PlayState.storyPlaylist);
-
-			PlayState.SONG = Song.loadJson(HighScore.formatSong(PlayState.storyPlaylist[0].toLowerCase(), curDifficulty), PlayState.storyPlaylist[0].toLowerCase());
+			PlayState.SONG = Song.loadJson(HighScore.formatSong(PlayState.storyPlaylist[0], curDifficulty), Paths.formatName(PlayState.storyPlaylist[0]));
 			PlayState.isStoryMode = true;
 			PlayState.storyDifficulty = curDifficulty;
 			PlayState.storyWeek = curWeek;

@@ -1,6 +1,8 @@
 package states;
 
 import Controls.KeyboardScheme;
+import core.ModCore;
+import core.ToastCore;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -103,10 +105,10 @@ class MainMenuState extends MusicBeatState
 
 		#if (mobile && FUTURE_POLYMOD)
 		addVirtualPad(UP_DOWN, A_B_C);
-		virtualPad.y -= 46;
+		virtualPad.y -= 23;
 		#elseif mobile
 		addVirtualPad(UP_DOWN, A_B);
-		virtualPad.y -= 46;
+		virtualPad.y -= 23;
 		#end
 
 		super.create();

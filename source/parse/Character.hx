@@ -1,4 +1,4 @@
-package parsers;
+package parse;
 
 import openfl.utils.Assets;
 import haxe.Json;

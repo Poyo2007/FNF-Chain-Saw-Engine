@@ -1,5 +1,6 @@
 package;
 
+import core.ToastCore;
 import flixel.FlxGame;
 import openfl.Lib;
 import openfl.display.Sprite;

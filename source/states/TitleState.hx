@@ -1,5 +1,6 @@
 package states;
 
+import core.ModCore;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;

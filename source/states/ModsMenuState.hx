@@ -1,5 +1,6 @@
 package states;
 
+import core.ModCore;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
@@ -56,10 +57,11 @@ class ModsMenuState extends MusicBeatState
 			add(icon);
 		}
 
-		description = new FlxText(0, FlxG.height * 0.1, 600, '', 32);
-		description.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		description = new FlxText(0, FlxG.height * 0.1, 600, '', 28);
+		description.setFormat("VCR OSD Mono", 28, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		description.screenCenter(X);
 		description.scrollFactor.set();
+		description.borderSize = 1.25;
 		add(description);
 
 		changeSelection();

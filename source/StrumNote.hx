@@ -7,7 +7,7 @@ import states.PlayState;
 using StringTools;
 
 /**
- * Class based from Psych Engine.
+ * Class based originaly from Psych Engine.
  * Credits: Shadow Mario.
  */
 class StrumNote extends FlxSprite

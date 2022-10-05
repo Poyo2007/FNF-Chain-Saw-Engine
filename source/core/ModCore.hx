@@ -1,4 +1,4 @@
-package;
+package core;
 
 import flixel.FlxG;
 import openfl.Lib;
@@ -9,7 +9,7 @@ import polymod.format.ParseRules;
 #end
 
 /**
- * Class based from Kade Engine.
+ * Class based originaly from Kade Engine.
  * Credits: KadeDev.
  */
 class ModCore

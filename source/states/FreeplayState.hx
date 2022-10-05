@@ -7,8 +7,8 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import openfl.utils.Assets;
-import parsers.Song;
-import parsers.Week;
+import parse.Song;
+import parse.Week;
 import states.ChartingState;
 import states.PlayState;
 
@@ -95,7 +95,7 @@ class FreeplayState extends MusicBeatState
 		changeDiff();
 
 		#if mobile
-		addVirtualPad(LEFT_FULL, A_B);
+		addVirtualPad(LEFT_FULL, A_B_C);
 		#end
 
 		super.create();
@@ -131,13 +131,12 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.ACCEPT)
 		{
-			PlayState.SONG = Song.loadJson(HighScore.formatSong(StringTools.replace(songs[curSelected].songName, " ", "-").toLowerCase(), curDifficulty),
-				StringTools.replace(songs[curSelected].songName, " ", "-").toLowerCase());
+			PlayState.SONG = Song.loadJson(HighScore.formatSong(songs[curSelected].songName, curDifficulty), Paths.formatName(songs[curSelected].songName));
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 			PlayState.storyWeek = songs[curSelected].week;
 
-			if (FlxG.keys.pressed.SHIFT)
+			if (FlxG.keys.pressed.SHIFT #if mobile || virtualPad.buttonC.pressed #end)
 				MusicBeatState.switchState(new ChartingState());
 			else
 				MusicBeatState.switchState(new PlayState());

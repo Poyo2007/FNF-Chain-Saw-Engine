@@ -2,12 +2,11 @@ import('Paths');
 import('Conductor');
 import('flixel.FlxG');
 import('flixel.FlxSprite');
-import('flixel.group.FlxSpriteGroup');
 import('flixel.addons.display.FlxRuntimeShader');
 import('states.PlayState');
 
 var lightFadeShader:FlxRuntimeShader;
-var phillyCityLights:FlxSpriteGroup;
+var phillyCityLights:Array<FlxSprite>;
 var phillyTrain:FlxSprite;
 var curLight:Int = 0;
 var startedMoving:Bool = false;
@@ -36,9 +35,7 @@ function create()
 	lightFadeShader.setFloat('alphaShit', 0);
         lightFadeShader.setBool('hasColorTransform', true); // (theShaderGod) lmao, you can set uniform for vertex part of shader using same thing as in fragment
 
-	phillyCityLights = new FlxSpriteGroup();
-	phillyCityLights.scrollFactor.set(0.3, 0.3);
-	phillyCityLights.shader = lightFadeShader;
+	phillyCityLights = [];
 	PlayState.instance.add(phillyCityLights);
 
 	for (i in 0...5)
@@ -46,8 +43,11 @@ function create()
 		var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.returnGraphic('stages/philly/images/win' + i));
 		light.setGraphicSize(Std.int(light.width * 0.85));
 		light.updateHitbox();
+		light.scrollFactor.set(0.3, 0.3);
+		light.shader = lightFadeShader;
 		light.visible = false;
-		phillyCityLights.add(light);
+		PlayState.instance.add(light);
+		phillyCityLights.push(light);
 	}
 
 	var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.returnGraphic('stages/philly/images/behindTrain'));
@@ -135,10 +135,8 @@ function beatHit(curBeat:Int)
 	{
 		lightFadeShader.setFloat('alphaShit', 0);
 
-		phillyCityLights.forEach(function(light:FlxSprite)
-		{
+		for (light in phillyCityLights)
 			light.visible = false;
-		});
 
 		curLight = FlxG.random.int(0, phillyCityLights.length - 1);
 
