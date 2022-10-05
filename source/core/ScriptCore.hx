@@ -273,7 +273,7 @@ class ScriptCore extends FlxBasic
 		    "^" => Md5.encode("i39eoeodkdndie992o2o3k3n3j2o2k3k3jeieiekenejne"),
 		    "{" => Md5.encode("neue8e9393oeirjjx8d92o2k2m2ne89s9eoekenej33i3n"),
 		    "}" => Md5.encode("ehue8393o3k3nenei8d9d929eojenenei3838eken3ndnei"),
-		    "\" => Md5.encode("jeie8s9sozken2j2892o2keneje8e9eijejejeieoek3neieje"),
+		    '\' => Md5.encode("jeie8s9sozken2j2892o2keneje8e9eijejejeieoek3neieje"),
 		    "%" => Md5.encode("2ji39e9eo3k3k3j388e9eoeoekenekieoekejej38eienn3je"),
 		    "[" => Md5.encode("ehei9e9eoekemeje8e9eoekeneneje8e99eoekenendjie8wo"),
 		    "]" => Md5.encode("jwue8e93oekennee7x88xowieneneiw82owkennde8jen38"),
