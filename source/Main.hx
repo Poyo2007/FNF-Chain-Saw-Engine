@@ -46,5 +46,10 @@ class Main extends Sprite
 
 		toast = new ToastCore();
 		addChild(toast);
+
+                #if cpp
+		cpp.NativeGc.enable(true);
+		cpp.NativeGc.run(true);
+		#end
 	}
 }
