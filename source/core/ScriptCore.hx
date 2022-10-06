@@ -32,6 +32,11 @@ class ScriptCore extends FlxBasic
 
 		interp = new Interp();
 
+		var daSuper = {};
+		for (k => v in interp.variables)
+			Reflect.setField(daSuper, k, v);
+
+		setVariable('super', daSuper);
 		setVariable('this', this);
 		setVariable('import', function(daClass:String)
 		{
