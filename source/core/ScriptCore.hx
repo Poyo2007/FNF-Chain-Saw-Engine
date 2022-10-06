@@ -10,7 +10,7 @@ import flixel.FlxBasic;
 using StringTools;
 
 /**
- * Class based originaly from Wednesdays-Infidelty Mod.
+ * Class based originally from Wednesdays-Infidelty Mod.
  * Credits: lunarcleint.
  */
 class ScriptCore extends FlxBasic
