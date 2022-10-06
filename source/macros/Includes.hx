@@ -24,6 +24,8 @@ class Includes
 		Compiler.include('Lambda');
 		Compiler.include('StringBuf');
 		Compiler.include('StringTools');
+                Compiler.include('cpp.RawPointer');
+                Compiler.include('cpp.Pointer');
 		#end
 		return macro $v{null};
 	}
