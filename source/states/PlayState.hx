@@ -74,7 +74,6 @@ class PlayState extends MusicBeatState
 	private var accuracy:Float = 1;
 	private var hitNotes:Float = 0;
 	private var totalNotes:Float = 0;
-	private var grade:String = Rank.gradeArray[0];
 	private var maxSongPos:Int = 14000;
 	private var minHealth:Int = 0;
 	private var paused:Bool = false;
@@ -109,7 +108,6 @@ class PlayState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
-		grade = Rank.gradeArray[0];
 		comboBreaks = 0;
 		accuracy = 1;
 
@@ -450,7 +448,7 @@ class PlayState extends MusicBeatState
 	private function doIntro(startTime:Float):Void
 	{
 		var swagCounter:Int = 0;
-		var startTimer:FlxTimer = new FlxTimer().start(startTime, function(tmr:FlxTimer)
+		new FlxTimer().start(startTime, function(tmr:FlxTimer)
 		{
 			if (tmr.loopsLeft % Math.round(gfSpeed * 2) == 0
 				&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing"))
@@ -590,8 +588,6 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	private var debugNum:Int = 0;
-
 	private function generateSong():Void
 	{
 		Conductor.mapBPMChanges(SONG);
@@ -629,7 +625,6 @@ class PlayState extends MusicBeatState
 				swagNote.scrollFactor.set(0, 0);
 
 				var susLength:Float = swagNote.sustainLength;
-
 				susLength /= Conductor.stepCrochet;
 				unspawnNotes.push(swagNote);
 
@@ -685,8 +680,6 @@ class PlayState extends MusicBeatState
 			accuracy = 1;
 		else
 			accuracy = hitNotes / totalNotes;
-
-		grade = Rank.accuracyToGrade(accuracy);
 	}
 
 	override function openSubState(SubState:FlxSubState)
@@ -812,7 +805,7 @@ class PlayState extends MusicBeatState
 			scoreTxt.text = 'Auto-Play';
 		else
 			scoreTxt.text = 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks + divider + 'Accuracy:' + CoolUtil.truncateFloat(accuracy * 100, 2)
-				+ '% - ' + grade;
+				+ '% - ' + Rank.accuracyToGrade(accuracy);
 		scoreTxt.screenCenter(X);
 
 		if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
@@ -872,10 +865,7 @@ class PlayState extends MusicBeatState
 		if (!inCutscene && !endingSong)
 		{
 			if (controls.RESET && startedCountdown)
-			{
 				health = minHealth;
-				trace("RESET = True");
-			}
 
 			if (health <= minHealth && !practiceMode)
 				gameOver();
@@ -1138,8 +1128,8 @@ class PlayState extends MusicBeatState
 				else
 				{
 					FlxTransitionableState.skipNextTransIn = FlxTransitionableState.skipNextTransOut = true;
-					PlayState.SONG = Song.loadJson(HighScore.formatSong(PlayState.storyPlaylist[0].toLowerCase(), storyDifficulty),
-						PlayState.storyPlaylist[0]);
+					PlayState.SONG = Song.loadJson(HighScore.formatSong(PlayState.storyPlaylist[0], storyDifficulty),
+					Paths.formatName(PlayState.storyPlaylist[0]));
 					FlxG.sound.music.stop();
 					MusicBeatState.switchState(new PlayState());
 				}
@@ -1636,6 +1626,7 @@ class PlayState extends MusicBeatState
 
 	override function destroy()
 	{
+		isPixelAssets = false;
 		scriptArray = [];
 		defaultPlayerStrumX = [];
 		defaultPlayerStrumY = [];

@@ -17,36 +17,11 @@ class ModCore
 	private static final MOD_DIR:String = 'mods';
 
 	#if FUTURE_POLYMOD
-	private static final modExtensions:Map<String, PolymodAssetType> = [
-		'mp3' => AUDIO_GENERIC,
-		'ogg' => AUDIO_GENERIC,
-		'wav' => AUDIO_GENERIC,
-		'jpg' => IMAGE,
-		'png' => IMAGE,
-		'gif' => IMAGE,
-		'tga' => IMAGE,
-		'bmp' => IMAGE,
-		'tif' => IMAGE,
-		'tiff' => IMAGE,
-		'xml' => TEXT,
-		'json' => TEXT,
-		'csv' => TEXT,
-		'tsv' => TEXT,
-		'mpf' => TEXT,
-		'tsx' => TEXT,
-		'tmx' => TEXT,
-		'vdf' => TEXT,
-		'frag' => TEXT,
-		'vert' => TEXT,
-		'txt' => TEXT,
-		'hx' => TEXT,
-		'ttf' => FONT,
-		'otf' => FONT,
-		'webm' => VIDEO,
-		'mp4' => VIDEO,
-		'mov' => VIDEO,
-		'avi' => VIDEO,
-		'mkv' => VIDEO
+	private static final extensions:Map<String, PolymodAssetType> = [
+		'mp3' => AUDIO_GENERIC, 'ogg' => AUDIO_GENERIC, 'wav' => AUDIO_GENERIC, 'jpg' => IMAGE, 'png' => IMAGE, 'gif' => IMAGE, 'tga' => IMAGE,
+		'bmp' => IMAGE, 'tif' => IMAGE, 'tiff' => IMAGE, 'xml' => TEXT, 'json' => TEXT, 'csv' => TEXT, 'tsv' => TEXT, 'mpf' => TEXT, 'tsx' => TEXT,
+		'tmx' => TEXT, 'vdf' => TEXT, 'frag' => TEXT, 'vert' => TEXT, 'txt' => TEXT, 'hx' => TEXT, 'ttf' => FONT, 'otf' => FONT, 'webm' => VIDEO,
+		'mp4' => VIDEO, 'mov' => VIDEO, 'avi' => VIDEO, 'mkv' => VIDEO
 	];
 
 	public static var trackedMods:Array<ModMetadata> = [];
@@ -72,7 +47,7 @@ class ModCore
 			apiVersion: Lib.application.meta.get('version'),
 			errorCallback: onError,
 			parseRules: getParseRules(),
-			extensionMap: modExtensions,
+			extensionMap: extensions,
 			ignoredFiles: Polymod.getDefaultIgnoreList()
 		});
 
@@ -110,11 +85,9 @@ class ModCore
 
 	public static function getParseRules():ParseRules
 	{
-		var output = ParseRules.getDefault();
+		var output:ParseRules = ParseRules.getDefault();
 		output.addType("txt", TextFileFormat.LINES);
 		output.addType("hx", TextFileFormat.PLAINTEXT);
-		output.addType("frag", TextFileFormat.PLAINTEXT);
-		output.addType("vert", TextFileFormat.PLAINTEXT);
 		return output;
 	}
 
