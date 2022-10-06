@@ -2,10 +2,14 @@ import('Paths');
 import('CoolUtil');
 import('flixel.FlxSprite');
 import('flixel.graphics.frames.FlxAtlasFrames');
+import('flixel.addons.display.FlxRuntimeShader');
+import('openfl.filters.ShaderFilter');
+import('openfl.utils.Assets');
 import('states.PlayState');
 
 var widShit:Int;
 var bgGirls:FlxSprite;
+var shader:FlxRuntimeShader;
 
 function create()
 {
@@ -73,6 +77,18 @@ function create()
 	bgGirls.setGraphicSize(Std.int(bgGirls.width * 6));
 	bgGirls.updateHitbox();
 	PlayState.instance.add(bgGirls);
+
+	shader = new FlxRuntimeShader(Paths.frag('shaders/vcr-distortion'), null);
+	shader.setFloat('iTime', 0);
+	shader.setBitmapData('iChannel', Assets.getBitmapData('assets/images/noise.png'));
+	PlayState.instance.camHUD.setFilters([new ShaderFilter(shader)]);
+}
+
+var shaderTime:Float = 0;
+function update(elapsed:Float)
+{
+	shaderTime += elapsed;
+	shader.setFloat('iTime', shaderTime);
 }
 
 var danceDir:Bool = false;
