@@ -9,7 +9,7 @@ class Includes
 	{
 		#if !display
 		Compiler.include('flixel');
-		#if !web
+		#if sys
 		Compiler.include('sys');
 		#end
 		Compiler.include('haxe.crypto');
@@ -24,8 +24,10 @@ class Includes
 		Compiler.include('Lambda');
 		Compiler.include('StringBuf');
 		Compiler.include('StringTools');
+		#if cpp
                 Compiler.include('cpp.RawPointer');
                 Compiler.include('cpp.Pointer');
+		#end
 		#end
 		return macro $v{null};
 	}
