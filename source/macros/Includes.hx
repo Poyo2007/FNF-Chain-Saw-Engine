@@ -25,8 +25,8 @@ class Includes
 		Compiler.include('StringBuf');
 		Compiler.include('StringTools');
 		#if cpp
-                Compiler.include('cpp.RawPointer');
-                Compiler.include('cpp.Pointer');
+		Compiler.include('cpp.RawPointer');
+		Compiler.include('cpp.Pointer');
 		#end
 		#end
 		return macro $v{null};

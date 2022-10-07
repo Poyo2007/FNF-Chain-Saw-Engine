@@ -4,8 +4,8 @@ import hscript.Interp;
 import hscript.Parser;
 import openfl.Lib;
 import openfl.utils.Assets;
-import haxe.crypto.Md5;
 import flixel.FlxBasic;
+import states.ScriptState;
 
 using StringTools;
 
@@ -72,6 +72,8 @@ class ScriptCore extends FlxBasic
 		setVariable('StringTools', StringTools);
 		setVariable('Sys', Sys);
 		setVariable('Xml', Xml);
+
+		setVariable('ScriptState', ScriptState);
 
 		if (execute)
 			this.execute(file);
