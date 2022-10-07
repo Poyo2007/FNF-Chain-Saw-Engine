@@ -21,7 +21,6 @@ import flixel.util.FlxTimer;
 import openfl.utils.Assets;
 import parse.Song;
 import parse.Stage;
-import parse.Week;
 import substates.GameOverSubState;
 import substates.PauseSubState;
 
@@ -797,9 +796,9 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
-		super.update(elapsed);
-
 		callScripts('update', [elapsed]);
+
+		super.update(elapsed);
 
 		if (autoplayMode)
 			scoreTxt.text = 'Auto-Play';

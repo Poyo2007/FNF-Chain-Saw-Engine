@@ -21,7 +21,7 @@ class ScriptCore extends FlxBasic
 	private var parser:Parser;
 	private var interp:Interp;
 
-	public function new(file:String)
+	public function new(file:String, ?execute:Bool = true)
 	{
 		super();
 
@@ -73,6 +73,12 @@ class ScriptCore extends FlxBasic
 		setVariable('Sys', Sys);
 		setVariable('Xml', Xml);
 
+		if (execute)
+			this.execute(file);
+	}
+
+	public function execute(file:String, ?executeCreate:Bool = true):Void
+	{
 		try
 		{
 			interp.execute(parser.parseString(Assets.getText(file)));
@@ -82,7 +88,8 @@ class ScriptCore extends FlxBasic
 
 		trace('Script Loaded Succesfully: $file');
 
-		executeFunc('create', []);
+		if (executeCreate)
+			executeFunc('create', []);
 	}
 
 	public function setVariable(name:String, val:Dynamic):Void

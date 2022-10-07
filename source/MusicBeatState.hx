@@ -190,6 +190,12 @@ class MusicBeatState extends FlxUIState
 	{
 	}
 
+	#if !mobile
+	public function onDropFile(path:String)
+	{
+	}
+	#end
+
 	public static function switchState(nextState:FlxState)
 	{
 		if (!FlxTransitionableState.skipNextTransIn)
