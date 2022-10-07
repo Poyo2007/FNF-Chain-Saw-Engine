@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxSprite;
+import flixel.math.FlxMath;
 import states.PlayState;
 
 using StringTools;
@@ -112,7 +113,7 @@ class Note extends FlxSprite
 						prevNote.animation.play('redhold');
 				}
 
-				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * PlayState.SONG.speed;
+				prevNote.scale.y *= ((0.45 * Conductor.stepCrochet) * FlxMath.roundDecimal(PlayState.SONG.speed, 2)) / prevNote.height;
 				prevNote.updateHitbox();
 			}
 		}
@@ -141,7 +142,7 @@ class Note extends FlxSprite
 
 			if (strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
 			{
-				if((sustainNote && prevNote.wasGoodHit) || strumTime <= Conductor.songPosition)
+				if ((sustainNote && prevNote.wasGoodHit) || strumTime <= Conductor.songPosition)
 					wasGoodHit = true;
 			}
 		}

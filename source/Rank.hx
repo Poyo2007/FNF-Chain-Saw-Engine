@@ -12,17 +12,20 @@ class Rank
 
 	public static function accuracyToGrade(accuracy:Float):String
 	{
-		var grade:Dynamic = gradeArray[gradeArray.length - 1];
+		var grade:String = '';
 
 		for (i in 0...accuracyArray.length)
 		{
+			trace(accuracyArray[i]);
 			if (accuracy >= accuracyArray[i])
 			{
 				grade = gradeArray[i];
+				trace(gradeArray[i]);
 				break;
 			}
 		}
 
+		trace(grade);
 		return grade;
 	}
 
