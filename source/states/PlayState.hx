@@ -764,7 +764,7 @@ class PlayState extends MusicBeatState
 				DiscordClient.changePresence(detailsText, SONG.song + " (" + CoolUtil.difficultyString(storyDifficulty) + ")", iconP2.curCharacter);
 		}
 
-		executeFunc("onFocus", []);
+		callScripts('onFocus', []);
 		super.onFocus();
 	}
 
@@ -773,7 +773,7 @@ class PlayState extends MusicBeatState
 		if (health > 0 && !paused)
 			DiscordClient.changePresence("Paused - " + detailsText, SONG.song + " (" + CoolUtil.difficultyString(storyDifficulty) + ")", iconP2.curCharacter);
 
-		executeFunc("onFocusLost", []);
+		callScripts('onFocusLost', []);
 		super.onFocusLost();
 	}
 	#end
