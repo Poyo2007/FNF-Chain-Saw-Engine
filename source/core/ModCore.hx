@@ -9,8 +9,8 @@ import polymod.format.ParseRules;
 #end
 
 /**
- * Class based originaly from Kade Engine.
- * Credits: KadeDev.
+ * Class based originally from Kade Engine.
+ * Credits: KadeDev & MasterEric.
  */
 class ModCore
 {
