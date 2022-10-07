@@ -8,6 +8,7 @@ import('openfl.utils.Assets');
 import('states.PlayState');
 
 var shader:FlxRuntimeShader;
+var shader2:FlxRuntimeShader;
 
 function create()
 {
@@ -26,10 +27,13 @@ function create()
 
 	shader = new FlxRuntimeShader(Paths.frag('shaders/vcr-distortion'), null);
 	shader.setFloat('iTime', 0);
+        shader2.setBool('noise', true);
 	shader.setBitmapData('iChannel', Assets.getBitmapData('assets/images/noise.png'));
+        shader2 = new FlxRuntimeShader(Paths.frag('shaders/vcr-distortion'), null);
+	shader2.setFloat('iTime', 0);
+        shader2.setBool('noise', false);
 	PlayState.instance.camGame.setFilters([new ShaderFilter(shader)]);
-	PlayState.instance.camHUD.setFilters([new ShaderFilter(shader)]);
-        PlayState.instance.camHUD.alpha = 0.3;
+	PlayState.instance.camHUD.setFilters([new ShaderFilter(shader2)]);
 }
 
 var shaderTime:Float = 0;
@@ -37,6 +41,7 @@ function update(elapsed:Float)
 {
 	shaderTime += elapsed;
 	shader.setFloat('iTime', shaderTime);
+        shader2.setFloat('iTime', shaderTime);
 }
 
 function beatHit(curBeat:Int)
