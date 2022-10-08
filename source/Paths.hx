@@ -152,9 +152,18 @@ class Paths
 
 	public static function returnSound(key:String, ?cache:Bool = true):Sound
 	{
-		var path:String = 'assets/$key.ogg';
-		if (Assets.exists(path, SOUND))
+		if (Assets.exists('assets/$key.ogg', SOUND))
 		{
+			var path:String = 'assets/$key.ogg';
+			if (!currentTrackedSounds.exists(path))
+				currentTrackedSounds.set(path, Assets.getSound(path, cache));
+
+			localTrackedAssets.push(path);
+			return currentTrackedSounds.get(path);
+		}
+		else if (Assets.exists('assets/$key.wav', SOUND))
+		{
+			var path:String = 'assets/$key.wav';
 			if (!currentTrackedSounds.exists(path))
 				currentTrackedSounds.set(path, Assets.getSound(path, cache));
 

@@ -67,6 +67,9 @@ class ChartingState extends MusicBeatState
 		DiscordClient.changePresence("Chart Editor", null, null, true);
 		#end
 
+		if (FlxG.sound.music != null)
+			FlxG.sound.music.stop();
+
 		curSection = lastSection;
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
@@ -183,12 +186,12 @@ class ChartingState extends MusicBeatState
 
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
 		{
-			loadSong(_song.song);
+			loadJson(Paths.formatName(_song.song));
 		});
 
 		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
 		{
-			loadJson(_song.song.toLowerCase());
+			loadJson(Paths.formatName(_song.song));
 		});
 
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
@@ -337,10 +340,7 @@ class ChartingState extends MusicBeatState
 	private function loadSong(daSong:String):Void
 	{
 		if (FlxG.sound.music != null)
-		{
 			FlxG.sound.music.stop();
-			// vocals.stop();
-		}
 
 		FlxG.sound.playMusic(Paths.inst(daSong), 0.6);
 
@@ -396,9 +396,7 @@ class ChartingState extends MusicBeatState
 				updateGrid();
 			}
 			else if (nums.name == 'song_speed')
-			{
 				_song.speed = nums.value;
-			}
 			else if (nums.name == 'song_bpm')
 			{
 				tempBpm = nums.value;
@@ -424,14 +422,14 @@ class ChartingState extends MusicBeatState
 	{
 		var daBPM:Float = _song.bpm;
 		var daPos:Float = 0;
+
 		for (i in 0...curSection)
 		{
 			if (_song.notes[i].changeBPM)
-			{
 				daBPM = _song.notes[i].bpm;
-			}
 			daPos += 4 * (1000 * 60 / daBPM);
 		}
+
 		return daPos;
 	}
 
@@ -503,11 +501,11 @@ class ChartingState extends MusicBeatState
 		if (FlxG.keys.justPressed.ENTER)
 		{
 			lastSection = curSection;
-
+			FlxG.mouse.visible = false;
 			PlayState.SONG = _song;
 			FlxG.sound.music.stop();
 			vocals.stop();
-			FlxG.switchState(new PlayState());
+			MusicBeatState.switchState(new PlayState());
 		}
 
 		if (FlxG.keys.justPressed.E)
@@ -610,11 +608,16 @@ class ChartingState extends MusicBeatState
 		if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.A)
 			changeSection(curSection - shiftThing);
 
-		bpmTxt.text = bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
+		bpmTxt.text = FlxMath.roundDecimal(Conductor.songPosition / 1000, 2)
 			+ " / "
-			+ Std.string(FlxMath.roundDecimal(FlxG.sound.music.length / 1000, 2))
+			+ FlxMath.roundDecimal(FlxG.sound.music.length / 1000, 2)
+			+ "\nStep: "
+			+ curStep
+			+ "\nBeat: "
+			+ curBeat
 			+ "\nSection: "
 			+ curSection;
+
 		super.update(elapsed);
 	}
 
@@ -921,7 +924,7 @@ class ChartingState extends MusicBeatState
 			"song": _song
 		};
 
-		var data:String = Json.stringify(json);
+		var data:String = Json.stringify(json, "\t");
 
 		if ((data != null) && (data.length > 0))
 		{

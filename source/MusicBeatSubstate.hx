@@ -8,9 +8,9 @@ import flixel.util.FlxDestroyUtil;
 #end
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
-import flixel.FlxSubState;
+import flixel.addons.ui.FlxUISubState;
 
-class MusicBeatSubstate extends FlxSubState
+class MusicBeatSubstate extends FlxUISubState
 {
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
@@ -77,7 +77,6 @@ class MusicBeatSubstate extends FlxSubState
 
 	override function update(elapsed:Float)
 	{
-		// everyStep();
 		var oldStep:Int = curStep;
 
 		updateCurStep();
@@ -113,6 +112,9 @@ class MusicBeatSubstate extends FlxSubState
 
 	public function beatHit():Void
 	{
-		// do literally nothing dumbass
+	}
+
+	public function onDropFile(path:String)
+	{
 	}
 }

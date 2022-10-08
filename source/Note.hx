@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxSprite;
+import flixel.math.FlxMath;
 import states.PlayState;
 
 using StringTools;
@@ -145,7 +146,7 @@ class Note extends FlxSprite
 
 			if (strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
 			{
-				if((sustainNote && prevNote.wasGoodHit) || strumTime <= Conductor.songPosition)
+				if ((sustainNote && prevNote.wasGoodHit) || strumTime <= Conductor.songPosition)
 					wasGoodHit = true;
 			}
 		}

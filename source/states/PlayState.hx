@@ -21,7 +21,6 @@ import flixel.util.FlxTimer;
 import openfl.utils.Assets;
 import parse.Song;
 import parse.Stage;
-import parse.Week;
 import substates.GameOverSubState;
 import substates.PauseSubState;
 
@@ -91,12 +90,12 @@ class PlayState extends MusicBeatState
 	private var health:Float = 1;
 	private var notes:FlxTypedGroup<Note>;
 
-	private final divider:String = " | ";
+	private final divider:String = ' | ';
 	private final iconOffset:Int = 26;
 
 	#if FUTURE_DISCORD_RCP
 	// Discord RPC variables
-	private var detailsText:String = "";
+	private var detailsText:String = '';
 	#end
 
 	override public function create()
@@ -113,9 +112,9 @@ class PlayState extends MusicBeatState
 
 		#if FUTURE_DISCORD_RCP
 		if (isStoryMode)
-			detailsText = "Story Mode: " + StoryMenuState.loadedWeekList[storyWeek];
+			detailsText = 'Story Mode: ' + StoryMenuState.loadedWeekList[storyWeek];
 		else
-			detailsText = "Freeplay";
+			detailsText = 'Freeplay';
 		#end
 
 		camGame = new FlxCamera();
@@ -271,7 +270,7 @@ class PlayState extends MusicBeatState
 		add(iconP2);
 
 		scoreTxt = new FlxText(0, healthBarBG.y + 35, 0, 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks, 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font('vcr.ttf'), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.screenCenter(X);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
@@ -451,17 +450,17 @@ class PlayState extends MusicBeatState
 		new FlxTimer().start(startTime, function(tmr:FlxTimer)
 		{
 			if (tmr.loopsLeft % Math.round(gfSpeed * 2) == 0
-				&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing"))
+				&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith('sing'))
 				&& !gf.stunned)
 				gf.dance();
 
 			if (tmr.loopsLeft % 2 == 0
-				&& (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith("sing"))
+				&& (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing'))
 				&& !boyfriend.stunned)
 				boyfriend.dance();
 
 			if (tmr.loopsLeft % 2 == 0
-				&& (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith("sing"))
+				&& (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith('sing'))
 				&& !dad.stunned)
 				dad.dance();
 
@@ -584,7 +583,7 @@ class PlayState extends MusicBeatState
 		}
 
 		#if FUTURE_DISCORD_RCP
-		DiscordClient.changePresence(detailsText, SONG.song + " (" + CoolUtil.difficultyString(storyDifficulty) + ")", iconP2.curCharacter);
+		DiscordClient.changePresence(detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')', iconP2.curCharacter);
 		#end
 	}
 
@@ -706,7 +705,7 @@ class PlayState extends MusicBeatState
 			});
 
 			#if FUTURE_DISCORD_RCP
-			DiscordClient.changePresence("Paused - " + detailsText, SONG.song + " (" + CoolUtil.difficultyString(storyDifficulty) + ")", iconP2.curCharacter);
+			DiscordClient.changePresence('Paused - ' + detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')', iconP2.curCharacter);
 			#end
 
 			paused = true;
@@ -736,9 +735,9 @@ class PlayState extends MusicBeatState
 
 			#if FUTURE_DISCORD_RCP
 			DiscordClient.changePresence(detailsText, SONG.song
-				+ " ("
+				+ ' ('
 				+ CoolUtil.difficultyString(storyDifficulty)
-				+ ")", iconP2.curCharacter, true,
+				+ ')', iconP2.curCharacter, true,
 				FlxG.sound.music.length
 				- Conductor.songPosition);
 			#end
@@ -756,23 +755,25 @@ class PlayState extends MusicBeatState
 		{
 			if (Conductor.songPosition > 0.0)
 				DiscordClient.changePresence(detailsText, SONG.song
-					+ " ("
+					+ ' ('
 					+ CoolUtil.difficultyString(storyDifficulty)
-					+ ")", iconP2.curCharacter, true,
+					+ ')', iconP2.curCharacter, true,
 					FlxG.sound.music.length
 					- Conductor.songPosition);
 			else
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + CoolUtil.difficultyString(storyDifficulty) + ")", iconP2.curCharacter);
+				DiscordClient.changePresence(detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')', iconP2.curCharacter);
 		}
 
+		callScripts('onFocus', []);
 		super.onFocus();
 	}
 
 	override public function onFocusLost():Void
 	{
 		if (health > 0 && !paused)
-			DiscordClient.changePresence("Paused - " + detailsText, SONG.song + " (" + CoolUtil.difficultyString(storyDifficulty) + ")", iconP2.curCharacter);
+			DiscordClient.changePresence('Paused - ' + detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')', iconP2.curCharacter);
 
+		callScripts('onFocusLost', []);
 		super.onFocusLost();
 	}
 	#end
@@ -791,21 +792,21 @@ class PlayState extends MusicBeatState
 		}
 
 		#if FUTURE_DISCORD_RCP
-		DiscordClient.changePresence(detailsText, SONG.song + " (" + CoolUtil.difficultyString(storyDifficulty) + ")", iconP2.curCharacter);
+		DiscordClient.changePresence(detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')', iconP2.curCharacter);
 		#end
 	}
 
 	override public function update(elapsed:Float)
 	{
-		super.update(elapsed);
-
 		callScripts('update', [elapsed]);
+
+		super.update(elapsed);
 
 		if (autoplayMode)
 			scoreTxt.text = 'Auto-Play';
 		else
 			scoreTxt.text = 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks + divider + 'Accuracy:' + CoolUtil.truncateFloat(accuracy * 100, 2)
-				+ '% - ' + Rank.accuracyToGrade(accuracy);
+				+ '%' + divider + Rank.accuracyToGrade(accuracy * 100);
 		scoreTxt.screenCenter(X);
 
 		if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
@@ -944,7 +945,7 @@ class PlayState extends MusicBeatState
 			openSubState(new GameOverSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 			#if FUTURE_DISCORD_RCP
-			DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + CoolUtil.difficultyString(storyDifficulty) + ")",
+			DiscordClient.changePresence('Game Over - ' + detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')',
 				iconP2.curCharacter);
 			#end
 		}
@@ -1129,7 +1130,7 @@ class PlayState extends MusicBeatState
 				{
 					FlxTransitionableState.skipNextTransIn = FlxTransitionableState.skipNextTransOut = true;
 					PlayState.SONG = Song.loadJson(HighScore.formatSong(PlayState.storyPlaylist[0], storyDifficulty),
-					Paths.formatName(PlayState.storyPlaylist[0]));
+						Paths.formatName(PlayState.storyPlaylist[0]));
 					FlxG.sound.music.stop();
 					MusicBeatState.switchState(new PlayState());
 				}
@@ -1511,7 +1512,7 @@ class PlayState extends MusicBeatState
 
 	private function opponentNoteHit(daNote:Note):Void
 	{
-		var altAnim:String = "";
+		var altAnim:String = '';
 
 		if ((SONG.notes[Math.floor(curStep / 16)] != null && SONG.notes[Math.floor(curStep / 16)].altAnim) || daNote.altNote)
 			altAnim = '-alt';
@@ -1575,9 +1576,9 @@ class PlayState extends MusicBeatState
 
 		#if FUTURE_DISCORD_RCP
 		DiscordClient.changePresence(detailsText, SONG.song
-			+ " ("
+			+ ' ('
 			+ CoolUtil.difficultyString(storyDifficulty)
-			+ ")", iconP2.curCharacter, true,
+			+ ')', iconP2.curCharacter, true,
 			FlxG.sound.music.length
 			- Conductor.songPosition);
 		#end
@@ -1608,16 +1609,16 @@ class PlayState extends MusicBeatState
 		iconP2.updateHitbox();
 
 		if (curBeat % Math.round(gfSpeed * 2) == 0
-			&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing"))
+			&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith('sing'))
 			&& !gf.stunned)
 			gf.dance();
 
 		if (curBeat % 2 == 0
-			&& (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith("sing"))
+			&& (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing'))
 			&& !boyfriend.stunned)
 			boyfriend.dance();
 
-		if (curBeat % 2 == 0 && (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith("sing")) && !dad.stunned)
+		if (curBeat % 2 == 0 && (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith('sing')) && !dad.stunned)
 			dad.dance();
 
 		lastBeatHit = curBeat;

@@ -276,13 +276,13 @@ class ControlsSubState extends MusicBeatSubstate
 	{
 		var keys:Array<Dynamic> = PreferencesData.keyBinds.get(optionShit[num][1]);
 
-		var text1 = new AttachedAlphabet(InputFormatter.getKeyName(keys[0]), 400, -55);
+		var text1 = new AttachedAlphabet(getKeyName(keys[0]), 400, -55);
 		text1.setPosition(optionText.x + 400, optionText.y - 55);
 		text1.sprTracker = optionText;
 		grpInputs.push(text1);
 		add(text1);
 
-		var text2 = new AttachedAlphabet(InputFormatter.getKeyName(keys[1]), 650, -55);
+		var text2 = new AttachedAlphabet(getKeyName(keys[1]), 650, -55);
 		text2.setPosition(optionText.x + 650, optionText.y - 55);
 		text2.sprTracker = optionText;
 		grpInputsAlt.push(text2);
@@ -343,6 +343,96 @@ class ControlsSubState extends MusicBeatSubstate
 					}
 				}
 			}
+		}
+	}
+
+	private function getKeyName(key:FlxKey):String
+	{
+		switch (key)
+		{
+			case BACKSPACE:
+				return "BckSpc";
+			case CONTROL:
+				return "Ctrl";
+			case ALT:
+				return "Alt";
+			case CAPSLOCK:
+				return "Caps";
+			case PAGEUP:
+				return "PgUp";
+			case PAGEDOWN:
+				return "PgDown";
+			case ZERO:
+				return "0";
+			case ONE:
+				return "1";
+			case TWO:
+				return "2";
+			case THREE:
+				return "3";
+			case FOUR:
+				return "4";
+			case FIVE:
+				return "5";
+			case SIX:
+				return "6";
+			case SEVEN:
+				return "7";
+			case EIGHT:
+				return "8";
+			case NINE:
+				return "9";
+			case NUMPADZERO:
+				return "#0";
+			case NUMPADONE:
+				return "#1";
+			case NUMPADTWO:
+				return "#2";
+			case NUMPADTHREE:
+				return "#3";
+			case NUMPADFOUR:
+				return "#4";
+			case NUMPADFIVE:
+				return "#5";
+			case NUMPADSIX:
+				return "#6";
+			case NUMPADSEVEN:
+				return "#7";
+			case NUMPADEIGHT:
+				return "#8";
+			case NUMPADNINE:
+				return "#9";
+			case NUMPADMULTIPLY:
+				return "#*";
+			case NUMPADPLUS:
+				return "#+";
+			case NUMPADMINUS:
+				return "#-";
+			case NUMPADPERIOD:
+				return "#.";
+			case SEMICOLON:
+				return ";";
+			case COMMA:
+				return ",";
+			case PERIOD:
+				return ".";
+			case GRAVEACCENT:
+				return "`";
+			case LBRACKET:
+				return "[";
+			case RBRACKET:
+				return "]";
+			case QUOTE:
+				return "'";
+			case PRINTSCREEN:
+				return "PrtScrn";
+			case NONE:
+				return '---';
+			default:
+				var label:String = '' + key;
+				if (label.toLowerCase() == 'null')
+					return '---';
+				return Std.string(label.charAt(0).toUpperCase() + label.substr(1).toLowerCase());
 		}
 	}
 }

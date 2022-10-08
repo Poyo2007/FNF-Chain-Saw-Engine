@@ -1,22 +1,39 @@
 package;
 
+import states.PlayState;
+
 class Rank
 {
-	public static var accuracyArray:Array<Float> = [
-		99.9935, 99.980, 99.950, 99.90, 99.80, 99.70, 99.50, 99, 96.50, 93, 90, 85, 80, 70, 60,
-	];
-
 	public static var gradeArray:Array<String> = [
-		"P", "X", "X-", "SS+", "SS", "SS-", "S+", "S", "S-", "A+", "A", "A-", "B", "C", "D"
+		'P', 'X', 'X-', 'SS+', 'SS', 'SS-', 'S+', 'S', 'S-', 'A+', 'A', 'A-', 'B', 'C', 'D', 'E'
 	];
 
 	public static function accuracyToGrade(accuracy:Float):String
 	{
-		var grade:Dynamic = gradeArray[gradeArray.length - 1];
+		var grade:String = '';
 
-		for (i in 0...accuracyArray.length)
+		final wifeConditions:Array<Bool> = [
+			accuracy >= 99.9935, // P
+			accuracy >= 99.980, // X
+			accuracy >= 99.950, // X-
+			accuracy >= 99.90, // SS+
+			accuracy >= 99.80, // SS
+			accuracy >= 99.70, // SS-
+			accuracy >= 99.50, // S+
+			accuracy >= 99, // S
+			accuracy >= 96.50, // S-
+			accuracy >= 93, // A+
+			accuracy >= 90, // A
+			accuracy >= 85, // A-
+			accuracy >= 80, // B
+			accuracy >= 70, // C
+			accuracy >= 60, // D
+			accuracy < 60 // E
+		];
+
+		for (i in 0...wifeConditions.length)
 		{
-			if (accuracy >= accuracyArray[i])
+			if (wifeConditions[i])
 			{
 				grade = gradeArray[i];
 				break;
