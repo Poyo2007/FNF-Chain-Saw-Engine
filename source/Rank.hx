@@ -5,7 +5,7 @@ import states.PlayState;
 class Rank
 {
 	public static var gradeArray:Array<String> = [
-		"P", "X", "X-", "SS+", "SS", "SS-", "S+", "S", "S-", "A+", "A", "A-", "B", "C", "D", "E"
+		'P', 'X', 'X-', 'SS+', 'SS', 'SS-', 'S+', 'S', 'S-', 'A+', 'A', 'A-', 'B', 'C', 'D', 'E'
 	];
 
 	public static function accuracyToGrade(accuracy:Float):String
