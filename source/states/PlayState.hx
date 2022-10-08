@@ -806,7 +806,7 @@ class PlayState extends MusicBeatState
 			scoreTxt.text = 'Auto-Play';
 		else
 			scoreTxt.text = 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks + divider + 'Accuracy:' + CoolUtil.truncateFloat(accuracy * 100, 2)
-				+ '% - ' + Rank.accuracyToGrade(accuracy);
+				+ '% - ' + Rank.accuracyToGrade(accuracy * 100);
 		scoreTxt.screenCenter(X);
 
 		if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
@@ -1016,7 +1016,7 @@ class PlayState extends MusicBeatState
 				if (daNote.y - daNote.offset.y * daNote.scale.y + daNote.height >= center
 					&& (!daNote.mustPress || (daNote.wasGoodHit || (daNote.prevNote.wasGoodHit && !daNote.canBeHit))))
 				{
-					var swagRect:FlxRect = new FlxRect(0, 0, daNote.frameWidth, daNote.frameHeight);
+					var swagRect:FlxRect = new FlxRect(0, 0, daNote.frameWidth * 2, daNote.frameHeight * 2);
 					swagRect.height = (center - daNote.y) / daNote.scale.y;
 					swagRect.y = daNote.frameHeight - swagRect.height;
 					daNote.clipRect = swagRect;

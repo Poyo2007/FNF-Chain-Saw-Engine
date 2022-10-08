@@ -4,11 +4,15 @@ import states.PlayState;
 
 class Rank
 {
+	public static var gradeArray:Array<String> = [
+		"P", "X", "X-", "SS+", "SS", "SS-", "S+", "S", "S-", "A+", "A", "A-", "B", "C", "D", "E"
+	];
+
 	public static function accuracyToGrade(accuracy:Float):String
 	{
-		var grade:String = '';
+		var grade:String;
 
-		var wifeConditions:Array<Bool> = [
+		final wifeConditions:Array<Bool> = [
 			accuracy >= 99.9935, // P
 			accuracy >= 99.980, // X
 			accuracy >= 99.950, // X-
@@ -31,42 +35,7 @@ class Rank
 		{
 			if (wifeConditions[i])
 			{
-				switch (i)
-				{
-					case 0:
-						grade = "P";
-					case 1:
-						grade = "X";
-					case 2:
-						grade = "X-";
-					case 3:
-						grade = "SS+";
-					case 4:
-						grade = "SS";
-					case 5:
-						grade = "SS-";
-					case 6:
-						grade = "S+";
-					case 7:
-						grade = "S";
-					case 8:
-						grade = "S-";
-					case 9:
-						grade = "A+";
-					case 10:
-						grade = "A";
-					case 11:
-						grade = "A-";
-					case 12:
-						grade = "B";
-					case 13:
-						grade = "C";
-					case 14:
-						grade = "D";
-					case 15:
-						grade = "E";
-				}
-
+				grade = gradeArray[i];
 				break;
 			}
 		}
