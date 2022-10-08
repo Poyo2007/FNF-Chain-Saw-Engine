@@ -77,7 +77,6 @@ class MusicBeatSubstate extends FlxUISubState
 
 	override function update(elapsed:Float)
 	{
-		// everyStep();
 		var oldStep:Int = curStep;
 
 		updateCurStep();
@@ -113,6 +112,9 @@ class MusicBeatSubstate extends FlxUISubState
 
 	public function beatHit():Void
 	{
-		// do literally nothing dumbass
+	}
+
+	public function onDropFile(path:String)
+	{
 	}
 }

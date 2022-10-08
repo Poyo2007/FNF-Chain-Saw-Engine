@@ -18,12 +18,6 @@ class Includes
 		Compiler.include('android');
 		#end
 		Compiler.include('haxe.crypto');
-		Compiler.include('DateTools');
-		Compiler.include('Reflect');
-		Compiler.include('EReg');
-		Compiler.include('Lambda');
-		Compiler.include('StringBuf');
-		Compiler.include('StringTools');
 		#if cpp
 		Compiler.include('cpp.RawPointer');
 		Compiler.include('cpp.Pointer');

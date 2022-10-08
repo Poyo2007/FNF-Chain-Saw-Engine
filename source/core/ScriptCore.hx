@@ -6,6 +6,7 @@ import openfl.Lib;
 import openfl.utils.Assets;
 import flixel.FlxBasic;
 import states.ScriptState;
+import substates.ScriptSubState;
 
 using StringTools;
 
@@ -62,18 +63,22 @@ class ScriptCore extends FlxBasic
 		});
 		setVariable('Function_Stop', Function_Stop);
 		setVariable('Function_Continue', Function_Continue);
-		setVariable('Reflect', Reflect);
-		setVariable('Sys', Sys);
-		setVariable('Array', Array);
-		setVariable('Type', Type);
-		setVariable('Std', Std);
+
+		setVariable('Date', Date);
 		setVariable('DateTools', DateTools);
+		setVariable('EReg', EReg);
+		setVariable('Lambda', Lambda);
 		setVariable('Math', Math);
+		setVariable('Reflect', Reflect);
+		setVariable('Std', Std);
+		setVariable('StringBuf', StringBuf);
 		setVariable('StringTools', StringTools);
 		setVariable('Sys', Sys);
+		setVariable('Type', Type);
 		setVariable('Xml', Xml);
 
 		setVariable('ScriptState', ScriptState);
+		setVariable('ScriptSubState', ScriptSubState);
 
 		if (execute)
 			this.execute(file);
