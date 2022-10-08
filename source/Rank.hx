@@ -10,7 +10,7 @@ class Rank
 
 	public static function accuracyToGrade(accuracy:Float):String
 	{
-		var grade:String;
+		var grade:String = '';
 
 		final wifeConditions:Array<Bool> = [
 			accuracy >= 99.9935, // P
