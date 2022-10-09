@@ -17,7 +17,6 @@ class FreeplayState extends MusicBeatState
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 	private var iconArray:Array<HealthIcon> = [];
-
 	private var songs:Array<SongMetadata> = [];
 	private var curSelected:Int = 0;
 	private var curDifficulty:Int = 1;
@@ -80,7 +79,7 @@ class FreeplayState extends MusicBeatState
 			add(icon);
 		}
 
-		scoreBG = new FlxSprite(FlxG.width * 6.7, 0).makeGraphic(1, 98, 0xFF000000);
+		scoreBG = new FlxSprite(FlxG.width * 6.7, 0).makeGraphic(1, 101, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
