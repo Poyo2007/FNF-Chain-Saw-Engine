@@ -12,6 +12,8 @@ import substates.PreferencesSubState;
 
 class OptionsState extends MusicBeatState
 {
+	public static var fromPause:Bool = false;
+
 	private final options:Array<String> = [
 		'Preferences',
 		#if mobile
@@ -129,7 +131,13 @@ class OptionsState extends MusicBeatState
 			case 'Controls':
 				openSubState(new ControlsSubState());
 			case 'Exit':
-				MusicBeatState.switchState(new MainMenuState());
+				if (fromPause)
+				{
+					fromPause = false;
+					MusicBeatState.switchState(new PlayState());
+				}
+				else
+					MusicBeatState.switchState(new MainMenuState());
 		}
 	}
 

@@ -692,18 +692,6 @@ class PlayState extends MusicBeatState
 					vocals.pause();
 			}
 
-			FlxTimer.globalManager.forEach(function(tmr:FlxTimer)
-			{
-				if (!tmr.finished)
-					tmr.active = false;
-			});
-
-			FlxTween.globalManager.forEach(function(twn:FlxTween)
-			{
-				if (!twn.finished)
-					twn.active = false;
-			});
-
 			#if FUTURE_DISCORD_RCP
 			DiscordClient.changePresence('Paused - ' + detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')', iconP2.curCharacter);
 			#end
@@ -915,12 +903,25 @@ class PlayState extends MusicBeatState
 			persistentUpdate = false;
 			persistentDraw = true;
 
+			FlxTimer.globalManager.forEach(function(tmr:FlxTimer)
+			{
+				if (!tmr.finished)
+					tmr.active = false;
+			});
+
+			FlxTween.globalManager.forEach(function(twn:FlxTween)
+			{
+				if (!twn.finished)
+					twn.active = false;
+			});
+
+			var pauseMenu:PauseSubState = new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y);
+
 			var cam:FlxCamera = new FlxCamera();
 			cam.bgColor.alpha = 0;
 			FlxG.cameras.add(cam, false);
-
-			var pauseMenu:PauseSubState = new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y);
 			pauseMenu.camera = cam;
+
 			openSubState(pauseMenu);
 		}
 	}

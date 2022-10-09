@@ -74,7 +74,7 @@ class ChartingState extends MusicBeatState
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.scrollFactor.set();
-		bg.color = 0xFF222222;
+		bg.color = FlxColor.fromRGB(FlxG.random.int(0, 255), FlxG.random.int(0, 255), FlxG.random.int(0, 255));
 		add(bg);
 
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
@@ -179,10 +179,7 @@ class ChartingState extends MusicBeatState
 			FlxG.sound.music.volume = vol;
 		};
 
-		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
-		{
-			saveLevel();
-		});
+		var saveButton:FlxButton = new FlxButton(110, 8, "Save", saveLevel);
 
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
 		{
@@ -204,15 +201,14 @@ class ChartingState extends MusicBeatState
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 
-		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characters/characterList'));
-		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stages/stageList'));
+		final characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characters/characterList'));
+		final stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stages/stageList'));
 
 		var gfVersionDropDown = new FlxUIDropDownMenu(10, 150, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.gfVersion = characters[Std.parseInt(character)];
 			updateHeads();
 		});
-
 		gfVersionDropDown.selectedLabel = _song.gfVersion;
 
 		var stageDropDown = new FlxUIDropDownMenu(140, 150, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true), function(stage:String)
@@ -220,7 +216,6 @@ class ChartingState extends MusicBeatState
 			_song.stage = stages[Std.parseInt(stage)];
 			updateHeads();
 		});
-
 		stageDropDown.selectedLabel = _song.stage;
 
 		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
@@ -235,7 +230,6 @@ class ChartingState extends MusicBeatState
 			_song.player2 = characters[Std.parseInt(character)];
 			updateHeads();
 		});
-
 		player2DropDown.selectedLabel = _song.player2;
 
 		var tab_group_song = new FlxUI(null, UI_box);

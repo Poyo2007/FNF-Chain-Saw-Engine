@@ -9,8 +9,10 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import parse.Song;
-import states.PlayState;
+import states.ChartingState;
 import states.FreeplayState;
+import states.OptionsState;
+import states.PlayState;
 import states.StoryMenuState;
 
 class PauseSubState extends MusicBeatSubstate
@@ -21,6 +23,8 @@ class PauseSubState extends MusicBeatSubstate
 		'Change Difficulty',
 		'Toggle Practice Mode',
 		'Toggle Auto-Play Mode',
+		'Chart Editor',
+		'Options',
 		'Quit'
 	];
 
@@ -185,6 +189,11 @@ class PauseSubState extends MusicBeatSubstate
 						MusicBeatState.switchState(new StoryMenuState());
 					else
 						MusicBeatState.switchState(new FreeplayState());
+				case 'Chart Editor':
+					MusicBeatState.switchState(new ChartingState());
+				case 'Options':
+					OptionsState.fromPause = false;
+					MusicBeatState.switchState(new OptionsState());
 				case "BACK":
 					regenMenu(pauseOG);
 			}
