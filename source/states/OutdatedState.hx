@@ -32,7 +32,7 @@ class OutdatedState extends MusicBeatState
 			+ "\n"
 			+ "Press Enter to go to the github page, or Escape to ignore this!",
 			32);
-		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
+		txt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();
 		add(txt);
 

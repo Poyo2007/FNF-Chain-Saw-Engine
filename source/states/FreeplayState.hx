@@ -23,6 +23,7 @@ class FreeplayState extends MusicBeatState
 	private var curDifficulty:Int = 1;
 	private var scoreText:FlxText;
 	private var diffText:FlxText;
+	private var rankText:FlxText;
 	private var lerpScore:Float = 0;
 	private var intendedScore:Int = 0;
 	private var bg:FlxSprite;
@@ -52,7 +53,7 @@ class FreeplayState extends MusicBeatState
 
 		#if FUTURE_DISCORD_RCP
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Freeplay Menu", null);
+		DiscordClient.changePresence('In the Freeplay Menu', null);
 		#end
 
 		if (!FlxG.sound.music.playing)
@@ -79,17 +80,21 @@ class FreeplayState extends MusicBeatState
 			add(icon);
 		}
 
-		scoreBG = new FlxSprite(FlxG.width * 6.7, 0).makeGraphic(1, 77, 0xFF000000);
+		scoreBG = new FlxSprite(FlxG.width * 6.7, 0).makeGraphic(1, 98, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
-		diffText = new FlxText(FlxG.width * 0.7, 41, 0, "", 24);
-		diffText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, RIGHT);
-		add(diffText);
-
-		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
-		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		scoreText = new FlxText(FlxG.width * 0.7, scoreBG.y + 5, 0, '', 32);
+		scoreText.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, RIGHT);
 		add(scoreText);
+
+		rankText = new FlxText(scoreText.x, scoreText.y + 36, 0, '', 24);
+		rankText.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, RIGHT);
+		add(rankText);
+
+		diffText = new FlxText(scoreText.x, rankText.y + 28, 0, '', 24);
+		diffText.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, RIGHT);
+		add(diffText);
 
 		changeSelection();
 		changeDiff();
@@ -114,7 +119,12 @@ class FreeplayState extends MusicBeatState
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.4);
 		bg.color = FlxColor.interpolate(bg.color, songs[curSelected].color, CoolUtil.camLerpShit(0.045));
 
-		scoreText.text = "PERSONAL BEST:" + Math.round(lerpScore);
+		scoreText.text = 'PERSONAL BEST:' + Math.round(lerpScore);
+		rankText.text = 'ACCURACY: '
+			+ HighScore.getScore(songs[curSelected].songName, curDifficulty).accuracy
+			+ '% | '
+			+ HighScore.getScore(songs[curSelected].songName, curDifficulty).grade;
+
 		positionHighScore();
 
 		if (controls.UI_UP_P)
@@ -158,7 +168,7 @@ class FreeplayState extends MusicBeatState
 
 		intendedScore = HighScore.getScore(songs[curSelected].songName, curDifficulty).score;
 
-		diffText.text = '< ' + CoolUtil.difficultyString(curDifficulty).toUpperCase() + ' >';
+		diffText.text = 'DIFFICULTY: ' + CoolUtil.difficultyString(curDifficulty).toUpperCase();
 	}
 
 	private function changeSelection(change:Int = 0)
@@ -195,19 +205,17 @@ class FreeplayState extends MusicBeatState
 
 	private function positionHighScore()
 	{
-		scoreText.x = FlxG.width - scoreText.width - 6;
+		scoreText.x = rankText.x = diffText.x = FlxG.width - scoreText.width - 6;
 		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
 		scoreBG.x = FlxG.width - scoreBG.scale.x / 2;
-		diffText.x = scoreBG.x + scoreBG.width / 2;
-		diffText.x -= diffText.width / 2;
 	}
 }
 
 class SongMetadata
 {
-	public var songName:String = "";
+	public var songName:String = '';
 	public var week:Int = 0;
-	public var songCharacter:String = "";
+	public var songCharacter:String = '';
 	public var color:FlxColor = FlxColor.WHITE;
 
 	public function new(song:String, week:Int, songCharacter:String, color:FlxColor)

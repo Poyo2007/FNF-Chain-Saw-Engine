@@ -97,7 +97,7 @@ class MainMenuState extends MusicBeatState
 			+ 'Chain-Saw Engine: '
 			+ Application.current.meta.get('version')
 			+ nightly, 12);
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.scrollFactor.set();
 		add(versionShit);
 
