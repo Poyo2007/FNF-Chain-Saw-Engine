@@ -10,27 +10,14 @@
 			"flipY": false,
 			"offset": [
 				0,
-				0
-			]
-		},
-		{
-			"animation": "hey",
-			"prefix": "hey",
-			"framerate": 24,
-			"looped": false,
-			"indices": [],
-			"flipX": false,
-			"flipY": false,
-			"offset": [
-				0,
-				0
+				-25
 			]
 		}
 	],
 	"danceAnimation": [
 		"idle"
 	],
-	"scale": 0.5,
+	"scale": 1,
 	"antialiasing": true,
 	"flipX": false,
 	"flipY": false

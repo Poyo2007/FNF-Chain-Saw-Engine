@@ -17,7 +17,7 @@
 	"danceAnimation": [
 		"idle"
 	],
-	"scale": 0.5,
+	"scale": 1,
 	"antialiasing": true,
 	"flipX": false,
 	"flipY": false

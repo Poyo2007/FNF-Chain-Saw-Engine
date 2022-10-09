@@ -122,11 +122,7 @@ class StoryMenuState extends MusicBeatState
 
 		final daWeek:SwagWeek = loadedWeeks[0];
 		for (char in 0...3)
-		{
-			var weekCharacterThing:StoryCharacter = new StoryCharacter((FlxG.width * 0.25) * (1 + char) - 150, 0, daWeek.characters[char]);
-			weekCharacterThing.y += 70;
-			grpWeekCharacters.add(weekCharacterThing);
-		}
+			grpWeekCharacters.add(new StoryCharacter((FlxG.width * 0.25) * (1 + char) - 150, 70, daWeek.characters[char]));
 
 		txtTracklist = new FlxText(FlxG.width * 0.05, 500, 0, "Tracks", 32);
 		txtTracklist.setFormat(Paths.font("vcr.ttf"), 32, 0xFFe55777, CENTER);
@@ -206,6 +202,10 @@ class StoryMenuState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+
+		for (i in 0...grpWeekCharacters.length)
+			if (grpWeekCharacters.members[i].animation.curAnim != null && grpWeekCharacters.members[i].animation.curAnim.finished && grpWeekCharacters.members[i].animation.curAnim.name != 'hey')
+				grpWeekCharacters.members[i].dance();
 	}
 
 	private var movedBack:Bool = false;
@@ -224,8 +224,8 @@ class StoryMenuState extends MusicBeatState
 					grpWeekText.members[curWeek].startFlashing();
 
 				for (i in 0...grpWeekCharacters.length)
-					if (grpWeekCharacters.members[i].animation.getByName('confirm') != null)
-						grpWeekCharacters.members[i].playAnim('confirm');
+					if (grpWeekCharacters.members[i].animation.getByName('hey') != null)
+						grpWeekCharacters.members[i].playAnim('hey');
 
 				stopspamming = true;
 			}

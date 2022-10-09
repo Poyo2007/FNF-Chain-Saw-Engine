@@ -10,7 +10,7 @@
 			"flipY": false,
 			"offset": [
 				0,
-				0
+				-120
 			]
 		}
 	],
@@ -19,6 +19,6 @@
 	],
 	"scale": 1,
 	"antialiasing": true,
-	"flipX": true,
+	"flipX": false,
 	"flipY": false
 }

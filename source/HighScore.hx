@@ -6,8 +6,8 @@ import haxe.Json;
 typedef SwagInfo =
 {
 	var score:Int;
-	@:optional var accuracy:Float;
-	@:optional var grade:String;
+	var accuracy:Float;
+	var grade:String;
 }
 
 class HighScore
@@ -68,7 +68,9 @@ class HighScore
 		if (!weekScores.exists(formatSong(week, diff)))
 		{
 			setWeekScore(formatSong(week, diff), {
-				score: 0
+				score: 0,
+				accuracy: 0,
+				grade: Rank.gradeArray[Rank.gradeArray.length - 1]
 			});
 		}
 

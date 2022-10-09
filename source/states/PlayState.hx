@@ -1110,7 +1110,9 @@ class PlayState extends MusicBeatState
 					if (SONG.validScore)
 					{
 						HighScore.saveWeekScore(StoryMenuState.loadedWeekList[storyWeek], storyDifficulty, {
-							score: campaignScore
+							score: campaignScore,
+							accuracy: 0,
+							grade: Rank.gradeArray[Rank.gradeArray.length - 1]
 						});
 					}
 
