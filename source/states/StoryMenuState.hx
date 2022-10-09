@@ -273,7 +273,7 @@ class StoryMenuState extends MusicBeatState
 		sprDifficulty.y = leftArrow.y - 15;
 		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
 
-		intendedScore = HighScore.getWeekScore(loadedWeekList[curWeek], curDifficulty);
+		intendedScore = HighScore.getWeekScore(loadedWeekList[curWeek], curDifficulty).score;
 	}
 
 	private var lerpScore:Int = 0;
@@ -327,6 +327,6 @@ class StoryMenuState extends MusicBeatState
 		txtTracklist.x -= FlxG.width * 0.35;
 		txtTracklist.text += "\n";
 
-		intendedScore = HighScore.getWeekScore(loadedWeekList[curWeek], curDifficulty);
+		intendedScore = HighScore.getWeekScore(loadedWeekList[curWeek], curDifficulty).score;
 	}
 }

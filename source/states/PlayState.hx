@@ -70,7 +70,7 @@ class PlayState extends MusicBeatState
 	private var combo:Int = 0;
 	private var score:Int = 0;
 	private var comboBreaks:Int = 0;
-	private var accuracy:Float = 1;
+	private var accuracy:Float = 0;
 	private var hitNotes:Float = 0;
 	private var totalNotes:Float = 0;
 	private var maxSongPos:Int = 14000;
@@ -108,7 +108,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.stop();
 
 		comboBreaks = 0;
-		accuracy = 1;
+		accuracy = 0;
 
 		#if FUTURE_DISCORD_RCP
 		if (isStoryMode)
@@ -152,18 +152,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var stageFile:SwagStage = Stage.loadJson(SONG.stage);
-		if (stageFile == null)
-		{
-			stageFile = {
-				zoom: 0.9,
-				gf: [400, 100],
-				dad: [100, 100],
-				boyfriend: [770, 100],
-				camFollowDad: [150, -100],
-				camFollowBoyfriend: [-100, -100]
-			};
-		}
+		final stageFile:SwagStage = Stage.loadJson(SONG.stage);
 
 		defaultCamZoom = stageFile.zoom;
 		camFollowDad = stageFile.camFollowDad;
@@ -674,12 +663,7 @@ class PlayState extends MusicBeatState
 	}
 
 	private function updateAccuracy():Void
-	{
-		if (totalNotes == 0)
-			accuracy = 1;
-		else
-			accuracy = hitNotes / totalNotes;
-	}
+		accuracy = 100 * (hitNotes / totalNotes);
 
 	override function openSubState(SubState:FlxSubState)
 	{
@@ -793,8 +777,8 @@ class PlayState extends MusicBeatState
 		if (autoplayMode)
 			scoreTxt.text = 'Auto-Play';
 		else
-			scoreTxt.text = 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks + divider + 'Accuracy:' + CoolUtil.truncateFloat(accuracy * 100, 2)
-				+ '%' + divider + Rank.accuracyToGrade(accuracy * 100);
+			scoreTxt.text = 'Score:' + score + divider + 'Combo Breaks:' + comboBreaks + divider + 'Accuracy:' + CoolUtil.truncateFloat(accuracy, 2) + '%'
+				+ divider + Rank.accuracyToGrade(accuracy);
 		scoreTxt.screenCenter(X);
 
 		if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
@@ -915,13 +899,12 @@ class PlayState extends MusicBeatState
 					twn.active = false;
 			});
 
-			var pauseMenu:PauseSubState = new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y);
-
 			var cam:FlxCamera = new FlxCamera();
 			cam.bgColor.alpha = 0;
 			FlxG.cameras.add(cam, false);
-			pauseMenu.camera = cam;
 
+			var pauseMenu:PauseSubState = new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y);
+			pauseMenu.camera = cam;
 			openSubState(pauseMenu);
 		}
 	}
@@ -1106,7 +1089,13 @@ class PlayState extends MusicBeatState
 		if (ret != ScriptCore.Function_Stop)
 		{
 			if (SONG.validScore)
-				HighScore.saveScore(SONG.song, Math.round(score), storyDifficulty);
+			{
+				HighScore.saveScore(SONG.song, storyDifficulty, {
+					score: Math.round(score),
+					accuracy: CoolUtil.truncateFloat(accuracy, 2),
+					grade: Rank.accuracyToGrade(accuracy)
+				});
+			}
 
 			if (isStoryMode)
 			{
@@ -1119,7 +1108,11 @@ class PlayState extends MusicBeatState
 					StoryMenuState.weekCompleted.set(StoryMenuState.loadedWeekList[storyWeek], true);
 
 					if (SONG.validScore)
-						HighScore.saveWeekScore(StoryMenuState.loadedWeekList[storyWeek], campaignScore, storyDifficulty);
+					{
+						HighScore.saveWeekScore(StoryMenuState.loadedWeekList[storyWeek], storyDifficulty, {
+							score: campaignScore
+						});
+					}
 
 					FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 					FlxG.save.flush();

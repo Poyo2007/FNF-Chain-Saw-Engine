@@ -156,7 +156,7 @@ class FreeplayState extends MusicBeatState
 		else if (curDifficulty >= CoolUtil.difficultyArray.length)
 			curDifficulty = 0;
 
-		intendedScore = HighScore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedScore = HighScore.getScore(songs[curSelected].songName, curDifficulty).score;
 
 		diffText.text = '< ' + CoolUtil.difficultyString(curDifficulty).toUpperCase() + ' >';
 	}
@@ -172,7 +172,7 @@ class FreeplayState extends MusicBeatState
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
-		intendedScore = HighScore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedScore = HighScore.getScore(songs[curSelected].songName, curDifficulty).score;
 
 		var bullShit:Int = 0;
 

@@ -192,7 +192,7 @@ class PauseSubState extends MusicBeatSubstate
 				case 'Chart Editor':
 					MusicBeatState.switchState(new ChartingState());
 				case 'Options':
-					OptionsState.fromPause = false;
+					OptionsState.fromPause = true;
 					MusicBeatState.switchState(new OptionsState());
 				case "BACK":
 					regenMenu(pauseOG);

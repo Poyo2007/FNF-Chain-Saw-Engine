@@ -4,8 +4,8 @@ import states.PlayState;
 
 class Rank
 {
-	public static var gradeArray:Array<String> = [
-		'P', 'X', 'X-', 'SS+', 'SS', 'SS-', 'S+', 'S', 'S-', 'A+', 'A', 'A-', 'B', 'C', 'D', 'E'
+	public static final gradeArray:Array<String> = [
+		'P', 'X', 'X-', 'SS+', 'SS', 'SS-', 'S+', 'S', 'S-', 'A+', 'A', 'A-', 'B', 'C', 'D', 'E', 'N/A'
 	];
 
 	public static function accuracyToGrade(accuracy:Float):String
@@ -28,7 +28,8 @@ class Rank
 			accuracy >= 80, // B
 			accuracy >= 70, // C
 			accuracy >= 60, // D
-			accuracy < 60 // E
+			accuracy <= 60, // E
+			accuracy <= 0 // N/A
 		];
 
 		for (i in 0...wifeConditions.length)
