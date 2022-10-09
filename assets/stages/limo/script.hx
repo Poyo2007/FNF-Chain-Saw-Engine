@@ -44,11 +44,11 @@ function create()
 	resetFastCar();
 	PlayState.instance.add(fastCar);
 
-	PlayState.instance.add(PlayState.instance.gf);
-
 	var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.returnGraphic('stages/limo/images/limoOverlay'));
 	overlayShit.alpha = 0.125;
 	PlayState.instance.add(overlayShit);
+
+	PlayState.instance.add(PlayState.instance.gf);
 
 	limo = new FlxSprite(-120, 550);
 	limo.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/limo/images/limoDrive'), Paths.xml('stages/limo/images/limoDrive'));
