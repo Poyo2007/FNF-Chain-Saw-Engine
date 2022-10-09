@@ -9,17 +9,10 @@ class PreferencesSubState extends BaseOptionsSubState
 	{
 		discordClientTitle = 'Preferences Menu';
 
-		var option:Option = new Option('Ghost Tapping', '---', 'ghostTapping', 'bool', true);
-		addOption(option);
-
-		var option:Option = new Option('Downscroll', '---', 'downScroll', 'bool', false);
-		addOption(option);
-
-		var option:Option = new Option('Centered Note-Field', '---', 'centeredNotes', 'bool', false);
-		addOption(option);
-
-		var option:Option = new Option('Note Splashes', '---', 'noteSplashes', 'bool', true);
-		addOption(option);
+		addOption(new Option('Ghost Tapping', '---', 'ghostTapping', 'bool', true));
+		addOption(new Option('Downscroll', '---', 'downScroll', 'bool', false));
+		addOption(new Option('Centered Note-Field', '---', 'centeredNotes', 'bool', false));
+		addOption(new Option('Note Splashes', '---', 'noteSplashes', 'bool', true));
 
 		var option:Option = new Option('Overlay', '---', 'overlay', 'bool', false);
 		option.onChange = function()
@@ -56,14 +49,9 @@ class PreferencesSubState extends BaseOptionsSubState
 		option.maxValue = 10;
 		addOption(option);
 
-		var option:Option = new Option('Check For Updates', '---', 'checkForUpdates', 'bool', true);
-		addOption(option);
-
-		var option:Option = new Option('Antialiasing', '---', 'antialiasing', 'bool', true);
-		addOption(option);
-
-		var option:Option = new Option('Flashing', '---', 'flashing', 'bool', true);
-		addOption(option);
+		addOption(new Option('Check For Updates', '---', 'checkForUpdates', 'bool', true));
+		addOption(new Option('Antialiasing', '---', 'antialiasing', 'bool', true));
+		addOption(new Option('Flashing', '---', 'flashing', 'bool', true));
 
 		super();
 	}

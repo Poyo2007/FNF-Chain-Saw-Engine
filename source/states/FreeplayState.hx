@@ -12,6 +12,14 @@ import parse.Week;
 import states.ChartingState;
 import states.PlayState;
 
+typedef SongMetadata =
+{
+	public var name:String;
+	public var week:Int;
+	public var character:String;
+	public var color:Int;
+}
+
 class FreeplayState extends MusicBeatState
 {
 	private var grpSongs:FlxTypedGroup<Alphabet>;
@@ -45,7 +53,12 @@ class FreeplayState extends MusicBeatState
 					if (colors == null || colors.length < 3)
 						colors = [146, 113, 253];
 
-					songs.push(new SongMetadata(song.name, i, song.character, FlxColor.fromRGB(colors[0], colors[1], colors[2])));
+					songs.push({
+						name: song.name,
+						week: i,
+						character: song.character,
+						color: FlxColor.fromRGB(colors[0], colors[1], colors[2])
+					});
 				}
 			}
 		}
@@ -68,12 +81,12 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].name, true, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			var icon:HealthIcon = new HealthIcon(songs[i].character);
 			icon.sprTracker = songText;
 			iconArray.push(icon);
 			add(icon);
@@ -120,9 +133,9 @@ class FreeplayState extends MusicBeatState
 
 		scoreText.text = 'PERSONAL BEST:' + Math.round(lerpScore);
 		rankText.text = 'ACCURACY: '
-			+ HighScore.getScore(songs[curSelected].songName, curDifficulty).accuracy
+			+ HighScore.getScore(songs[curSelected].name, curDifficulty).accuracy
 			+ '% | '
-			+ HighScore.getScore(songs[curSelected].songName, curDifficulty).grade;
+			+ HighScore.getScore(songs[curSelected].name, curDifficulty).grade;
 
 		positionHighScore();
 
@@ -140,7 +153,7 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.ACCEPT)
 		{
-			PlayState.SONG = Song.loadJson(HighScore.formatSong(songs[curSelected].songName, curDifficulty), Paths.formatName(songs[curSelected].songName));
+			PlayState.SONG = Song.loadJson(HighScore.formatSong(songs[curSelected].name, curDifficulty), Paths.formatName(songs[curSelected].name));
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 			PlayState.storyWeek = songs[curSelected].week;
@@ -165,7 +178,7 @@ class FreeplayState extends MusicBeatState
 		else if (curDifficulty >= CoolUtil.difficultyArray.length)
 			curDifficulty = 0;
 
-		intendedScore = HighScore.getScore(songs[curSelected].songName, curDifficulty).score;
+		intendedScore = HighScore.getScore(songs[curSelected].name, curDifficulty).score;
 
 		diffText.text = 'DIFFICULTY: ' + CoolUtil.difficultyString(curDifficulty).toUpperCase();
 	}
@@ -181,7 +194,7 @@ class FreeplayState extends MusicBeatState
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
-		intendedScore = HighScore.getScore(songs[curSelected].songName, curDifficulty).score;
+		intendedScore = HighScore.getScore(songs[curSelected].name, curDifficulty).score;
 
 		var bullShit:Int = 0;
 
@@ -207,21 +220,5 @@ class FreeplayState extends MusicBeatState
 		scoreText.x = rankText.x = diffText.x = FlxG.width - scoreText.width - 6;
 		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
 		scoreBG.x = FlxG.width - scoreBG.scale.x / 2;
-	}
-}
-
-class SongMetadata
-{
-	public var songName:String = '';
-	public var week:Int = 0;
-	public var songCharacter:String = '';
-	public var color:FlxColor = FlxColor.WHITE;
-
-	public function new(song:String, week:Int, songCharacter:String, color:FlxColor)
-	{
-		this.songName = song;
-		this.week = week;
-		this.songCharacter = songCharacter;
-		this.color = color;
 	}
 }
