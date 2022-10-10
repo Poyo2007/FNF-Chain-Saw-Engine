@@ -30,7 +30,7 @@ class Rank
 			accuracy >= 80, // B
 			accuracy >= 70, // C
 			accuracy >= 60, // D
-			accuracy <= 60, // E
+			accuracy <= 60 // E
 		];
 
 		for (i in 0...wifeConditions.length)
