@@ -310,6 +310,12 @@ class PlayState extends MusicBeatState
 		else
 			startCountdown();
 
+		for (key in ['missnote1', 'missnote2', 'missnote3'])
+			Paths.sound(key); // sound precache because we are cool :)
+
+		for (key in ['breakfast', 'freakyMenu'])
+			Paths.music(key); // music precache because we are cool :)
+
 		super.create();
 
 		Paths.clearUnusedMemory();
@@ -317,7 +323,7 @@ class PlayState extends MusicBeatState
 
 	private function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
-		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, 0xFF000000);
 		black.scrollFactor.set();
 		add(black);
 
@@ -937,58 +943,27 @@ class PlayState extends MusicBeatState
 
 	private function noteCalls(daNote:Note)
 	{
-		var strumX:Float = 0;
-		var strumY:Float = 0;
-		var strumScroll:Bool = false;
-		var strumAngle:Float = 0;
-		var strumAlpha:Float = 0;
-
-		if (daNote.mustPress)
-		{
-			strumX = playerStrums.members[daNote.noteData].x;
-			strumY = playerStrums.members[daNote.noteData].y;
-			strumScroll = playerStrums.members[daNote.noteData].downScroll;
-			strumAngle = playerStrums.members[daNote.noteData].angle;
-			strumAlpha = playerStrums.members[daNote.noteData].alpha;
-		}
-		else
-		{
-			strumX = opponentStrums.members[daNote.noteData].x;
-			strumY = opponentStrums.members[daNote.noteData].y;
-			strumScroll = opponentStrums.members[daNote.noteData].downScroll;
-			strumAngle = opponentStrums.members[daNote.noteData].angle;
-			strumAlpha = opponentStrums.members[daNote.noteData].alpha;
-		}
-
-		strumX += daNote.offsetX;
-		strumY += daNote.offsetY;
-		strumAngle += daNote.offsetAngle;
-		strumAlpha *= daNote.multAlpha;
+		var strums:FlxTypedGroup<StrumNote> = daNote.mustPress ? playerStrums : opponentStrums;
+		var strumX:Float = strums.members[daNote.noteData].x + daNote.offsetX;
+		var strumY:Float = strums.members[daNote.noteData].y + daNote.offsetY;
+		var strumScroll:Bool = strums.members[daNote.noteData].downScroll;
+		var strumAngle:Float = strums.members[daNote.noteData].angle + daNote.offsetAngle;
+		var strumAlpha:Float = strums.members[daNote.noteData].alpha * daNote.multAlpha;
 
 		daNote.x = strumX;
 		if (!daNote.sustainNote)
 			daNote.angle = strumAngle;
 		daNote.alpha = strumAlpha;
 
-		var daHide:Bool = daNote.y < -daNote.height;
-		if (strumScroll)
-			daHide = daNote.y > FlxG.height;
-
 		if (!daNote.mustPress && PreferencesData.centeredNotes)
 		{
 			daNote.active = true;
 			daNote.visible = false;
 		}
-		else if (daHide)
-		{
-			daNote.active = false;
-			daNote.visible = false;
-		}
+		else if (strumScroll ? (daNote.y > FlxG.height) : (daNote.y < -daNote.height))
+			daNote.active = daNote.visible = false;
 		else
-		{
-			daNote.visible = true;
-			daNote.active = true;
-		}
+			daNote.visible = daNote.active = true;
 
 		var center:Float = strumY + (Note.swagWidth / 2);
 
@@ -1040,18 +1015,12 @@ class PlayState extends MusicBeatState
 				goodNoteHit(daNote);
 		}
 
-		var doKill:Bool = daNote.y < -daNote.height;
-		if (strumScroll)
-			doKill = daNote.y > FlxG.height;
-
-		if (doKill)
+		if (strumScroll ? (daNote.y > FlxG.height) : (daNote.y < -daNote.height))
 		{
 			if (daNote.mustPress && !autoplayMode && !endingSong && (daNote.tooLate || !daNote.wasGoodHit))
 				noteMiss();
 
-			daNote.active = false;
-			daNote.visible = false;
-
+			daNote.active = daNote.visible = false;
 			destroyNote(daNote);
 		}
 	}
@@ -1123,7 +1092,7 @@ class PlayState extends MusicBeatState
 					FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 					FlxG.save.flush();
 
-					FlxG.sound.music.stop();
+					FlxG.sound.playMusic(Paths.music('freakyMenu'));
 					MusicBeatState.switchState(new StoryMenuState());
 				}
 				else
@@ -1136,7 +1105,7 @@ class PlayState extends MusicBeatState
 			}
 			else
 			{
-				FlxG.sound.music.stop();
+				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				MusicBeatState.switchState(new FreeplayState());
 			}
 		}
