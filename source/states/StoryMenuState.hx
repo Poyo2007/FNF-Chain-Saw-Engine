@@ -232,6 +232,8 @@ class StoryMenuState extends MusicBeatState
 
 			selectedWeek = true;
 
+			PlayState.storyPlaylist = [];
+
 			final daWeek:SwagWeek = loadedWeeks[curWeek];
 			for (i in 0...daWeek.songs.length)
 				PlayState.storyPlaylist.push(daWeek.songs[i].name);
