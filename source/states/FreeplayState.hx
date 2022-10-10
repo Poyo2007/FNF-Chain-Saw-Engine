@@ -14,10 +14,10 @@ import states.PlayState;
 
 typedef SongMetadata =
 {
-	public var name:String;
-	public var week:Int;
-	public var character:String;
-	public var color:Int;
+	var name:String;
+	var week:Int;
+	var character:String;
+	var color:Int;
 }
 
 class FreeplayState extends MusicBeatState
