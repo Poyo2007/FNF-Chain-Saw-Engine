@@ -14,7 +14,7 @@ class PreferencesSubState extends BaseOptionsSubState
 		addOption(new Option('Centered Note-Field', 'if enabled, moves the scroll to the middle.', 'centeredNotes', 'bool', false));
 		addOption(new Option('Note Splashes', 'If disabled, no splashes will appear on sick note presses.', 'noteSplashes', 'bool', true));
 
-		var option:Option = new Option('Overlay', 'If enabled, shows an overlay with fps and ram info.', 'overlay', 'bool', false);
+		var option:Option = new Option('Overlay', 'If enabled, shows an overlay with fps and memory info.', 'overlay', 'bool', false);
 		option.onChange = function()
 		{
 			if (Main.overlay != null)
