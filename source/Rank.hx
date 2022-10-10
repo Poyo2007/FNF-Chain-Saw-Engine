@@ -42,7 +42,10 @@ class Rank
 			}
 		}
 
-		return if (accuracy <= 0) ? Rank.unknownGrade : grade;
+		if (accuracy <= 0)
+			grade = Rank.unknownGrade;
+
+		return grade;
 	}
 
 	public static function ratingToHit(rating:String):Float
