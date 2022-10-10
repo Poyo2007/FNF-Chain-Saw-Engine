@@ -5,17 +5,19 @@ import states.PlayState;
 class Rank
 {
 	public static final gradeArray:Array<String> = [
-		'P', 'X', 'X-', 'SS+', 'SS', 'SS-', 'S+', 'S', 'S-', 'A+', 'A', 'A-', 'B', 'C', 'D', 'E', 'N/A'
+		'P', 'X', 'X-', 'SS+', 'SS', 'SS-', 'S+', 'S', 'S-', 'A+', 'A', 'A-', 'B', 'C', 'D', 'E'
 	];
+
+	public static final unknownGrade:String = 'N/A';
 
 	public static function accuracyToGrade(accuracy:Float):String
 	{
 		var grade:String = '';
 
 		final wifeConditions:Array<Bool> = [
-			accuracy >= 99.9935, // P
-			accuracy >= 99.980, // X
-			accuracy >= 99.950, // X-
+			accuracy >= 99.99, // P
+			accuracy >= 99.98, // X
+			accuracy >= 99.95, // X-
 			accuracy >= 99.90, // SS+
 			accuracy >= 99.80, // SS
 			accuracy >= 99.70, // SS-
@@ -29,7 +31,6 @@ class Rank
 			accuracy >= 70, // C
 			accuracy >= 60, // D
 			accuracy <= 60, // E
-			accuracy <= 0 // N/A
 		];
 
 		for (i in 0...wifeConditions.length)
@@ -41,7 +42,7 @@ class Rank
 			}
 		}
 
-		return grade;
+		return if (accuracy <= 0) ? Rank.unknownGrade : grade;
 	}
 
 	public static function ratingToHit(rating:String):Float

@@ -49,7 +49,7 @@ class HighScore
 			setScore(formatSong(song, diff), {
 				score: 0,
 				accuracy: 0,
-				grade: Rank.gradeArray[Rank.gradeArray.length - 1]
+				grade: Rank.unknownGrade
 			});
 		}
 
@@ -70,7 +70,7 @@ class HighScore
 			setWeekScore(formatSong(week, diff), {
 				score: 0,
 				accuracy: 0,
-				grade: Rank.gradeArray[Rank.gradeArray.length - 1]
+				grade: Rank.unknownGrade
 			});
 		}
 
