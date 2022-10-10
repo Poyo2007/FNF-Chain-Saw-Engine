@@ -33,10 +33,10 @@ class HighScore
 		if (weekScores.exists(daWeek))
 		{
 			if (weekScores.get(daWeek).score < info.score)
-				setScore(daWeek, info);
+				setWeekScore(daWeek, info);
 		}
 		else
-			setScore(daWeek, info);
+			setWeekScore(daWeek, info);
 	}
 
 	public static function formatSong(song:String, diff:Int):String
@@ -56,9 +56,9 @@ class HighScore
 		return songScores.get(formatSong(song, diff));
 	}
 
-	static function setScore(song:String, score:SwagInfo):Void
+	static function setScore(song:String, info:SwagInfo):Void
 	{
-		songScores.set(song, score);
+		songScores.set(song, info);
 		FlxG.save.data.songScores = songScores;
 		FlxG.save.flush();
 	}
@@ -77,9 +77,9 @@ class HighScore
 		return weekScores.get(formatSong(week, diff));
 	}
 
-	static function setWeekScore(song:String, info:SwagInfo):Void
+	static function setWeekScore(week:String, info:SwagInfo):Void
 	{
-		weekScores.set(song, info);
+		weekScores.set(week, info);
 		FlxG.save.data.weekScores = weekScores;
 		FlxG.save.flush();
 	}
