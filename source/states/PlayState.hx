@@ -937,22 +937,6 @@ class PlayState extends MusicBeatState
 
 	private function noteCalls(daNote:Note)
 	{
-		if (!daNote.mustPress && PreferencesData.centeredNotes)
-		{
-			daNote.active = true;
-			daNote.visible = false;
-		}
-		else if (daNote.y > FlxG.height)
-		{
-			daNote.active = false;
-			daNote.visible = false;
-		}
-		else
-		{
-			daNote.visible = true;
-			daNote.active = true;
-		}
-
 		var strumX:Float = 0;
 		var strumY:Float = 0;
 		var strumScroll:Bool = false;
@@ -985,6 +969,26 @@ class PlayState extends MusicBeatState
 		if (!daNote.sustainNote)
 			daNote.angle = strumAngle;
 		daNote.alpha = strumAlpha;
+
+		var daHide:Bool = daNote.y < -daNote.height;
+		if (strumScroll)
+			daHide = daNote.y > FlxG.height;
+
+		if (!daNote.mustPress && PreferencesData.centeredNotes)
+		{
+			daNote.active = true;
+			daNote.visible = false;
+		}
+		else if (daHide)
+		{
+			daNote.active = false;
+			daNote.visible = false;
+		}
+		else
+		{
+			daNote.visible = true;
+			daNote.active = true;
+		}
 
 		var center:Float = strumY + (Note.swagWidth / 2);
 
@@ -1119,12 +1123,11 @@ class PlayState extends MusicBeatState
 					FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 					FlxG.save.flush();
 
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					FlxG.sound.music.stop();
 					MusicBeatState.switchState(new StoryMenuState());
 				}
 				else
 				{
-					FlxTransitionableState.skipNextTransIn = FlxTransitionableState.skipNextTransOut = true;
 					PlayState.SONG = Song.loadJson(HighScore.formatSong(PlayState.storyPlaylist[0], storyDifficulty),
 						Paths.formatName(PlayState.storyPlaylist[0]));
 					FlxG.sound.music.stop();
@@ -1133,7 +1136,7 @@ class PlayState extends MusicBeatState
 			}
 			else
 			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				FlxG.sound.music.stop();
 				MusicBeatState.switchState(new FreeplayState());
 			}
 		}
