@@ -75,6 +75,7 @@ class PlayState extends MusicBeatState
 	private var totalNotes:Float = 0;
 	private var maxSongPos:Int = 14000;
 	private var minHealth:Int = 0;
+	private var maxHealth:Int = 2;
 	private var paused:Bool = false;
 	private var startedCountdown:Bool = false;
 	private var canPause:Bool = true;
@@ -90,7 +91,7 @@ class PlayState extends MusicBeatState
 	private var health:Float = 1;
 	private var notes:FlxTypedGroup<Note>;
 
-	private final divider:String = ' | ';
+	private final divider:String = ' - ';
 	private final iconOffset:Int = 26;
 
 	#if FUTURE_DISCORD_RCP
@@ -807,8 +808,8 @@ class PlayState extends MusicBeatState
 		iconP2.updateHitbox();
 		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
 
-		if (health > 2)
-			health = 2;
+		if (health > maxHealth)
+			health = maxHealth;
 
 		if (iconP1.animation.curAnim != null)
 			iconP1.animation.curAnim.curFrame = healthBar.percent < 20 ? 1 : 0;
