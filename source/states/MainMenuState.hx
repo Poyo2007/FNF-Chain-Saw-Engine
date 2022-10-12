@@ -21,7 +21,15 @@ class MainMenuState extends MusicBeatState
 	public static var nightly:String = #if nightly '-nightly' #else '' #end;
 	public static var gameVer:String = '0.2.7.1';
 
-	private final optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
+	private final optionShit:Array<String> = [
+		'story mode',
+		'freeplay',
+		#if FUTURE_POLYMOD
+		'mods',
+		#end
+		'credits',
+		'options'
+	];
 	private var menuItems:FlxTypedGroup<FlxSprite>;
 	private var curSelected:Int = 0;
 	private var camFollow:FlxObject;
@@ -76,7 +84,7 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + (108 - (Math.max(optionShit.length, 4) - 4) * 80));
-			menuItem.frames = Paths.getSparrowAtlas('FNF_main_menu_assets');
+			menuItem.frames = Paths.getSparrowAtlas('mainmenu/' + optionShit[i] + '/spritesheet');
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
@@ -103,10 +111,7 @@ class MainMenuState extends MusicBeatState
 
 		changeItem();
 
-		#if (mobile && FUTURE_POLYMOD)
-		addVirtualPad(UP_DOWN, A_B_C);
-		virtualPad.y -= 23;
-		#elseif mobile
+		#if mobile
 		addVirtualPad(UP_DOWN, A_B);
 		virtualPad.y -= 23;
 		#end
@@ -146,10 +151,8 @@ class MainMenuState extends MusicBeatState
 			}
 			else if (controls.ACCEPT)
 			{
-				if (optionShit[curSelected] == 'donate')
-				{
-					FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
-				}
+				if (optionShit[curSelected] == 'credits')
+					Main.toast.create('Alert!', 0xFFFF0000, 'Not Maded Menu!');
 				else
 				{
 					selectedSomething = true;
@@ -190,15 +193,6 @@ class MainMenuState extends MusicBeatState
 					});
 				}
 			}
-			#if FUTURE_POLYMOD
-			else if (FlxG.keys.justPressed.SEVEN #if mobile || virtualPad.buttonC.justPressed #end)
-			{
-				if (ModCore.trackedMods != [])
-					MusicBeatState.switchState(new ModsMenuState());
-				else
-					Main.toast.create('No Mods Installed!', 0xFFFFFF00, 'Please add mods to be able to access the menu!');
-			}
-			#end
 		}
 
 		super.update(elapsed);
@@ -219,6 +213,13 @@ class MainMenuState extends MusicBeatState
 				MusicBeatState.switchState(new StoryMenuState());
 			case 'freeplay':
 				MusicBeatState.switchState(new FreeplayState());
+			#if FUTURE_POLYMOD
+			case 'mods':
+				if (ModCore.trackedMods != [])
+					MusicBeatState.switchState(new ModsMenuState());
+				else
+					Main.toast.create('No Mods Installed!', 0xFFFFFF00, 'Please add mods to be able to access the menu!');
+			#end
 			case 'options':
 				MusicBeatState.switchState(new OptionsState());
 		}
