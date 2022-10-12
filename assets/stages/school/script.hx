@@ -81,7 +81,7 @@ function create()
 	shader = new FlxRuntimeShader(Paths.frag('shaders/vcr-distortion'), null);
 	shader.setFloat('iTime', 0);
 	shader.setBool('noise', true);
-	shader.setBitmapData('iChannel', Assets.getBitmapData('assets/noise.png'));
+	shader.setBitmapData('iChannel', Assets.getBitmapData('assets/images/noise.png'));
 	shader2 = new FlxRuntimeShader(Paths.frag('shaders/vcr-distortion'), null);
 	shader2.setFloat('iTime', 0);
 	shader2.setBool('noise', false);
