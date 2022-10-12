@@ -1,7 +1,6 @@
 import('Paths');
 import('flixel.FlxG');
 import('flixel.FlxSprite');
-import('flixel.graphics.frames.FlxAtlasFrames');
 import('states.PlayState');
 
 var tankWatchtower:FlxSprite;
@@ -17,58 +16,57 @@ function create()
 {
 	PlayState.isPixelAssets = false;
 
-	var sky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.returnGraphic('stages/tank/images/tankSky'));
+	var sky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.image('stages/tank/tankSky'));
 	sky.scrollFactor.set(0, 0);
 	PlayState.instance.add(sky);
 
 	var clouds:FlxSprite = new FlxSprite(FlxG.random.int(-700, -100),
-		FlxG.random.int(-20, 20)).loadGraphic(Paths.returnGraphic('stages/tank/images/tankClouds'));
+		FlxG.random.int(-20, 20)).loadGraphic(Paths.image('stages/tank/tankClouds'));
 	clouds.scrollFactor.set(0.1, 0.1);
 	clouds.velocity.x = FlxG.random.float(5, 15);
 	PlayState.instance.add(clouds);
 
-	var mountains:FlxSprite = new FlxSprite(-300, -20).loadGraphic(Paths.returnGraphic('stages/tank/images/tankMountains'));
+	var mountains:FlxSprite = new FlxSprite(-300, -20).loadGraphic(Paths.image('stages/tank/tankMountains'));
 	mountains.scrollFactor.set(0.2, 0.2);
 	mountains.setGraphicSize(Std.int(mountains.width * 1.2));
 	mountains.updateHitbox();
 	PlayState.instance.add(mountains);
 
-	var buildings:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.returnGraphic('stages/tank/images/tankBuildings'));
+	var buildings:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('stages/tank/tankBuildings'));
 	buildings.scrollFactor.set(0.3, 0.3);
 	buildings.setGraphicSize(Std.int(buildings.width * 1.1));
 	buildings.updateHitbox();
 	PlayState.instance.add(buildings);
 
-	var ruins:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.returnGraphic('stages/tank/images/tankRuins'));
+	var ruins:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('stages/tank/tankRuins'));
 	ruins.scrollFactor.set(0.35, 0.35);
 	ruins.setGraphicSize(Std.int(ruins.width * 1.1));
 	ruins.updateHitbox();
 	PlayState.instance.add(ruins);
 
 	var smokeL:FlxSprite = new FlxSprite(-200, -100);
-	smokeL.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/tank/images/smokeLeft'), Paths.xml('stages/tank/images/smokeLeft'));
+	smokeL.frames = Paths.getSparrowAtlas('stages/tank/smokeLeft');
 	smokeL.animation.addByPrefix('SmokeBlurLeft', 'SmokeBlurLeft', 24, true);
 	smokeL.animation.play('SmokeBlurLeft');
 	smokeL.scrollFactor.set(0.4, 0.4);
 	PlayState.instance.add(smokeL);
 
 	var smokeR:FlxSprite = new FlxSprite(1100, -100);
-	smokeR.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/tank/images/smokeRight'), Paths.xml('stages/tank/images/smokeRight'));
+	smokeR.frames = Paths.getSparrowAtlas('stages/tank/smokeRight');
 	smokeR.animation.addByPrefix('SmokeRight', 'SmokeRight', 24, true);
 	smokeR.animation.play('SmokeRight');
 	smokeR.scrollFactor.set(0.4, 0.4);
 	PlayState.instance.add(smokeR);
 
 	tankWatchtower = new FlxSprite(100, 50);
-	tankWatchtower.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/tank/images/tankWatchtower'),
-		Paths.xml('stages/tank/images/tankWatchtower'));
+	tankWatchtower.frames = Paths.getSparrowAtlas('stages/tank/tankWatchtower');
 	tankWatchtower.animation.addByPrefix('watchtower gradient color', 'watchtower gradient color', 24, false);
 	tankWatchtower.animation.play('watchtower gradient color');
 	tankWatchtower.scrollFactor.set(0.5, 0.5);
 	PlayState.instance.add(tankWatchtower);
 
 	tankGround = new FlxSprite(300, 300);
-	tankGround.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/tank/images/tankRolling'), Paths.xml('stages/tank/images/tankRolling'));
+	tankGround.frames = Paths.getSparrowAtlas('stages/tank/tankRolling');
 	tankGround.animation.addByPrefix('BG tank w lighting', 'BG tank w lighting', 24, true);
 	tankGround.animation.play('BG tank w lighting');
 	tankGround.scrollFactor.set(0.5, 0.5);
@@ -77,7 +75,7 @@ function create()
 	// tankmanRun = new FlxTypedGroup<TankmenBG>();
 	// add(tankmanRun);
 
-	var ground:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.returnGraphic('stages/tank/images/tankGround'));
+	var ground:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.image('stages/tank/tankGround'));
 	ground.setGraphicSize(Std.int(ground.width * 1.15));
 	ground.updateHitbox();
 	PlayState.instance.add(ground);
@@ -89,42 +87,42 @@ function create()
 	PlayState.instance.add(PlayState.instance.boyfriend);
 
 	tankdude0 = new FlxSprite(-500, 650);
-	tankdude0.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/tank/images/tank0'), Paths.xml('stages/tank/images/tank0'));
+	tankdude0.frames = Paths.getSparrowAtlas('stages/tank/tank0');
 	tankdude0.animation.addByPrefix('fg', 'fg', 24, false);
 	tankdude0.animation.play('fg');
 	tankdude0.scrollFactor.set(1.7, 1.5);
 	PlayState.instance.add(tankdude0);
 
 	tankdude1 = new FlxSprite(-300, 750);
-	tankdude1.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/tank/images/tank1'), Paths.xml('stages/tank/images/tank1'));
+	tankdude1.frames = Paths.getSparrowAtlas('stages/tank/tank1');
 	tankdude1.animation.addByPrefix('fg', 'fg', 24, false);
 	tankdude1.animation.play('fg');
 	tankdude1.scrollFactor.set(2, 0.2);
 	PlayState.instance.add(tankdude1);
 
 	tankdude2 = new FlxSprite(450, 940);
-	tankdude2.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/tank/images/tank2'), Paths.xml('stages/tank/images/tank2'));
+	tankdude2.frames = Paths.getSparrowAtlas('stages/tank/tank2');
 	tankdude2.animation.addByPrefix('fg', 'foreground', 24, false);
 	tankdude2.animation.play('fg');
 	tankdude2.scrollFactor.set(1.5, 1.5);
 	PlayState.instance.add(tankdude2);
 
 	tankdude4 = new FlxSprite(1300, 900);
-	tankdude4.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/tank/images/tank4'), Paths.xml('stages/tank/images/tank4'));
+	tankdude4.frames = Paths.getSparrowAtlas('stages/tank/tank4');
 	tankdude4.animation.addByPrefix('fg', 'fg', 24, false);
 	tankdude4.animation.play('fg');
 	tankdude4.scrollFactor.set(1.5, 1.5);
 	PlayState.instance.add(tankdude4);
 
 	tankdude5 = new FlxSprite(1620, 700);
-	tankdude5.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/tank/images/tank5'), Paths.xml('stages/tank/images/tank5'));
+	tankdude5.frames = Paths.getSparrowAtlas('stages/tank/tank5');
 	tankdude5.animation.addByPrefix('fg', 'fg', 24, false);
 	tankdude5.animation.play('fg');
 	tankdude5.scrollFactor.set(1.5, 1.5);
 	PlayState.instance.add(tankdude5);
 
 	tankdude3 = new FlxSprite(1300, 1200);
-	tankdude3.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/tank/images/tank3'), Paths.xml('stages/tank/images/tank3'));
+	tankdude3.frames = Paths.getSparrowAtlas('stages/tank/tank3');
 	tankdude3.animation.addByPrefix('fg', 'fg', 24, false);
 	tankdude3.animation.play('fg');
 	tankdude3.scrollFactor.set(3.5, 2.5);
@@ -157,5 +155,5 @@ function beatHit(curBeat:Int)
 	tankdude2.animation.play('fg');
 	tankdude4.animation.play('fg');
 	tankdude5.animation.play('fg');
-	// tankdude3.animation.play('fg');
+	tankdude3.animation.play('fg');
 }

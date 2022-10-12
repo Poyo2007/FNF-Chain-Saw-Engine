@@ -29,8 +29,6 @@ class Character extends FlxSprite
 	{
 		super(x, y);
 
-		animOffsets.clear();
-
 		this.curCharacter = curCharacter;
 		this.isPlayer = isPlayer;
 
@@ -48,6 +46,8 @@ class Character extends FlxSprite
 
 		position = character.position;
 		camPos = character.camPos;
+
+		animOffsets.clear();
 
 		if (character.animations != null && character.animations.length > 0)
 		{

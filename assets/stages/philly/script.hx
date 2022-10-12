@@ -20,11 +20,11 @@ function create()
 {
 	PlayState.isPixelAssets = false;
 
-	var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.returnGraphic('stages/philly/images/sky'));
+	var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('stages/philly/sky'));
 	bg.scrollFactor.set(0.1, 0.1);
 	PlayState.instance.add(bg);
 
-	var city:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.returnGraphic('stages/philly/images/city'));
+	var city:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.image('stages/philly/city'));
 	city.scrollFactor.set(0.3, 0.3);
 	city.setGraphicSize(Std.int(city.width * 0.85));
 	city.updateHitbox();
@@ -35,7 +35,7 @@ function create()
 
 	for (i in 0...5)
 	{
-		var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.returnGraphic('stages/philly/images/win' + i));
+		var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.image('stages/philly/win' + i));
 		light.setGraphicSize(Std.int(light.width * 0.85));
 		light.updateHitbox();
 		light.scrollFactor.set(0.3, 0.3);
@@ -44,16 +44,16 @@ function create()
 		phillyCityLights.push(light);
 	}
 
-	var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.returnGraphic('stages/philly/images/behindTrain'));
+	var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.image('stages/philly/behindTrain'));
 	PlayState.instance.add(streetBehind);
 
-	phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.returnGraphic('stages/philly/images/train'));
+	phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.image('stages/philly/train'));
 	PlayState.instance.add(phillyTrain);
 
-	trainSound = new FlxSound().loadEmbedded(Paths.returnSound('stages/philly/sounds/train_passes'));
+	trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
 	FlxG.sound.list.add(trainSound);
 
-	var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.returnGraphic('stages/philly/images/street'));
+	var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.image('stages/philly/street'));
 	PlayState.instance.add(street);
 }
 

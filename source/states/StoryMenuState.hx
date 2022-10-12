@@ -204,7 +204,9 @@ class StoryMenuState extends MusicBeatState
 		super.update(elapsed);
 
 		for (i in 0...grpWeekCharacters.length)
-			if (grpWeekCharacters.members[i].animation.curAnim != null && grpWeekCharacters.members[i].animation.curAnim.finished && grpWeekCharacters.members[i].animation.curAnim.name != 'hey')
+			if (grpWeekCharacters.members[i].animation.curAnim != null
+				&& grpWeekCharacters.members[i].animation.curAnim.finished
+				&& grpWeekCharacters.members[i].animation.curAnim.name != 'hey')
 				grpWeekCharacters.members[i].dance();
 	}
 
@@ -255,7 +257,7 @@ class StoryMenuState extends MusicBeatState
 
 		if (curDifficulty < 0)
 			curDifficulty = CoolUtil.difficultyArray.length - 1;
-		if (curDifficulty >= CoolUtil.difficultyArray.length)
+		else if (curDifficulty >= CoolUtil.difficultyArray.length)
 			curDifficulty = 0;
 
 		switch (curDifficulty)
@@ -287,14 +289,14 @@ class StoryMenuState extends MusicBeatState
 
 		if (curWeek < 0)
 			curWeek = loadedWeeks.length - 1;
-		if (curWeek >= loadedWeeks.length)
+		else if (curWeek >= loadedWeeks.length)
 			curWeek = 0;
 
 		var bullShit:Int = 0;
 		for (item in grpWeekText.members)
 		{
 			item.targetY = bullShit - curWeek;
-			if (item.targetY == Std.int(0) && !weekIsLocked(loadedWeekList[curWeek]))
+			if (item.targetY == 0 && !weekIsLocked(loadedWeekList[curWeek]))
 				item.alpha = 1;
 			else
 				item.alpha = 0.6;
@@ -317,7 +319,8 @@ class StoryMenuState extends MusicBeatState
 	{
 		final daWeek:SwagWeek = loadedWeeks[curWeek];
 		for (i in 0...grpWeekCharacters.length)
-			grpWeekCharacters.members[i].changeCharacter(daWeek.characters[i]);
+			if (grpWeekCharacters.members[i].curCharacter != daWeek.characters[i])
+				grpWeekCharacters.members[i].changeCharacter(daWeek.characters[i]);
 
 		txtTracklist.text = "Tracks\n";
 

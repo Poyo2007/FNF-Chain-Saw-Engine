@@ -13,7 +13,7 @@ function create()
 	PlayState.isPixelAssets = false;
 
 	halloweenBG = new FlxSprite(-200, -100);
-	halloweenBG.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/spooky/images/halloween_bg'), Paths.xml('stages/spooky/images/halloween_bg'));
+	halloweenBG.frames = Paths.getSparrowAtlas('stages/spooky/halloween_bg');
 	halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
 	halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
 	halloweenBG.animation.play('idle');
@@ -22,7 +22,7 @@ function create()
 
 function lightningStrikeShit(curBeat:Int)
 {
-	FlxG.sound.play(Paths.returnSound('stages/spooky/sounds/thunder_' + FlxG.random.int(1, 2)));
+	FlxG.sound.play(Paths.sound('thunder_' + FlxG.random.int(1, 2)));
 	halloweenBG.animation.play('lightning');
 
 	lightningStrikeBeat = curBeat;

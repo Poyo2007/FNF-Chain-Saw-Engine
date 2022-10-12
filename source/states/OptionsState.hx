@@ -147,11 +147,10 @@ class OptionsState extends MusicBeatState
 
 		if (curSelected < 0)
 			curSelected = options.length - 1;
-		if (curSelected >= options.length)
+		else if (curSelected >= options.length)
 			curSelected = 0;
 
 		var bullShit:Int = 0;
-
 		for (item in grpOptions.members)
 		{
 			item.targetY = bullShit - curSelected;

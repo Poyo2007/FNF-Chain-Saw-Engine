@@ -14,6 +14,7 @@ class StoryCharacter extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>> = [];
 	public var danceAnimation:Array<String> = ['idle'];
+	public var curCharacter:String = 'bf';
 
 	public function new(x:Float, y:Float, name:String = 'bf')
 	{
@@ -22,11 +23,11 @@ class StoryCharacter extends FlxSprite
 		changeCharacter(name);
 	}
 
-	public function changeCharacter(char:String = 'bf'):Void
+	public function changeCharacter(curCharacter:String = 'bf'):Void
 	{
-		animOffsets.clear();
+		this.curCharacter = curCharacter;
 
-		if (char == '')
+		if (curCharacter == '')
 		{
 			if (visible == true)
 				visible = false;
@@ -39,18 +40,20 @@ class StoryCharacter extends FlxSprite
 			scale.set(1, 1);
 			updateHitbox(); // is this acually needed?
 
-			final daCharacter:SwagStoryCharacter = StoryCharacterParse.loadJson(char + '/data');
+			final daCharacter:SwagStoryCharacter = StoryCharacterParse.loadJson(curCharacter + '/data');
 
-			if (Assets.exists(Paths.xml('images/menucharacters/' + char + '/spritesheet')))
-				frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('images/menucharacters/' + char + '/spritesheet'),
-					Paths.xml('images/menucharacters/' + char + '/spritesheet'));
-			else if (Assets.exists(Paths.txt('images/menucharacters/' + char + '/spritesheet')))
-				frames = FlxAtlasFrames.fromSpriteSheetPacker(Paths.returnGraphic('images/menucharacters/' + char + '/spritesheet'),
-					Paths.txt('images/menucharacters/' + char + '/spritesheet'));
-			else if (Assets.exists(Paths.json('images/menucharacters/' + char + '/spritesheet')))
-				frames = FlxAtlasFrames.fromTexturePackerJson(Paths.returnGraphic('images/menucharacters/' + char + '/spritesheet'),
-					Paths.json('images/menucharacters/' + char + '/spritesheet'));
-	
+			if (Assets.exists(Paths.xml('images/menucharacters/' + curCharacter + '/spritesheet')))
+				frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('images/menucharacters/' + curCharacter + '/spritesheet'),
+					Paths.xml('images/menucharacters/' + curCharacter + '/spritesheet'));
+			else if (Assets.exists(Paths.txt('images/menucharacters/' + curCharacter + '/spritesheet')))
+				frames = FlxAtlasFrames.fromSpriteSheetPacker(Paths.returnGraphic('images/menucharacters/' + curCharacter + '/spritesheet'),
+					Paths.txt('images/menucharacters/' + curCharacter + '/spritesheet'));
+			else if (Assets.exists(Paths.json('images/menucharacters/' + curCharacter + '/spritesheet')))
+				frames = FlxAtlasFrames.fromTexturePackerJson(Paths.returnGraphic('images/menucharacters/' + curCharacter + '/spritesheet'),
+					Paths.json('images/menucharacters/' + curCharacter + '/spritesheet'));
+
+			animOffsets.clear();
+
 			if (daCharacter.animations != null && daCharacter.animations.length > 0)
 			{
 				for (anim in daCharacter.animations)
@@ -63,12 +66,12 @@ class StoryCharacter extends FlxSprite
 					final animOffset:Array<Float> = anim.offset;
 					final animFlipX:Bool = anim.flipX;
 					final animFlipY:Bool = anim.flipY;
-	
+
 					if (animIndices != null && animIndices.length > 0)
 						animation.addByIndices(animAnimation, animPrefix, animIndices, '', animFramerate, animLooped, animFlipX, animFlipY);
 					else
 						animation.addByPrefix(animAnimation, animPrefix, animFramerate, animLooped, animFlipX, animFlipY);
-	
+
 					if (animOffset != null && animOffset.length > 0)
 						addOffset(animAnimation, animOffset[0], animOffset[1]);
 					else
@@ -93,10 +96,10 @@ class StoryCharacter extends FlxSprite
 				antialiasing = PreferencesData.antialiasing;
 			else
 				antialiasing = daCharacter.antialiasing;
-	
+
 			flipX = daCharacter.flipX;
 			flipY = daCharacter.flipY;
-	
+
 			dance();
 			animation.finish();
 		}

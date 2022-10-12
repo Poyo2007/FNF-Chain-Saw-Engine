@@ -122,7 +122,7 @@ class ModsMenuState extends MusicBeatState
 
 		if (curSelected < 0)
 			curSelected = ModCore.trackedMods.length - 1;
-		if (curSelected >= ModCore.trackedMods.length)
+		else if (curSelected >= ModCore.trackedMods.length)
 			curSelected = 0;
 
 		for (i in 0...iconArray.length)

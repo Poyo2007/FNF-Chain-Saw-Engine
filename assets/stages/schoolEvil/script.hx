@@ -1,6 +1,5 @@
 import('Paths');
 import('flixel.FlxSprite');
-import('flixel.graphics.frames.FlxAtlasFrames');
 import('flixel.addons.display.FlxRuntimeShader');
 import('flixel.addons.effects.FlxTrail');
 import('openfl.filters.ShaderFilter');
@@ -15,8 +14,7 @@ function create()
 	PlayState.isPixelAssets = true;
 
 	var bg:FlxSprite = new FlxSprite(400, 200);
-	bg.frames = FlxAtlasFrames.fromSparrow(Paths.returnGraphic('stages/schoolEvil/images/animatedEvilSchool'),
-		Paths.xml('stages/schoolEvil/images/animatedEvilSchool'));
+	bg.frames = Paths.getSparrowAtlas('stages/schoolEvil/animatedEvilSchool');
 	bg.animation.addByPrefix('idle', 'background 2', 24);
 	bg.animation.play('idle');
 	bg.scrollFactor.set(0.8, 0.9);
@@ -27,24 +25,20 @@ function create()
 
 	shader = new FlxRuntimeShader(Paths.frag('shaders/vcr-distortion'), null);
 	shader.setFloat('iTime', 0);
-        shader.setBool('noise', true);
-	shader.setBitmapData('iChannel', Assets.getBitmapData('assets/images/noise.png'));
-        shader2 = new FlxRuntimeShader(Paths.frag('shaders/vcr-distortion'), null);
+	shader.setBool('noise', true);
+	shader.setBitmapData('iChannel', Assets.getBitmapData('assets/noise.png'));
+	shader2 = new FlxRuntimeShader(Paths.frag('shaders/vcr-distortion'), null);
 	shader2.setFloat('iTime', 0);
-        shader2.setBool('noise', false);
+	shader2.setBool('noise', false);
 	PlayState.instance.camGame.setFilters([new ShaderFilter(shader)]);
 	PlayState.instance.camHUD.setFilters([new ShaderFilter(shader2)]);
 }
 
 var shaderTime:Float = 0;
+
 function update(elapsed:Float)
 {
 	shaderTime += elapsed;
 	shader.setFloat('iTime', shaderTime);
-        shader2.setFloat('iTime', shaderTime);
-}
-
-function beatHit(curBeat:Int)
-{
-	
+	shader2.setFloat('iTime', shaderTime);
 }

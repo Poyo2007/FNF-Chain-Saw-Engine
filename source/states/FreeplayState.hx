@@ -31,8 +31,13 @@ class FreeplayState extends MusicBeatState
 	private var scoreText:FlxText;
 	private var diffText:FlxText;
 	private var rankText:FlxText;
+
 	private var lerpScore:Float = 0;
-	private var intendedScore:Int = 0;
+	private var lerpAccuracy:Float = 0;
+
+	private var intendedScore:Float = 0;
+	private var intendedAccuracy:Float = 0;
+
 	private var bg:FlxSprite;
 	private var scoreBG:FlxSprite;
 
@@ -129,22 +134,30 @@ class FreeplayState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.4);
+		lerpAccuracy = CoolUtil.coolLerp(lerpAccuracy, intendedAccuracy, 0.4);
+
 		bg.color = FlxColor.interpolate(bg.color, songs[curSelected].color, CoolUtil.camLerpShit(0.045));
 
 		scoreText.text = 'PERSONAL BEST: ' + Math.round(lerpScore);
-		rankText.text = 'ACCURACY: '
-			+ HighScore.getScore(songs[curSelected].name, curDifficulty).accuracy
-			+ '% | '
-			+ HighScore.getScore(songs[curSelected].name, curDifficulty).grade;
+		rankText.text = 'ACCURACY: ' + lerpAccuracy + '% - ' + HighScore.getScore(songs[curSelected].name, curDifficulty).grade;
 
 		positionHighScore();
 
 		if (controls.UI_UP_P)
+		{
 			changeSelection(-1);
+			changeDiff();
+		}
 		else if (controls.UI_DOWN_P)
+		{
 			changeSelection(1);
+			changeDiff();
+		}
 		else if (FlxG.mouse.wheel != 0)
+		{
 			changeSelection(-FlxG.mouse.wheel);
+			changeDiff();
+		}
 
 		if (controls.UI_LEFT_P)
 			changeDiff(-1);
@@ -179,6 +192,7 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 0;
 
 		intendedScore = HighScore.getScore(songs[curSelected].name, curDifficulty).score;
+		intendedAccuracy = HighScore.getScore(songs[curSelected].name, curDifficulty).accuracy;
 
 		diffText.text = 'DIFFICULTY: ' + CoolUtil.difficultyString(curDifficulty).toUpperCase();
 	}
@@ -191,25 +205,24 @@ class FreeplayState extends MusicBeatState
 
 		if (curSelected < 0)
 			curSelected = songs.length - 1;
-		if (curSelected >= songs.length)
+		else if (curSelected >= songs.length)
 			curSelected = 0;
 
 		intendedScore = HighScore.getScore(songs[curSelected].name, curDifficulty).score;
-
-		var bullShit:Int = 0;
+		intendedAccuracy = HighScore.getScore(songs[curSelected].name, curDifficulty).accuracy;
 
 		for (i in 0...iconArray.length)
 			iconArray[i].alpha = 0.6;
 
 		iconArray[curSelected].alpha = 1;
 
+		var bullShit:Int = 0;
 		for (item in grpSongs.members)
 		{
 			item.targetY = bullShit - curSelected;
 			bullShit++;
 
 			item.alpha = 0.6;
-
 			if (item.targetY == 0)
 				item.alpha = 1;
 		}
