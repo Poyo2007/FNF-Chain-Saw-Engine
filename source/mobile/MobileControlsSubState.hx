@@ -35,6 +35,10 @@ class MobileControlsSubState extends FlxSubState
 
 	override function create()
 	{
+		for (i in 0...controlsItems.length)
+			if (controlsItems[i] == MobileControls.getMode())
+				curSelected = i;
+
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
 		bg.screenCenter();
