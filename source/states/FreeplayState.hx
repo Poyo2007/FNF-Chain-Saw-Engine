@@ -12,7 +12,7 @@ import parse.Week;
 import states.ChartingState;
 import states.PlayState;
 
-typedef SongMetadata =
+typedef SongMetaData =
 {
 	var name:String;
 	var week:Int;
@@ -25,7 +25,7 @@ class FreeplayState extends MusicBeatState
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 	private var iconArray:Array<HealthIcon> = [];
-	private var songs:Array<SongMetadata> = [];
+	private var songs:Array<SongMetaData> = [];
 	private var curSelected:Int = 0;
 	private var curDifficulty:Int = 1;
 	private var scoreText:FlxText;
@@ -134,7 +134,14 @@ class FreeplayState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.4);
+
+		if (Math.abs(lerpScore - intendedScore) <= 10)
+			lerpScore = intendedScore;
+
 		lerpAccuracy = CoolUtil.coolLerp(lerpAccuracy, intendedAccuracy, 0.4);
+
+		if (Math.abs(lerpAccuracy - intendedAccuracy) <= 0.01)
+			lerpAccuracy = intendedAccuracy;
 
 		bg.color = FlxColor.interpolate(bg.color, songs[curSelected].color, CoolUtil.camLerpShit(0.045));
 

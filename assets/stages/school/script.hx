@@ -15,7 +15,7 @@ function create()
 {
 	PlayState.isPixelAssets = true;
 
-	var bgSky:FlxSprite = new FlxSprite().loadGraphic(Paths.image('stages/school/weebSky'));
+	var bgSky:FlxSprite = new FlxSprite().loadGraphic(Paths.image('stages/weeb/weebSky'));
 
 	widShit = Std.int(bgSky.width * 6);
 
@@ -24,26 +24,26 @@ function create()
 	bgSky.updateHitbox();
 	PlayState.instance.add(bgSky);
 
-	var bgSchool:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('stages/school/weebSchool'));
+	var bgSchool:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('stages/weeb/weebSchool'));
 	bgSchool.scrollFactor.set(0.6, 0.90);
 	bgSchool.setGraphicSize(widShit);
 	bgSchool.updateHitbox();
 	PlayState.instance.add(bgSchool);
 
-	var bgStreet:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('stages/school/weebStreet'));
+	var bgStreet:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('stages/weeb/weebStreet'));
 	bgStreet.scrollFactor.set(0.95, 0.95);
 	bgStreet.setGraphicSize(widShit);
 	bgStreet.updateHitbox();
 	PlayState.instance.add(bgStreet);
 
-	var fgTrees:FlxSprite = new FlxSprite(-50, 130).loadGraphic(Paths.image('stages/school/weebTreesBack'));
+	var fgTrees:FlxSprite = new FlxSprite(-50, 130).loadGraphic(Paths.image('stages/weeb/weebTreesBack'));
 	fgTrees.scrollFactor.set(0.9, 0.9);
 	fgTrees.setGraphicSize(Std.int(widShit * 0.8));
 	fgTrees.updateHitbox();
 	PlayState.instance.add(fgTrees);
 
 	var bgTrees:FlxSprite = new FlxSprite(-580, -800);
-	bgTrees.frames = Paths.getPackerAtlas('stages/school/weebTrees');
+	bgTrees.frames = Paths.getPackerAtlas('stages/weeb/weebTrees');
 	bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
 	bgTrees.animation.play('treeLoop');
 	bgTrees.scrollFactor.set(0.85, 0.85);
@@ -52,7 +52,7 @@ function create()
 	PlayState.instance.add(bgTrees);
 
 	var treeLeaves:FlxSprite = new FlxSprite(-200, -40);
-	treeLeaves.frames = Paths.getSparrowAtlas('stages/school/petals');
+	treeLeaves.frames = Paths.getSparrowAtlas('stages/weeb/petals');
 	treeLeaves.animation.addByPrefix('leaves', 'PETALS ALL', 24, true);
 	treeLeaves.animation.play('leaves');
 	treeLeaves.scrollFactor.set(0.85, 0.85);
@@ -61,7 +61,7 @@ function create()
 	PlayState.instance.add(treeLeaves);
 
 	bgGirls = new FlxSprite(-100, 190);
-	bgGirls.frames = Paths.getSparrowAtlas('stages/school/bgFreaks');
+	bgGirls.frames = Paths.getSparrowAtlas('stages/weeb/bgFreaks');
 	if (PlayState.SONG.song.toLowerCase() == 'roses')
 	{
 		bgGirls.animation.addByIndices('danceLeft', 'BG fangirls dissuaded', CoolUtil.numberArray(14), "", 24, false);

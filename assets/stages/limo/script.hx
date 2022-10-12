@@ -18,7 +18,7 @@ function create()
 	PlayState.instance.add(skyBG);
 
 	var bgLimo:FlxSprite = new FlxSprite(-200, 480);
-	bgLimo.frames = Paths.getSparrowAtlas(Paths.image('stages/limo/bgLimo');
+	bgLimo.frames = Paths.getSparrowAtlas('stages/limo/bgLimo');
 	bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
 	bgLimo.animation.play('drive');
 	bgLimo.scrollFactor.set(0.4, 0.4);
