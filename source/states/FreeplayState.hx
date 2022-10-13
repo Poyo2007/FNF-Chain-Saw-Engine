@@ -146,7 +146,7 @@ class FreeplayState extends MusicBeatState
 		bg.color = FlxColor.interpolate(bg.color, songs[curSelected].color, CoolUtil.camLerpShit(0.045));
 
 		scoreText.text = 'PERSONAL BEST: ' + Math.round(lerpScore);
-		rankText.text = 'ACCURACY: ' + lerpAccuracy + '% - ' + HighScore.getScore(songs[curSelected].name, curDifficulty).grade;
+		rankText.text = 'ACCURACY: ' + Std.string(lerpAccuracy).substr(0, 4) + '% - ' + HighScore.getScore(songs[curSelected].name, curDifficulty).grade;
 
 		positionHighScore();
 
@@ -206,7 +206,7 @@ class FreeplayState extends MusicBeatState
 
 	private function changeSelection(change:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		FlxG.sound.play(Paths.sound('scrollMenu'));
 
 		curSelected += change;
 

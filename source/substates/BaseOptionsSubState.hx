@@ -109,7 +109,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 		{
 			if (controls.ACCEPT)
 			{
-				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				FlxG.sound.play(Paths.sound('scrollMenu'));
 				curOption.setValue((curOption.getValue() == true) ? false : true);
 				curOption.change();
 				updateTextFrom(curOption, true);
@@ -166,7 +166,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 
 						updateTextFrom(curOption, false);
 						curOption.change();
-						FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+						FlxG.sound.play(Paths.sound('scrollMenu'));
 					}
 					else if (curOption.type != 'string')
 					{
@@ -220,7 +220,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 
 	private function changeSelection(change:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		FlxG.sound.play(Paths.sound('scrollMenu'));
 
 		curSelected += change;
 
@@ -288,7 +288,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 	private function clearHold()
 	{
 		if (holdTime > 0.5)
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			FlxG.sound.play(Paths.sound('scrollMenu'));
 		holdTime = 0;
 	}
 }

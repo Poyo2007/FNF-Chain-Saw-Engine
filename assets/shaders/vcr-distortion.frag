@@ -1,4 +1,5 @@
 #pragma header
+
 uniform float iTime; // shader playback time (in seconds)
 uniform sampler2D iChannel; // shader texture (a bitmap data)
 uniform bool noise;

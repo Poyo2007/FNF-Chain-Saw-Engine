@@ -218,7 +218,7 @@ class MainMenuState extends MusicBeatState
 
 	private function changeItem(huh:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		FlxG.sound.play(Paths.sound('scrollMenu'));
 
 		curSelected += huh;
 		if (curSelected >= menuItems.length)

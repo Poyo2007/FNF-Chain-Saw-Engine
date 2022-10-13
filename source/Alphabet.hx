@@ -240,8 +240,9 @@ class Alphabet extends FlxSpriteGroup
 	{
 		if (isMenuItem)
 		{
+			var scaledY:Float = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
 			var lerpVal:Float = CoolUtil.boundTo(elapsed * 9.6, 0, 1);
-			y = FlxMath.lerp(y, (FlxMath.remapToRange(targetY, 0, 1, 0, 1.3) * yMult) + (FlxG.height * 0.48) + yAdd, lerpVal);
+			y = FlxMath.lerp(y, (scaledY * yMult) + (FlxG.height * 0.48) + yAdd, lerpVal);
 			if (forceX != Math.NEGATIVE_INFINITY)
 				x = forceX;
 			else
@@ -289,6 +290,7 @@ class AlphaCharacter extends FlxSprite
 		{
 			animation.addByPrefix(letter, letter.toUpperCase() + " bold", 24);
 			animation.play(letter);
+			updateHitbox();
 		}
 		else
 		{
@@ -298,6 +300,7 @@ class AlphaCharacter extends FlxSprite
 
 			animation.addByPrefix(letter, letter + " " + letterCase, 24);
 			animation.play(letter);
+			updateHitbox();
 
 			y = (110 - height);
 			y += curRow * 60;
@@ -310,11 +313,13 @@ class AlphaCharacter extends FlxSprite
 		{
 			animation.addByPrefix(letter, "bold" + letter, 24);
 			animation.play(letter);
+			updateHitbox();
 		}
 		else
 		{
 			animation.addByPrefix(letter, letter, 24);
 			animation.play(letter);
+			updateHitbox();
 
 			y = (110 - height);
 			y += curRow * 60;
@@ -330,24 +335,30 @@ class AlphaCharacter extends FlxSprite
 				case '.':
 					animation.addByPrefix(letter, 'PERIOD bold', 24);
 					animation.play(letter);
+					updateHitbox();
 				case "'":
 					animation.addByPrefix(letter, 'APOSTRAPHIE bold', 24);
 					animation.play(letter);
+					updateHitbox();
 				case "?":
 					animation.addByPrefix(letter, 'QUESTION MARK bold', 24);
 					animation.play(letter);
+					updateHitbox();
 				case "!":
 					animation.addByPrefix(letter, 'EXCLAMATION POINT bold', 24);
 					animation.play(letter);
+					updateHitbox();
 				case "(":
 					animation.addByPrefix(letter, 'bold (', 24);
 					animation.play(letter);
+					updateHitbox();
 				case ")":
 					animation.addByPrefix(letter, 'bold )', 24);
 					animation.play(letter);
+					updateHitbox();
 				default:
 					animation.addByPrefix(letter, 'bold ' + letter, 24);
-					animation.play(letter);
+					updateHitbox();
 			}
 	
 			switch (letter)
@@ -377,24 +388,31 @@ class AlphaCharacter extends FlxSprite
 				case '#':
 					animation.addByPrefix(letter, 'hashtag', 24);
 					animation.play(letter);
+					updateHitbox();
 				case '.':
 					animation.addByPrefix(letter, 'period', 24);
 					animation.play(letter);
+					updateHitbox();
 				case "'":
 					animation.addByPrefix(letter, 'apostraphie', 24);
 					animation.play(letter);
+					updateHitbox();
 				case "?":
 					animation.addByPrefix(letter, 'question mark', 24);
 					animation.play(letter);
+					updateHitbox();
 				case "!":
 					animation.addByPrefix(letter, 'exclamation point', 24);
 					animation.play(letter);
+					updateHitbox();
 				case ",":
 					animation.addByPrefix(letter, 'comma', 24);
 					animation.play(letter);
+					updateHitbox();
 				default:
 					animation.addByPrefix(letter, letter, 24);
 					animation.play(letter);
+					updateHitbox();
 			}
 	
 			y = (110 - height);
