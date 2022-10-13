@@ -1047,6 +1047,8 @@ class PlayState extends MusicBeatState
 
 	private function endSong():Void
 	{
+		seenCutscene = canPause = false;
+		deathCounter = 0;
 		FlxG.sound.music.volume = vocals.volume = 0;
 
 		#if mobile
@@ -1590,8 +1592,7 @@ class PlayState extends MusicBeatState
 
 	override function destroy()
 	{
-		seenCutscene = autoplayMode = canPause = false;
-		deathCounter = 0;
+		autoplayMode = practiceMode = false;
 		isPixelAssets = false;
 		scriptArray = [];
 		defaultPlayerStrumX = [];
