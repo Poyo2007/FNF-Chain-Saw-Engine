@@ -1,7 +1,7 @@
 #pragma header
 
-uniform float iTime; // shader playback time (in seconds)
-uniform sampler2D iChannel; // shader texture (a bitmap data)
+uniform float iTime;
+uniform sampler2D iChannel;
 uniform bool noise;
 
 float noisee(vec2 p)
@@ -25,12 +25,10 @@ float ramp(float y, float start, float end)
 
 float stripes(vec2 uv)
 {
-        if (noise) {
-	        float noi = noisee(uv*vec2(0.5,1.) + vec2(1.,3.));
-	        return ramp(mod(uv.y*4. + iTime/2.+sin(iTime + sin(iTime*0.63)),1.),0.5,0.6)*noi;
-        } else {
-	        return ramp(mod(uv.y*4. + iTime/2.+sin(iTime + sin(iTime*0.63)),1.),0.5,0.6);
-        }
+	if (noise)
+		return ramp(mod(uv.y*4. + iTime/2.+sin(iTime + sin(iTime*0.63)),1.),0.5,0.6)*noisee(uv*vec2(0.5,1.) + vec2(1.,3.));
+	else
+		return ramp(mod(uv.y*4. + iTime/2.+sin(iTime + sin(iTime*0.63)),1.),0.5,0.6);
 }
 
 vec3 getVideo(vec2 uv)
@@ -62,15 +60,15 @@ void main()
 	float vignette = (1.-vigAmt*(uv.y-.5)*(uv.y-.5))*(1.-vigAmt*(uv.x-.5)*(uv.x-.5));
 
 	video += stripes(uv);
-        if (noise) {
-	        video += noisee(uv*2.)/2.;
-        }
+
+	if (noise)
+		video += noisee(uv*2.)/2.;
+
 	video *= vignette;
 	video *= (12.+mod(uv.y*30.+iTime,1.))/13.;
 
-        if (noise) {
-	        gl_FragColor = vec4(video,1.0);
-        } else {
-                gl_FragColor = vec4(video,0.3);
-        }
+	if (noise)
+		gl_FragColor = vec4(video,1.0);
+	else
+		gl_FragColor = vec4(video,0.3);
 }
