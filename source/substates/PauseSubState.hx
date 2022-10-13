@@ -210,15 +210,15 @@ class PauseSubState extends MusicBeatSubstate
 	private function changeSelection(change:Int = 0):Void
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
 		curSelected += change;
 
 		if (curSelected < 0)
 			curSelected = menuItems.length - 1;
-		if (curSelected >= menuItems.length)
+		else if (curSelected >= menuItems.length)
 			curSelected = 0;
 
 		var bullShit:Int = 0;
-
 		for (item in grpMenuShit.members)
 		{
 			item.targetY = bullShit - curSelected;

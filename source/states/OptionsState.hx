@@ -161,6 +161,6 @@ class OptionsState extends MusicBeatState
 				item.alpha = 1;
 		}
 
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 	}
 }

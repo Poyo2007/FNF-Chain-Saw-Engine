@@ -82,10 +82,11 @@ function create()
 	shader.setFloat('iTime', 0);
 	shader.setBool('noise', true);
 	shader.setBitmapData('iChannel', Assets.getBitmapData('assets/images/noise.png'));
+	PlayState.instance.camGame.setFilters([new ShaderFilter(shader)]);
+
 	shader2 = new FlxRuntimeShader(Paths.frag('shaders/vcr-distortion'), null);
 	shader2.setFloat('iTime', 0);
 	shader2.setBool('noise', false);
-	PlayState.instance.camGame.setFilters([new ShaderFilter(shader)]);
 	PlayState.instance.camHUD.setFilters([new ShaderFilter(shader2)]);
 }
 
@@ -98,8 +99,13 @@ function update(elapsed:Float)
 	shader2.setFloat('iTime', shaderTime);
 }
 
-var danceDir:Bool = false;
+function gameOver()
+{
+	PlayState.instance.camGame.setFilters([]);
+	PlayState.instance.camHUD.setFilters([]);
+}
 
+var danceDir:Bool = false;
 function beatHit(curBeat:Int)
 {
 	danceDir = !danceDir;

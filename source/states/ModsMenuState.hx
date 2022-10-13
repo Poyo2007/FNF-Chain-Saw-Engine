@@ -75,12 +75,6 @@ class ModsMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (ModCore.trackedMods[curSelected].description != null)
-		{
-			description.text = ModCore.trackedMods[curSelected].description;
-			description.screenCenter(X);
-		}
-
 		if (controls.UI_UP_P)
 			changeSelection(-1);
 		else if (controls.UI_DOWN_P)
@@ -141,6 +135,12 @@ class ModsMenuState extends MusicBeatState
 			daMods.members[i].alpha = 0.6;
 			if (!FlxG.save.data.disabledMods.contains(ModCore.trackedMods[i].id))
 				daMods.members[i].alpha = 1;
+		}
+
+		if (ModCore.trackedMods[curSelected].description != null)
+		{
+			description.text = ModCore.trackedMods[curSelected].description;
+			description.screenCenter(X);
 		}
 	}
 }

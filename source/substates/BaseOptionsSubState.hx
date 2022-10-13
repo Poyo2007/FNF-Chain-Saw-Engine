@@ -4,6 +4,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
 
 using StringTools;
 
@@ -19,6 +21,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 	private var options:Array<Option>;
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private var grpTexts:FlxTypedGroup<Alphabet>;
+	private var description:FlxText;
 
 	public function new()
 	{
@@ -67,6 +70,13 @@ class BaseOptionsSubState extends MusicBeatSubstate
 			updateTextFrom(options[i], options[i].type == 'bool');
 		}
 
+		description = new FlxText(0, FlxG.height * 0.1, FlxG.width * 0.9, '', 28);
+		description.setFormat(Paths.font("vcr.ttf"), 28, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		description.screenCenter(X);
+		description.scrollFactor.set();
+		description.borderSize = 3;
+		add(description);
+
 		changeSelection();
 
 		#if android
@@ -99,7 +109,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 		{
 			if (controls.ACCEPT)
 			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 				curOption.setValue((curOption.getValue() == true) ? false : true);
 				curOption.change();
 				updateTextFrom(curOption, true);
@@ -156,7 +166,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 
 						updateTextFrom(curOption, false);
 						curOption.change();
-						FlxG.sound.play(Paths.sound('scrollMenu'));
+						FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 					}
 					else if (curOption.type != 'string')
 					{
@@ -210,26 +220,31 @@ class BaseOptionsSubState extends MusicBeatSubstate
 
 	private function changeSelection(change:Int = 0)
 	{
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
 		curSelected += change;
 
 		if (curSelected < 0)
 			curSelected = options.length - 1;
-		if (curSelected >= options.length)
+		else if (curSelected >= options.length)
 			curSelected = 0;
 
 		var bullShit:Int = 0;
-
 		for (item in grpOptions.members)
 		{
 			item.targetY = bullShit - curSelected;
 			bullShit++;
 
 			item.alpha = 0.6;
+			item.xAdd = 0;
 			if (item.targetY == 0)
+			{
 				item.alpha = 1;
+				item.xAdd = 70;
+			}
 		}
 
-		for (text in grpTexts)
+		for (text in grpOptions.members)
 		{
 			text.alpha = 0.6;
 			if (text.ID == curSelected)
@@ -237,7 +252,12 @@ class BaseOptionsSubState extends MusicBeatSubstate
 		}
 
 		curOption = options[curSelected];
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+
+		if (curOption.description != null)
+		{
+			description.text = curOption.description;
+			description.screenCenter(X);
+		}
 	}
 
 	private function addOption(daOption:Option)
@@ -268,7 +288,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 	private function clearHold()
 	{
 		if (holdTime > 0.5)
-			FlxG.sound.play(Paths.sound('scrollMenu'));
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		holdTime = 0;
 	}
 }

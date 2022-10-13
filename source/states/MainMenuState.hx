@@ -129,20 +129,11 @@ class MainMenuState extends MusicBeatState
 		if (!selectedSomething)
 		{
 			if (controls.UI_UP_P)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
-			}
 			else if (controls.UI_DOWN_P)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);
-			}
 			else if (FlxG.mouse.wheel != 0)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-FlxG.mouse.wheel);
-			}
 
 			if (controls.BACK)
 			{
@@ -227,8 +218,9 @@ class MainMenuState extends MusicBeatState
 
 	private function changeItem(huh:Int = 0)
 	{
-		curSelected += huh;
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
+		curSelected += huh;
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
 		else if (curSelected < 0)

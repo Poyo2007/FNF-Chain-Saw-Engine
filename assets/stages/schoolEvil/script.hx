@@ -27,18 +27,24 @@ function create()
 	shader.setFloat('iTime', 0);
 	shader.setBool('noise', true);
 	shader.setBitmapData('iChannel', Assets.getBitmapData('assets/images/noise.png'));
+	PlayState.instance.camGame.setFilters([new ShaderFilter(shader)]);
+
 	shader2 = new FlxRuntimeShader(Paths.frag('shaders/vcr-distortion'), null);
 	shader2.setFloat('iTime', 0);
 	shader2.setBool('noise', false);
-	PlayState.instance.camGame.setFilters([new ShaderFilter(shader)]);
 	PlayState.instance.camHUD.setFilters([new ShaderFilter(shader2)]);
 }
 
 var shaderTime:Float = 0;
-
 function update(elapsed:Float)
 {
 	shaderTime += elapsed;
 	shader.setFloat('iTime', shaderTime);
 	shader2.setFloat('iTime', shaderTime);
+}
+
+function gameOver()
+{
+	PlayState.instance.camGame.setFilters([]);
+	PlayState.instance.camHUD.setFilters([]);
 }
