@@ -764,15 +764,11 @@ class PlayState extends MusicBeatState
 
 		FlxG.sound.music.play();
 		Conductor.songPosition = FlxG.sound.music.time;
-		if (!vocalsFinished)
+		if (Conductor.songPosition <= vocals.length && !vocalsFinished)
 		{
 			vocals.time = Conductor.songPosition;
 			vocals.play();
 		}
-
-		#if FUTURE_DISCORD_RCP
-		DiscordClient.changePresence(detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')', iconP2.curCharacter);
-		#end
 	}
 
 	override public function update(elapsed:Float)
@@ -1051,8 +1047,6 @@ class PlayState extends MusicBeatState
 
 	private function endSong():Void
 	{
-		seenCutscene = autoplayMode = canPause = false;
-		deathCounter = 0;
 		FlxG.sound.music.volume = vocals.volume = 0;
 
 		#if mobile
@@ -1596,6 +1590,8 @@ class PlayState extends MusicBeatState
 
 	override function destroy()
 	{
+		seenCutscene = autoplayMode = canPause = false;
+		deathCounter = 0;
 		isPixelAssets = false;
 		scriptArray = [];
 		defaultPlayerStrumX = [];
