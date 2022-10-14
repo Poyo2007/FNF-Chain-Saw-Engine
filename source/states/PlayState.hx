@@ -941,6 +941,7 @@ class PlayState extends MusicBeatState
 	private function noteCalls(daNote:Note)
 	{
 		var strums:FlxTypedGroup<StrumNote> = daNote.mustPress ? playerStrums : opponentStrums;
+
 		var strumX:Float = strums.members[daNote.noteData].x + daNote.offsetX;
 		var strumY:Float = strums.members[daNote.noteData].y + daNote.offsetY;
 		var strumScroll:Bool = strums.members[daNote.noteData].downScroll;
@@ -1256,81 +1257,77 @@ class PlayState extends MusicBeatState
 			controls.NOTE_RIGHT_P
 		];
 
-		if (holdingArray.contains(true) && generatedMusic)
+		if (!boyfriend.stunned && generatedMusic)
 		{
-			notes.forEachAlive(function(daNote:Note)
+			if (holdingArray.contains(true) && !endingSong)
 			{
-				if (daNote.sustainNote && daNote.canBeHit && daNote.mustPress && holdingArray[daNote.noteData])
-					goodNoteHit(daNote);
-			});
-		}
-
-		if (controlArray.contains(true) && generatedMusic)
-		{
-			boyfriend.holdTimer = 0;
-
-			var possibleNotes:Array<Note> = [];
-			var ignoreList:Array<Int> = [];
-			var removeList:Array<Note> = [];
-
-			notes.forEachAlive(function(daNote:Note)
-			{
-				if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
+				notes.forEachAlive(function(daNote:Note)
 				{
-					if (ignoreList.contains(daNote.noteData))
+					if (daNote.sustainNote && daNote.canBeHit && daNote.mustPress && holdingArray[daNote.noteData])
+						goodNoteHit(daNote);
+				});
+			}
+
+			if (controlArray.contains(true) && !endingSong)
+			{
+				var possibleNotes:Array<Note> = [];
+				var ignoreList:Array<Int> = [];
+				var removeList:Array<Note> = [];
+
+				notes.forEachAlive(function(daNote:Note)
+				{
+					if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
 					{
-						for (possibleNote in possibleNotes)
+						if (ignoreList.contains(daNote.noteData))
 						{
-							if (possibleNote.noteData == daNote.noteData && Math.abs(daNote.strumTime - possibleNote.strumTime) < 10)
-								removeList.push(daNote);
-							else if (possibleNote.noteData == daNote.noteData && daNote.strumTime < possibleNote.strumTime)
+							for (possibleNote in possibleNotes)
 							{
-								possibleNotes.remove(possibleNote);
-								possibleNotes.push(daNote);
+								if (possibleNote.noteData == daNote.noteData && Math.abs(daNote.strumTime - possibleNote.strumTime) < 10)
+									removeList.push(daNote);
+								else if (possibleNote.noteData == daNote.noteData && daNote.strumTime < possibleNote.strumTime)
+								{
+									possibleNotes.remove(possibleNote);
+									possibleNotes.push(daNote);
+								}
 							}
 						}
+						else
+						{
+							possibleNotes.push(daNote);
+							ignoreList.push(daNote.noteData);
+						}
 					}
-					else
-					{
-						possibleNotes.push(daNote);
-						ignoreList.push(daNote.noteData);
-					}
+				});
+
+				for (badNote in removeList)
+				{
+					badNote.kill();
+					notes.remove(badNote, true);
+					badNote.destroy();
 				}
-			});
 
-			for (badNote in removeList)
-			{
-				badNote.kill();
-				notes.remove(badNote, true);
-				badNote.destroy();
+				possibleNotes.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
+
+				if (possibleNotes.length > 0)
+				{
+					for (i in 0...controlArray.length)
+						if (!PreferencesData.ghostTapping && (controlArray[i] && !ignoreList.contains(i)))
+							badNoteHit();
+
+					for (possibleNote in possibleNotes)
+						if (controlArray[possibleNote.noteData])
+							goodNoteHit(possibleNote);
+				}
+				else if (!PreferencesData.ghostTapping)
+					badNoteHit();
 			}
-
-			possibleNotes.sort(function(note1:Note, note2:Note)
-			{
-				return Std.int(note1.strumTime - note2.strumTime);
-			});
-
-			if (possibleNotes.length > 0)
-			{
-				for (i in 0...controlArray.length)
-					if (!PreferencesData.ghostTapping && (controlArray[i] && !ignoreList.contains(i)))
-						badNoteHit();
-
-				for (possibleNote in possibleNotes)
-					if (controlArray[possibleNote.noteData])
-						goodNoteHit(possibleNote);
-			}
-			else if (!PreferencesData.ghostTapping)
-				badNoteHit();
+			else if (boyfriend.holdTimer > 0.001 * boyfriend.singDuration * Conductor.stepCrochet
+				&& !holdingArray.contains(true)
+				&& (boyfriend.animation.curAnim != null
+					&& boyfriend.animation.curAnim.name.startsWith('sing')
+					&& !boyfriend.animation.curAnim.name.endsWith('miss')))
+				boyfriend.dance();
 		}
-
-		if (boyfriend.animation.curAnim != null
-			&& boyfriend.holdTimer > 0.001 * boyfriend.singDuration * Conductor.stepCrochet
-			&& !holdingArray.contains(true)
-			&& (boyfriend.animation.curAnim != null
-				&& boyfriend.animation.curAnim.name.startsWith('sing')
-				&& !boyfriend.animation.curAnim.name.endsWith('miss')))
-			boyfriend.dance();
 
 		playerStrums.forEach(function(spr:StrumNote)
 		{
@@ -1448,6 +1445,8 @@ class PlayState extends MusicBeatState
 					if (boyfriend.animation.getByName('singRIGHT') != null)
 						boyfriend.playAnim('singRIGHT', true);
 			}
+
+			boyfriend.holdTimer = 0;
 
 			var time:Float = 0.15;
 			if (daNote.sustainNote && (daNote.animation.curAnim != null && !daNote.animation.curAnim.name.endsWith('end')))
