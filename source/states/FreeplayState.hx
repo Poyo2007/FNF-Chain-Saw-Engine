@@ -91,6 +91,17 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
+			if (songText.width > 980)
+			{
+				var textScale:Float = 980 / songText.width;
+				songText.scale.x = textScale;
+				for (letter in songText.lettersArray)
+				{
+					letter.x *= textScale;
+					letter.offset.x *= textScale;
+				}
+			}
+
 			var icon:HealthIcon = new HealthIcon(songs[i].character);
 			icon.sprTracker = songText;
 			iconArray.push(icon);

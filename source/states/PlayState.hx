@@ -686,6 +686,8 @@ class PlayState extends MusicBeatState
 		}
 
 		super.openSubState(SubState);
+
+		Paths.clearUnusedMemory();
 	}
 
 	override function closeSubState()
@@ -720,6 +722,8 @@ class PlayState extends MusicBeatState
 		}
 
 		super.closeSubState();
+
+		Paths.clearUnusedMemory();
 	}
 
 	#if FUTURE_DISCORD_RCP
