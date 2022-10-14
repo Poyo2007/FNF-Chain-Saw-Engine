@@ -90,7 +90,7 @@ jobs:
           haxelib --quiet install polymod
           haxelib --quiet install hscript
           haxelib --quiet install hxcpp-debug-server
-          haxelib --quiet git spine https://github.com/jeremyfa/spine-hx.git
+          haxelib --quiet install spinehaxe
           haxelib --quiet git discord_rpc https://github.com/Aidan63/linc_discord-rpc.git
         shell: cmd
 
