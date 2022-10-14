@@ -358,6 +358,7 @@ class AlphaCharacter extends FlxSprite
 					updateHitbox();
 				default:
 					animation.addByPrefix(letter, 'bold ' + letter, 24);
+					animation.play(letter);
 					updateHitbox();
 			}
 	

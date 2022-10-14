@@ -101,18 +101,10 @@ class PreferencesData
 		if (FlxG.save.data.framerate != null)
 		{
 			framerate = FlxG.save.data.framerate;
-			if (framerate > FlxG.drawFramerate)
-			{
-				FlxG.updateFramerate = framerate;
-				FlxG.drawFramerate = framerate;
-				Lib.current.stage.frameRate = framerate;
-			}
-			else
-			{
-				FlxG.drawFramerate = framerate;
-				FlxG.updateFramerate = framerate;
-				Lib.current.stage.frameRate = framerate;
-			}
+			FlxG.updateFramerate = framerate;
+			FlxG.drawFramerate = framerate;
+			FlxG.game.focusLostFramerate = framerate;
+			Lib.current.stage.frameRate = framerate;
 		}
 
 		if (FlxG.save.data.safeFrames != null)

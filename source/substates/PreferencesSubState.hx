@@ -28,18 +28,10 @@ class PreferencesSubState extends BaseOptionsSubState
 		option.maxValue = 240;
 		option.onChange = function()
 		{
-			if (PreferencesData.framerate > FlxG.drawFramerate)
-			{
-				FlxG.updateFramerate = PreferencesData.framerate;
-				FlxG.drawFramerate = PreferencesData.framerate;
-				Lib.current.stage.frameRate = PreferencesData.framerate;
-			}
-			else
-			{
-				FlxG.drawFramerate = PreferencesData.framerate;
-				FlxG.updateFramerate = PreferencesData.framerate;
-				Lib.current.stage.frameRate = PreferencesData.framerate;
-			}
+			FlxG.updateFramerate = PreferencesData.framerate;
+			FlxG.drawFramerate = PreferencesData.framerate;
+			FlxG.game.focusLostFramerate = PreferencesData.framerate;
+			Lib.current.stage.frameRate = PreferencesData.framerate;
 		}
 		addOption(option);
 		#end

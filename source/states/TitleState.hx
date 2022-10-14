@@ -27,16 +27,12 @@ class TitleState extends MusicBeatState
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 
+		FlxG.keys.preventDefaultKeys = [TAB];
+
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 
 		ModCore.reload();
-
-		FlxG.game.focusLostFramerate = 60;
-		FlxG.sound.muteKeys = [FlxKey.ZERO];
-		FlxG.sound.volumeDownKeys = [FlxKey.NUMPADMINUS, FlxKey.MINUS];
-		FlxG.sound.volumeUpKeys = [FlxKey.NUMPADPLUS, FlxKey.PLUS];
-		FlxG.keys.preventDefaultKeys = [TAB];
 
 		PlayerSettings.init();
 		PreferencesData.load();

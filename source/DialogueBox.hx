@@ -142,7 +142,7 @@ class DialogueBox extends FlxSpriteGroup
 
 	override function update(elapsed:Float)
 	{
-		if (Paths.formatName(PlayState.SONG.song.toLowerCase()) == 'senpai'
+		if (Paths.formatName(PlayState.SONG.song.toLowerCase()) == 'roses'
 			|| Paths.formatName(PlayState.SONG.song.toLowerCase()) == 'thorns')
 			portraitLeft.visible = false;
 		if (Paths.formatName(PlayState.SONG.song.toLowerCase()) == 'thorns')

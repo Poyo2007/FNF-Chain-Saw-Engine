@@ -1,7 +1,5 @@
 package;
 
-import states.PlayState;
-
 class Rank
 {
 	public static final gradeArray:Array<String> = [
