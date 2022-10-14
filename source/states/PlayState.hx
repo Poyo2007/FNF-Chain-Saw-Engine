@@ -446,18 +446,13 @@ class PlayState extends MusicBeatState
 		new FlxTimer().start(startTime, function(tmr:FlxTimer)
 		{
 			if (tmr.loopsLeft % Math.round(gfSpeed * 2) == 0
-				&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith('sing'))
-				&& !gf.stunned)
+				&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith('sing')))
 				gf.dance();
 
-			if (tmr.loopsLeft % 2 == 0
-				&& (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing'))
-				&& !boyfriend.stunned)
+			if (tmr.loopsLeft % 2 == 0 && (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing')))
 				boyfriend.dance();
 
-			if (tmr.loopsLeft % 2 == 0
-				&& (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith('sing'))
-				&& !dad.stunned)
+			if (tmr.loopsLeft % 2 == 0 && (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith('sing')))
 				dad.dance();
 
 			switch (swagCounter)
@@ -921,7 +916,6 @@ class PlayState extends MusicBeatState
 		var ret:Dynamic = callScripts('gameOver', []);
 		if (ret != ScriptCore.Function_Stop)
 		{
-			boyfriend.stunned = true;
 			persistentUpdate = persistentDraw = false;
 
 			vocals.stop();
@@ -1257,9 +1251,9 @@ class PlayState extends MusicBeatState
 			controls.NOTE_RIGHT_P
 		];
 
-		if (!boyfriend.stunned && generatedMusic)
+		if (generatedMusic && !endingSong)
 		{
-			if (holdingArray.contains(true) && !endingSong)
+			if (holdingArray.contains(true))
 			{
 				notes.forEachAlive(function(daNote:Note)
 				{
@@ -1268,7 +1262,7 @@ class PlayState extends MusicBeatState
 				});
 			}
 
-			if (controlArray.contains(true) && !endingSong)
+			if (controlArray.contains(true))
 			{
 				var possibleNotes:Array<Note> = [];
 				var ignoreList:Array<Int> = [];
@@ -1299,14 +1293,13 @@ class PlayState extends MusicBeatState
 					}
 				});
 
-				for (badNote in removeList)
-				{
-					badNote.kill();
-					notes.remove(badNote, true);
-					badNote.destroy();
-				}
+				for (daBadNote in removeList)
+					destroyNote(daBadNote);
 
-				possibleNotes.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
+				possibleNotes.sort(function(note1:Note, note2:Note)
+				{
+					return Std.int(note1.strumTime - note2.strumTime);
+				});
 
 				if (possibleNotes.length > 0)
 				{
@@ -1347,55 +1340,44 @@ class PlayState extends MusicBeatState
 
 	private function noteMiss(direction:Int = 0)
 	{
-		if (!boyfriend.stunned)
+		if (health <= minHealth && practiceMode)
+			health = minHealth;
+		else
+			health -= 0.04;
+
+		totalNotes++;
+
+		if (combo > 5 && gf.animation.getByName('sad') != null)
+			gf.playAnim('sad');
+
+		combo = 0;
+		comboBreaks++;
+
+		if (!practiceMode)
+			score -= 10;
+
+		FlxG.sound.play(Paths.sound('missnote' + FlxG.random.int(1, 3)), FlxG.random.float(0.1, 0.2));
+
+		switch (Math.abs(direction) % 4)
 		{
-			if (health <= minHealth && practiceMode)
-				health = minHealth;
-			else
-				health -= 0.04;
-
-			totalNotes++;
-
-			if (combo > 5 && gf.animation.getByName('sad') != null)
-				gf.playAnim('sad');
-
-			combo = 0;
-			comboBreaks++;
-
-			if (!practiceMode)
-				score -= 10;
-
-			FlxG.sound.play(Paths.sound('missnote' + FlxG.random.int(1, 3)), FlxG.random.float(0.1, 0.2));
-
-			boyfriend.stunned = true;
-
-			// get stunned for 5 seconds
-			new FlxTimer().start(5 / 60, function(tmr:FlxTimer)
-			{
-				boyfriend.stunned = false;
-			});
-
-			switch (Math.abs(direction) % 4)
-			{
-				case 0:
-					if (boyfriend.animation.getByName('singLEFTmiss') != null)
-						boyfriend.playAnim('singLEFTmiss', true);
-				case 1:
-					if (boyfriend.animation.getByName('singDOWNmiss') != null)
-						boyfriend.playAnim('singDOWNmiss', true);
-				case 2:
-					if (boyfriend.animation.getByName('singUPmiss') != null)
-						boyfriend.playAnim('singUPmiss', true);
-				case 3:
-					if (boyfriend.animation.getByName('singRIGHTmiss') != null)
-						boyfriend.playAnim('singRIGHTmiss', true);
-			}
-
-			vocals.volume = 0;
-			updateAccuracy();
-
-			callScripts('noteMiss', [direction]);
+			case 0:
+				if (boyfriend.animation.getByName('singLEFTmiss') != null)
+					boyfriend.playAnim('singLEFTmiss', true);
+			case 1:
+				if (boyfriend.animation.getByName('singDOWNmiss') != null)
+					boyfriend.playAnim('singDOWNmiss', true);
+			case 2:
+				if (boyfriend.animation.getByName('singUPmiss') != null)
+					boyfriend.playAnim('singUPmiss', true);
+			case 3:
+				if (boyfriend.animation.getByName('singRIGHTmiss') != null)
+					boyfriend.playAnim('singRIGHTmiss', true);
 		}
+
+		vocals.volume = 0;
+		updateAccuracy();
+
+		callScripts('noteMiss', [direction]);
 	}
 
 	private function badNoteHit()
@@ -1572,17 +1554,13 @@ class PlayState extends MusicBeatState
 		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
 		iconP2.updateHitbox();
 
-		if (curBeat % Math.round(gfSpeed * 2) == 0
-			&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith('sing'))
-			&& !gf.stunned)
+		if (curBeat % Math.round(gfSpeed * 2) == 0 && (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith('sing')))
 			gf.dance();
 
-		if (curBeat % 2 == 0
-			&& (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing'))
-			&& !boyfriend.stunned)
+		if (curBeat % 2 == 0 && (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing')))
 			boyfriend.dance();
 
-		if (curBeat % 2 == 0 && (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith('sing')) && !dad.stunned)
+		if (curBeat % 2 == 0 && (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith('sing')))
 			dad.dance();
 
 		lastBeatHit = curBeat;
