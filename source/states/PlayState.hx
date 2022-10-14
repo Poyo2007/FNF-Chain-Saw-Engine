@@ -1241,7 +1241,8 @@ class PlayState extends MusicBeatState
 			startDelay: Conductor.crochet * 0.001
 		});
 
-		updateAccuracy();
+		if (!autoplayMode)
+			updateAccuracy();
 		curSection += 1;
 	}
 
@@ -1344,7 +1345,7 @@ class PlayState extends MusicBeatState
 
 	private function noteMiss(direction:Int = 0)
 	{
-		if (health <= minHealth && practiceMode)
+		if (health <= minHealth && (practiceMode || autoplayMode))
 			health = minHealth;
 		else
 			health -= 0.04;
@@ -1379,7 +1380,8 @@ class PlayState extends MusicBeatState
 		}
 
 		vocals.volume = 0;
-		updateAccuracy();
+		if (!autoplayMode)
+			updateAccuracy();
 
 		callScripts('noteMiss', [direction]);
 	}
