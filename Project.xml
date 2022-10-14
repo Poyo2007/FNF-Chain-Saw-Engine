@@ -76,6 +76,9 @@
 	<!--Add null-pointer checks, even in release mode-->
 	<haxedef name="HXCPP_CHECK_POINTER" if="cpp" unless="debug" />
 
+	<!-- Da Script Extension for Polymod -->
+	<haxedef name="POLYMOD_SCRIPT_EXT" value=".hx" />
+
 	<!--The Name Says what will do-->
 	<haxedef name="no-deprecation-warnings" />
 
