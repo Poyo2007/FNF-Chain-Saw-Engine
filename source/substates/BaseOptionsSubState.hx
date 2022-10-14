@@ -244,7 +244,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 			}
 		}
 
-		for (text in grpOptions.members)
+		for (text in grpTexts.members)
 		{
 			text.alpha = 0.6;
 			if (text.ID == curSelected)
