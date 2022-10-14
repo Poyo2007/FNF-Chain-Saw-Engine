@@ -5,6 +5,8 @@ import openfl.Assets;
 import openfl.display.BitmapData;
 import spine.support.graphics.TextureAtlas.AtlasPage;
 import spine.support.graphics.TextureAtlas.AtlasRegion;
+import spine.support.graphics.TextureLoader;
+
 
 class FlixelTextureLoader implements TextureLoader
 {
@@ -31,10 +33,4 @@ class FlixelTextureLoader implements TextureLoader
 	{
 		FlxG.bitmap.remove(cast page.rendererObject);
 	}
-}
-
-interface TextureLoader {
-	function loadPage (page:AtlasPage, path:String):Void;
-	function loadRegion (region:AtlasRegion):Void;
-	function unloadPage (page:AtlasPage):Void;
 }
