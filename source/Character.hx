@@ -16,7 +16,6 @@ class Character extends FlxSprite
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
 	public var holdTimer:Float = 0;
-	public var stunned:Bool = false;
 	public var specialAnim:Bool = false;
 
 	public var position:Array<Float> = [0, 0];
