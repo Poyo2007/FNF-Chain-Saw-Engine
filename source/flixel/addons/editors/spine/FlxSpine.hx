@@ -103,8 +103,6 @@ class FlxSpine extends FlxSprite
 	{
 		super(X, Y);
 
-		Bone.yDown = true;
-
 		width = Width;
 		height = Height;
 
@@ -115,9 +113,6 @@ class FlxSpine extends FlxSprite
 
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
-
-		flipX = false;
-		flipY = false;
 
 		collider = new FlxSpineCollider(this, X, Y, Width, Height, OffsetX, OffsetY);
 
@@ -304,8 +299,8 @@ class FlxSpine extends FlxSprite
 
 	function renderWithQuads():Void
 	{
-		var flipX:Int = skeleton.flipX ? -1 : 1;
-		var flipY:Int = skeleton.flipY ? -1 : 1;
+		var flipX:Int = flipX ? -1 : 1;
+		var flipY:Int = flipY ? -1 : 1;
 		var flip:Int = flipX * flipY;
 
 		var drawOrder:Array<Slot> = skeleton.drawOrder;
@@ -442,7 +437,7 @@ class FlxSpine extends FlxSprite
 
 			if (collider != null)
 			{
-				if (skeleton.flipX)
+				if (flipX)
 					collider.x = skeleton.x - collider.offsetX - width;
 				else
 					collider.x = skeleton.x + collider.offsetX;
@@ -462,7 +457,7 @@ class FlxSpine extends FlxSprite
 
 			if (collider != null)
 			{
-				if (skeleton.flipY)
+				if (flipY)
 					collider.y = skeleton.y + collider.offsetY - height;
 				else
 					collider.y = skeleton.y - collider.offsetY;
@@ -494,16 +489,16 @@ class FlxSpine extends FlxSprite
 
 	override function set_flipX(value:Bool):Bool
 	{
-		skeleton.flipX = value;
+		flipX = value;
 		set_x(x);
-		return flipX = value;
+		return flipX;
 	}
 
 	override function set_flipY(value:Bool):Bool
 	{
-		skeleton.flipY = value;
+		flipY = value;
 		set_y(y);
-		return flipY = value;
+		return flipY;
 	}
 }
 
@@ -534,7 +529,7 @@ class FlxSpineCollider extends FlxObject
 		{
 			super.set_x(NewX);
 
-			if (parent.skeleton.flipX)
+			if (parent.flipX)
 				parent.x = NewX + offsetX + width;
 			else
 				parent.x = NewX - offsetX;
@@ -553,7 +548,7 @@ class FlxSpineCollider extends FlxObject
 		{
 			super.set_y(NewY);
 
-			if (parent.skeleton.flipY)
+			if (parent.flipY)
 				parent.y = NewY - offsetY + height;
 			else
 				parent.y = NewY + offsetY;
