@@ -290,7 +290,7 @@ class FlxSpine extends FlxSprite
 					wrapper.color = wrapperColor;
 					wrapper.alpha = skeleton.getColor().a * slot.getColor().a * a * alpha;
 
-					wrapper.blend = (slot.data.blendMode == spinehaxe.BlendMode.additive) ? BlendMode.ADD : null;
+					wrapper.blend = (slot.data.blendMode == spine.BlendMode.additive) ? BlendMode.ADD : null;
 					wrapper.draw();
 				}
 			}
@@ -322,12 +322,12 @@ class FlxSpine extends FlxSprite
 			if (regionAttachment != null)
 			{
 				var wrapper:FlxSprite = getSprite(regionAttachment);
-				wrapper.blend = (slot.data.blendMode == spinehaxe.BlendMode.additive) ? BlendMode.ADD : BlendMode.NORMAL;
+				wrapper.blend = (slot.data.blendMode == spine.BlendMode.additive) ? BlendMode.ADD : BlendMode.NORMAL;
 
 				wrapper.color = FlxColor.fromRGBFloat(skeleton.getColor().r * slot.getColor().r * regionAttachment.getColor().r * color.redFloat,
 					skeleton.getColor().g * slot.getColor().g * regionAttachment.getColor().g * color.greenFloat, skeleton.getColor().b * slot.getColor().b * regionAttachment.getColor().b * color.blueFloat);
 
-				wrapper.alpha = skeleton.getColor().a * slot.getColor().a * regionAttachment.a * this.alpha;
+				wrapper.alpha = skeleton.getColor().a * slot.getColor().a * regionAttachment.getColor().a * this.alpha;
 
 				var bone:Bone = slot.bone;
 
