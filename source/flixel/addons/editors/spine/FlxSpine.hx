@@ -338,9 +338,9 @@ class FlxSpine extends FlxSprite
 				var wrapperOriginX:Float = wrapper.origin.x;
 				var wrapperOriginY:Float = wrapper.origin.y;
 
-				var worldRotation:Float = bone.worldRotationX;
-				var worldScaleX:Float = bone.worldScaleX;
-				var worldScaleY:Float = bone.worldScaleY;
+				var worldRotation:Float = bone.getWorldRotationX();
+				var worldScaleX:Float = bone.getWorldScaleX();
+				var worldScaleY:Float = bone.getWorldScaleY();
 
 				wrapper.origin.set(0, 0);
 
