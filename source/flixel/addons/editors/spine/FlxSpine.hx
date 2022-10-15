@@ -215,6 +215,7 @@ class FlxSpine extends FlxSprite
 					var region:RegionAttachment = cast slot.attachment;
 					verticesLength = 8;
 					region.computeWorldVertices(slot.bone, worldVertices, 0, 0);
+                                        @:privateAccess
 					uvtData = region.uvs;
 					triangles = _quadTriangles;
 
@@ -240,6 +241,7 @@ class FlxSpine extends FlxSprite
 					var mesh:MeshAttachment = cast slot.attachment;
 					verticesLength = mesh.vertices.length;
 					mesh.computeWorldVertices(slot, worldVertices);
+                                        @:privateAccess
 					uvtData = mesh.uvs;
 					triangles = mesh.triangles;
 
