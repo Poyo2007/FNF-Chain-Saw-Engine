@@ -72,6 +72,6 @@ class CoolUtil
 	{
 		number = number * Math.pow(10, precision);
 		number = Math.round(number) / Math.pow(10, precision);
-		return num;
+		return number;
 	}
 }
