@@ -14,7 +14,7 @@ class JsonReader {
 
     }
 
-    public function parseString(str:String):JsonValue {
+    public static function parseString(str:String):JsonValue {
 
         return new JsonDynamic(Json.parse(str));
 
