@@ -230,10 +230,10 @@ class FlxSpine extends FlxSprite
 						_regionWrappers[region] = wrapper;
 					}
 
-					r = region.color.r;
-					g = region.color.g;
-					b = region.color.b;
-					a = region.color.a;
+					r = region.getColor().r;
+					g = region.getColor().g;
+					b = region.getColor().b;
+					a = region.getColor().a;
 				}
 				else if ((slot.attachment is MeshAttachment))
 				{
@@ -255,10 +255,10 @@ class FlxSpine extends FlxSprite
 						mesh.getRegion().rendererObject = wrapper;
 					}
 
-					r = mesh.color.r;
-					g = mesh.color.g;
-					b = mesh.color.b;
-					a = mesh.color.a;
+					r = mesh.getColor().r;
+					g = mesh.getColor().g;
+					b = mesh.getColor().b;
+					a = mesh.getColor().a;
 				}
 				if (wrapper != null)
 				{
