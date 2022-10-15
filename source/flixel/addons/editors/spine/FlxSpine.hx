@@ -284,11 +284,11 @@ class FlxSpine extends FlxSprite
 					wrapper.indices = Vector.ofArray(triangles);
 					wrapper.uvtData = Vector.ofArray(uvtData);
 
-					wrapperColor = FlxColor.fromRGBFloat(skeleton.r * slot.r * r * color.redFloat, skeleton.g * slot.g * g * color.greenFloat,
-						skeleton.b * slot.b * b * color.blueFloat, 1);
+					wrapperColor = FlxColor.fromRGBFloat(skeleton.getColor().r * slot.getColor().r * r * color.redFloat, skeleton.getColor().g * slot.getColor().g * g * color.greenFloat,
+						skeleton.getColor().b * slot.getColor().b * b * color.blueFloat, 1);
 
 					wrapper.color = wrapperColor;
-					wrapper.alpha = skeleton.a * slot.a * a * alpha;
+					wrapper.alpha = skeleton.getColor().a * slot.getColor().a * a * alpha;
 
 					wrapper.blend = (slot.data.blendMode == spinehaxe.BlendMode.additive) ? BlendMode.ADD : null;
 					wrapper.draw();
@@ -324,10 +324,10 @@ class FlxSpine extends FlxSprite
 				var wrapper:FlxSprite = getSprite(regionAttachment);
 				wrapper.blend = (slot.data.blendMode == spinehaxe.BlendMode.additive) ? BlendMode.ADD : BlendMode.NORMAL;
 
-				wrapper.color = FlxColor.fromRGBFloat(skeleton.r * slot.r * regionAttachment.r * color.redFloat,
-					skeleton.g * slot.g * regionAttachment.g * color.greenFloat, skeleton.b * slot.b * regionAttachment.b * color.blueFloat);
+				wrapper.color = FlxColor.fromRGBFloat(skeleton.getColor().r * slot.getColor().r * regionAttachment.getColor().r * color.redFloat,
+					skeleton.getColor().g * slot.getColor().g * regionAttachment.getColor().g * color.greenFloat, skeleton.getColor().b * slot.getColor().b * regionAttachment.getColor().b * color.blueFloat);
 
-				wrapper.alpha = skeleton.a * slot.a * regionAttachment.a * this.alpha;
+				wrapper.alpha = skeleton.getColor().a * slot.getColor().a * regionAttachment.a * this.alpha;
 
 				var bone:Bone = slot.bone;
 
