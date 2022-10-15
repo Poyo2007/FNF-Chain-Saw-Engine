@@ -239,7 +239,7 @@ class BaseOptionsSubState extends MusicBeatSubstate
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
-				item.xAdd = 70;
+				item.xAdd = 110;
 			}
 		}
 
