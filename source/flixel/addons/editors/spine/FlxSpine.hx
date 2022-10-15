@@ -404,21 +404,21 @@ class FlxSpine extends FlxSprite
 		wrapper.frames = imageFrame;
 		wrapper.antialiasing = antialiasing;
 
-		wrapper.angle = -regionAttachment.rotation;
-		wrapper.scale.x = regionAttachment.scaleX * (regionAttachment.width / region.width);
-		wrapper.scale.y = regionAttachment.scaleY * (regionAttachment.height / region.height);
+		wrapper.angle = -regionAttachment.getRotation();
+		wrapper.scale.x = regionAttachment.getScaleX() * (regionAttachment.getWidth() / region.width);
+		wrapper.scale.y = regionAttachment.getScaleY() * (regionAttachment.getHeight() / region.height);
 
 		// Position using attachment translation, shifted as if scale and rotation were at image center.
-		var radians:Float = -regionAttachment.rotation * Math.PI / 180;
+		var radians:Float = -regionAttachment.getRotation() * Math.PI / 180;
 		var cos:Float = Math.cos(radians);
 		var sin:Float = Math.sin(radians);
-		var shiftX:Float = -regionAttachment.width / 2 * regionAttachment.scaleX;
-		var shiftY:Float = -regionAttachment.height / 2 * regionAttachment.scaleY;
+		var shiftX:Float = -regionAttachment.getWidth() / 2 * regionAttachment.getScaleX();
+		var shiftY:Float = -regionAttachment.getHeight() / 2 * regionAttachment.getScaleY();
 
 		if (region.rotate)
 		{
 			wrapper.angle += 90;
-			shiftX += regionHeight * (regionAttachment.width / region.width);
+			shiftX += regionHeight * (regionAttachment.getWidth() / region.width);
 		}
 
 		wrapper.origin.x = regionAttachment.x + shiftX * cos - shiftY * sin;
