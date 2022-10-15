@@ -241,7 +241,7 @@ class FlxSpine extends FlxSprite
 					verticesLength = mesh.vertices.length;
 					mesh.computeWorldVertices(slot, 0, mesh.getWorldVerticesLength(), worldVertices, 0, 1);
 					uvtData = mesh.getUVs();
-					triangles = mesh.triangles;
+					triangles = mesh.getTriangles();
 
 					if ((mesh.getRegion().rendererObject is FlxStrip))
 					{
@@ -249,7 +249,7 @@ class FlxSpine extends FlxSprite
 					}
 					else
 					{
-						var atlasRegion:AtlasRegion = cast mesh.region.rendererObject;
+						var atlasRegion:AtlasRegion = cast mesh.getRegion().rendererObject;
 						var graphic:FlxGraphic = cast atlasRegion.page.rendererObject;
 						wrapper = new FlxStrip(0, 0, graphic);
 						mesh.getRegion().rendererObject = wrapper;
