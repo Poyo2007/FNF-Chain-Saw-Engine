@@ -28,6 +28,7 @@ import spine.AnimationStateData;
 import spine.support.graphics.TextureAtlas as Atlas;
 import spine.support.graphics.TextureAtlas.AtlasPage;
 import spine.support.graphics.TextureAtlas.AtlasRegion;
+import spine.support.utils.JsonReader;
 import spine.attachments.Attachment;
 import spine.attachments.MeshAttachment;
 import spine.attachments.RegionAttachment;
@@ -64,7 +65,8 @@ class FlxSpine extends FlxSprite
 		var spineAtlas:Atlas = new Atlas(Assets.getText(DataPath + AtlasName + ".atlas"), new FlixelTextureLoader(DataPath));
 		var json:SkeletonJson = new SkeletonJson(new AtlasAttachmentLoader(spineAtlas));
 		json.scale = Scale;
-		var skeletonData:SkeletonData = json.readSkeletonData(Assets.getText(DataPath + AnimationName + ".json"), AnimationName);
+		var skeletonData:SkeletonData = json.readSkeletonData(JsonReader.parseString(Assets.getText(DataPath + AnimationName + ".json")));
+                skeletonData.name = AnimationName;
 		return skeletonData;
 	}
 
