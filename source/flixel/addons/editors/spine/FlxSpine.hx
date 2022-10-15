@@ -215,8 +215,7 @@ class FlxSpine extends FlxSprite
 					var region:RegionAttachment = cast slot.attachment;
 					verticesLength = 8;
 					region.computeWorldVertices(slot.bone, worldVertices, 0, 0);
-                                        @:privateAccess
-					uvtData = region.uvs;
+					uvtData = region.getUVs();
 					triangles = _quadTriangles;
 
 					if (_regionWrappers.exists(region))
@@ -231,18 +230,17 @@ class FlxSpine extends FlxSprite
 						_regionWrappers[region] = wrapper;
 					}
 
-					r = region.r;
-					g = region.g;
-					b = region.b;
-					a = region.a;
+					r = region.color.r;
+					g = region.color.g;
+					b = region.color.b;
+					a = region.color.a;
 				}
 				else if ((slot.attachment is MeshAttachment))
 				{
 					var mesh:MeshAttachment = cast slot.attachment;
 					verticesLength = mesh.vertices.length;
 					mesh.computeWorldVertices(slot, worldVertices);
-                                        @:privateAccess
-					uvtData = mesh.uvs;
+					uvtData = mesh.getUVs();
 					triangles = mesh.triangles;
 
 					if ((mesh.getRegion().rendererObject is FlxStrip))
@@ -257,10 +255,10 @@ class FlxSpine extends FlxSprite
 						mesh.getRegion().rendererObject = wrapper;
 					}
 
-					r = mesh.r;
-					g = mesh.g;
-					b = mesh.b;
-					a = mesh.a;
+					r = mesh.color.r;
+					g = mesh.color.g;
+					b = mesh.color.b;
+					a = mesh.color.a;
 				}
 				if (wrapper != null)
 				{
