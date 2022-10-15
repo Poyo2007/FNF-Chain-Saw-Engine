@@ -73,7 +73,7 @@ class PlayState extends MusicBeatState
 	private var accuracy:Float = 0;
 	private var hitNotes:Float = 0;
 	private var totalNotes:Float = 0;
-	private var maxSongPos:Int = 14000;
+	private var maxSongPos:Int = 3000;
 	private var minHealth:Int = 0;
 	private var maxHealth:Int = 2;
 	private var paused:Bool = false;
@@ -88,6 +88,7 @@ class PlayState extends MusicBeatState
 	private var camFollowDad:Array<Float> = [0, 0];
 	private var camFollowBoyfriend:Array<Float> = [0, 0];
 	private var dialogue:Array<String> = ['dad:blah blah blah', 'bf:coolswag'];
+	private var singAnimations:Array<String> = ['singLEFT', 'singDOWN', 'singUP', 'singRIGHT'];
 	private var health:Float = 1;
 	private var notes:FlxTypedGroup<Note>;
 
@@ -220,6 +221,7 @@ class PlayState extends MusicBeatState
 		add(notes);
 
 		generateSong();
+		Conductor.songPosition = 0; // :|
 
 		for (script in Assets.list(TEXT).filter(text -> text.contains('assets/scripts')))
 			if (script.endsWith('.hx'))
@@ -405,12 +407,12 @@ class PlayState extends MusicBeatState
 	{
 		if (startedCountdown)
 		{
-			callScripts('startCountdown', []);
+			callOnScripts('startCountdown', []);
 			return;
 		}
 
 		inCutscene = false;
-		var ret:Dynamic = callScripts('startCountdown', []);
+		var ret:Dynamic = callOnScripts('startCountdown', []);
 		if (ret != ScriptCore.Function_Stop)
 		{
 			#if mobile
@@ -742,7 +744,7 @@ class PlayState extends MusicBeatState
 				DiscordClient.changePresence(detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')', iconP2.curCharacter);
 		}
 
-		callScripts('onFocus', []);
+		callOnScripts('onFocus', []);
 		super.onFocus();
 	}
 
@@ -751,7 +753,7 @@ class PlayState extends MusicBeatState
 		if (health > 0 && !paused)
 			DiscordClient.changePresence('Paused - ' + detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')', iconP2.curCharacter);
 
-		callScripts('onFocusLost', []);
+		callOnScripts('onFocusLost', []);
 		super.onFocusLost();
 	}
 	#end
@@ -772,7 +774,7 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
-		callScripts('update', [elapsed]);
+		callOnScripts('update', [elapsed]);
 
 		super.update(elapsed);
 
@@ -848,7 +850,7 @@ class PlayState extends MusicBeatState
 
 		if (unspawnNotes[0] != null
 			&& unspawnNotes.length > 0
-			&& (unspawnNotes[0].strumTime - Conductor.songPosition < maxSongPos / SONG.speed))
+			&& (unspawnNotes[0].strumTime - Conductor.songPosition < maxSongPos))
 		{
 			notes.add(unspawnNotes[0]);
 			unspawnNotes.shift();
@@ -883,7 +885,7 @@ class PlayState extends MusicBeatState
 
 	private function pause()
 	{
-		var ret:Dynamic = callScripts('pause', []);
+		var ret:Dynamic = callOnScripts('pause', []);
 		if (ret != ScriptCore.Function_Stop)
 		{
 			persistentUpdate = false;
@@ -917,7 +919,7 @@ class PlayState extends MusicBeatState
 	 */
 	private function gameOver()
 	{
-		var ret:Dynamic = callScripts('gameOver', []);
+		var ret:Dynamic = callOnScripts('gameOver', []);
 		if (ret != ScriptCore.Function_Stop)
 		{
 			persistentUpdate = persistentDraw = false;
@@ -1034,13 +1036,13 @@ class PlayState extends MusicBeatState
 		{
 			camFollow.x = dad.getMidpoint().x + camFollowDad[0];
 			camFollow.y = dad.getMidpoint().y + camFollowDad[1];
-			callScripts('camearaFollow', ['dad']);
+			callOnScripts('camearaFollow', ['dad']);
 		}
 		else
 		{
 			camFollow.x = boyfriend.getMidpoint().x + camFollowBoyfriend[0];
 			camFollow.y = boyfriend.getMidpoint().y + camFollowBoyfriend[1];
-			callScripts('camearaFollow', ['boyfriend']);
+			callOnScripts('camearaFollow', ['boyfriend']);
 		}
 	}
 
@@ -1054,7 +1056,7 @@ class PlayState extends MusicBeatState
 		mobileControls.visible = false;
 		#end
 
-		var ret:Dynamic = callScripts('endSong', []);
+		var ret:Dynamic = callOnScripts('endSong', []);
 		if (ret != ScriptCore.Function_Stop)
 		{
 			if (SONG.validScore)
@@ -1188,7 +1190,6 @@ class PlayState extends MusicBeatState
 		add(comboSpr);
 
 		var comboSplit:Array<String> = Std.string(combo).split('');
-
 		var seperatedScore:Array<Int> = [];
 		for (i in 0...comboSplit.length)
 			seperatedScore.push(Std.parseInt(comboSplit[i]));
@@ -1363,27 +1364,14 @@ class PlayState extends MusicBeatState
 
 		FlxG.sound.play(Paths.sound('missnote' + FlxG.random.int(1, 3)), FlxG.random.float(0.1, 0.2));
 
-		switch (Math.abs(direction) % 4)
-		{
-			case 0:
-				if (boyfriend.animation.getByName('singLEFTmiss') != null)
-					boyfriend.playAnim('singLEFTmiss', true);
-			case 1:
-				if (boyfriend.animation.getByName('singDOWNmiss') != null)
-					boyfriend.playAnim('singDOWNmiss', true);
-			case 2:
-				if (boyfriend.animation.getByName('singUPmiss') != null)
-					boyfriend.playAnim('singUPmiss', true);
-			case 3:
-				if (boyfriend.animation.getByName('singRIGHTmiss') != null)
-					boyfriend.playAnim('singRIGHTmiss', true);
-		}
+		if (boyfriend.animation.getByName(singAnimations[Std.int(Math.abs(direction) % 4)] + 'miss') != null)
+			boyfriend.playAnim(singAnimations[Std.int(Math.abs(direction) % 4)] + 'miss', true);
 
 		vocals.volume = 0;
 		if (!autoplayMode)
 			updateAccuracy();
 
-		callScripts('noteMiss', [direction]);
+		callOnScripts('noteMiss', [direction]);
 	}
 
 	private function badNoteHit()
@@ -1418,21 +1406,8 @@ class PlayState extends MusicBeatState
 			else
 				health += 0.004;
 
-			switch (Math.abs(daNote.noteData) % 4)
-			{
-				case 0:
-					if (boyfriend.animation.getByName('singLEFT') != null)
-						boyfriend.playAnim('singLEFT', true);
-				case 1:
-					if (boyfriend.animation.getByName('singDOWN') != null)
-						boyfriend.playAnim('singDOWN', true);
-				case 2:
-					if (boyfriend.animation.getByName('singUP') != null)
-						boyfriend.playAnim('singUP', true);
-				case 3:
-					if (boyfriend.animation.getByName('singRIGHT') != null)
-						boyfriend.playAnim('singRIGHT', true);
-			}
+			if (boyfriend.animation.getByName(singAnimations[Std.int(Math.abs(daNote.noteData) % 4)]) != null)
+				boyfriend.playAnim(singAnimations[Std.int(Math.abs(daNote.noteData) % 4)], true);
 
 			boyfriend.holdTimer = 0;
 
@@ -1455,7 +1430,7 @@ class PlayState extends MusicBeatState
 			daNote.wasGoodHit = true;
 			vocals.volume = 1;
 
-			callScripts('goodNoteHit', [daNote]);
+			callOnScripts('goodNoteHit', [daNote]);
 
 			if (!daNote.sustainNote)
 				destroyNote(daNote);
@@ -1465,25 +1440,11 @@ class PlayState extends MusicBeatState
 	private function opponentNoteHit(daNote:Note):Void
 	{
 		var altAnim:String = '';
-
 		if ((SONG.notes[Math.floor(curStep / 16)] != null && SONG.notes[Math.floor(curStep / 16)].altAnim) || daNote.altNote)
 			altAnim = '-alt';
 
-		switch (Math.abs(daNote.noteData) % 4)
-		{
-			case 0:
-				if (dad.animation.getByName('singLEFT' + altAnim) != null)
-					dad.playAnim('singLEFT' + altAnim, true);
-			case 1:
-				if (dad.animation.getByName('singDOWN' + altAnim) != null)
-					dad.playAnim('singDOWN' + altAnim, true);
-			case 2:
-				if (dad.animation.getByName('singUP' + altAnim) != null)
-					dad.playAnim('singUP' + altAnim, true);
-			case 3:
-				if (dad.animation.getByName('singRIGHT' + altAnim) != null)
-					dad.playAnim('singRIGHT' + altAnim, true);
-		}
+		if (dad.animation.getByName(singAnimations[Std.int(Math.abs(daNote.noteData) % 4)]) != null)
+			dad.playAnim(singAnimations[Std.int(Math.abs(daNote.noteData) % 4)], true);
 
 		dad.holdTimer = 0;
 
@@ -1502,7 +1463,7 @@ class PlayState extends MusicBeatState
 
 		vocals.volume = 1;
 
-		callScripts('opponentNoteHit', [daNote]);
+		callOnScripts('opponentNoteHit', [daNote]);
 
 		if (!daNote.sustainNote)
 			destroyNote(daNote);
@@ -1524,7 +1485,7 @@ class PlayState extends MusicBeatState
 			return;
 
 		lastStepHit = curStep;
-		callScripts('stepHit', [curStep]);
+		callOnScripts('stepHit', [curStep]);
 
 		#if FUTURE_DISCORD_RCP
 		DiscordClient.changePresence(detailsText, SONG.song
@@ -1570,7 +1531,7 @@ class PlayState extends MusicBeatState
 			dad.dance();
 
 		lastBeatHit = curBeat;
-		callScripts('beatHit', [curBeat]);
+		callOnScripts('beatHit', [curBeat]);
 	}
 
 	override function destroy()
@@ -1583,12 +1544,12 @@ class PlayState extends MusicBeatState
 		defaultOpponentStrumX = [];
 		defaultOpponentStrumY = [];
 
-		callScripts('destroy', []);
+		callOnScripts('destroy', []);
 
 		super.destroy();
 	}
 
-	private function callScripts(funcName:String, args:Array<Dynamic>):Dynamic
+	private function callOnScripts(funcName:String, args:Array<Dynamic>):Dynamic
 	{
 		var value:Dynamic = ScriptCore.Function_Continue;
 
@@ -1602,8 +1563,4 @@ class PlayState extends MusicBeatState
 
 		return value;
 	}
-
-	private function setScripts(name:String, val:Dynamic)
-		for (i in 0...scriptArray.length)
-			scriptArray[i].setVariable(name, val);
 }

@@ -601,11 +601,11 @@ class Controls extends FlxActionSet
 	}
 
 	public function bindKeys(control:Control, keys:Array<FlxKey>)
-		inline forEachBound(control, (action, state) -> addKeys(action, keys, state));
 
+	inline forEachBound(control, (action, state) -> addKeys(action, keys, state));
 	public function unbindKeys(control:Control, keys:Array<FlxKey>)
-		inline forEachBound(control, (action, _) -> removeKeys(action, keys));
 
+	inline forEachBound(control, (action, _) -> removeKeys(action, keys));
 	inline static function addKeys(action:FlxActionDigital, keys:Array<FlxKey>, state:FlxInputState)
 	{
 		for (key in keys)
@@ -698,7 +698,7 @@ class Controls extends FlxActionSet
 		gamepadsAdded.push(id);
 
 		for (control => buttons in buttonMap)
-			inline bindButtons(control, id, buttons);
+		inline bindButtons(control, id, buttons);
 	}
 
 	inline function addGamepadLiteral(id:Int, ?buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void
@@ -706,7 +706,7 @@ class Controls extends FlxActionSet
 		gamepadsAdded.push(id);
 
 		for (control => buttons in buttonMap)
-			inline bindButtons(control, id, buttons);
+		inline bindButtons(control, id, buttons);
 	}
 
 	public function removeGamepad(deviceID:Int = FlxInputDeviceID.ALL):Void
@@ -748,15 +748,16 @@ class Controls extends FlxActionSet
 	 * If binder is a literal you can inline this
 	 */
 	public function bindButtons(control:Control, id, buttons)
-		inline forEachBound(control, (action, state) -> addButtons(action, buttons, state, id));
+
+	inline forEachBound(control, (action, state) -> addButtons(action, buttons, state, id));
 
 	/**
 	 * Sets all actions that pertain to the binder to trigger when the supplied keys are used.
 	 * If binder is a literal you can inline this
 	 */
 	public function unbindButtons(control:Control, gamepadID:Int, buttons)
-		inline forEachBound(control, (action, _) -> removeButtons(action, gamepadID, buttons));
 
+	inline forEachBound(control, (action, _) -> removeButtons(action, gamepadID, buttons));
 	inline static function addButtons(action:FlxActionDigital, buttons:Array<FlxGamepadInputID>, state, id)
 	{
 		for (button in buttons)

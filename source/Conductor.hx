@@ -35,17 +35,17 @@ class Conductor
 		var curBPM:Float = song.bpm;
 		var totalSteps:Int = 0;
 		var totalPos:Float = 0;
+
 		for (i in 0...song.notes.length)
 		{
 			if (song.notes[i].changeBPM && song.notes[i].bpm != curBPM)
 			{
 				curBPM = song.notes[i].bpm;
-				var event:BPMChangeEvent = {
+				bpmChangeMap.push({
 					stepTime: totalSteps,
 					songTime: totalPos,
 					bpm: curBPM
-				};
-				bpmChangeMap.push(event);
+				});
 			}
 
 			var deltaSteps:Int = song.notes[i].lengthInSteps;

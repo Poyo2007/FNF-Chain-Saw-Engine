@@ -21,14 +21,14 @@ class Alphabet extends FlxSpriteGroup
 	public var textSize:Float = 1.0;
 	public var text:String = "";
 	public var curRow:Int = 0;
-	public var lettersArray:Array<AlphaCharacter> = [];
+	public var lettersArray:Array<AlphabetCharacter> = [];
 	public var finishedText:Bool = false;
 	public var typed:Bool = false;
 	public var typingSpeed:Float = 0.05;
 
 	private var _finalText:String = "";
 	private var yMulti:Float = 1;
-	private var lastSprite:AlphaCharacter;
+	private var lastSprite:AlphabetCharacter;
 	private var xPosResetted:Bool = false;
 	private var splitWords:Array<String> = [];
 	private var isBold:Bool = false;
@@ -36,11 +36,12 @@ class Alphabet extends FlxSpriteGroup
 	private var xPos:Float = 0;
 	private var consecutiveSpaces:Int = 0;
 	private var typeTimer:FlxTimer = null;
-	private var LONG_TEXT_ADD:Float = -24;
+	private final LONG_TEXT_ADD:Float = -24;
 
 	public function new(x:Float, y:Float, text:String = "", ?bold:Bool = false, typed:Bool = false, ?typingSpeed:Float = 0.05, ?textSize:Float = 1)
 	{
 		super(x, y);
+
 		forceX = Math.NEGATIVE_INFINITY;
 		this.textSize = textSize;
 
@@ -107,9 +108,9 @@ class Alphabet extends FlxSpriteGroup
 			if (spaceChar)
 				consecutiveSpaces++;
 
-			var isNumber:Bool = AlphaCharacter.numbers.indexOf(character) != -1;
-			var isSymbol:Bool = AlphaCharacter.symbols.indexOf(character) != -1;
-			var isAlphabet:Bool = AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1;
+			var isNumber:Bool = AlphabetCharacter.numbers.indexOf(character) != -1;
+			var isSymbol:Bool = AlphabetCharacter.symbols.indexOf(character) != -1;
+			var isAlphabet:Bool = AlphabetCharacter.alphabet.indexOf(character.toLowerCase()) != -1;
 			if ((isAlphabet || isSymbol || isNumber) && (!isBold || !spaceChar))
 			{
 				if (lastSprite != null)
@@ -119,7 +120,7 @@ class Alphabet extends FlxSpriteGroup
 
 				consecutiveSpaces = 0;
 
-				var letter:AlphaCharacter = new AlphaCharacter(xPos, 0, textSize);
+				var letter:AlphabetCharacter = new AlphabetCharacter(xPos, 0, textSize);
 				if (isNumber)
 					letter.createNumber(character, isBold);
 				else if (isSymbol)
@@ -134,7 +135,7 @@ class Alphabet extends FlxSpriteGroup
 	}
 
 	private function doSplitWords():Void
-		splitWords = _finalText.split("");
+		splitWords = _finalText.split('');
 
 	public function startTypedText(speed:Float):Void
 	{
@@ -187,9 +188,9 @@ class Alphabet extends FlxSpriteGroup
 			if (spaceChar)
 				consecutiveSpaces++;
 
-			var isNumber:Bool = AlphaCharacter.numbers.indexOf(splitWords[loopNum]) != -1;
-			var isSymbol:Bool = AlphaCharacter.symbols.indexOf(splitWords[loopNum]) != -1;
-			var isAlphabet:Bool = AlphaCharacter.alphabet.indexOf(splitWords[loopNum].toLowerCase()) != -1;
+			var isNumber:Bool = AlphabetCharacter.numbers.indexOf(splitWords[loopNum]) != -1;
+			var isSymbol:Bool = AlphabetCharacter.symbols.indexOf(splitWords[loopNum]) != -1;
+			var isAlphabet:Bool = AlphabetCharacter.alphabet.indexOf(splitWords[loopNum].toLowerCase()) != -1;
 
 			if ((isAlphabet || isSymbol || isNumber) && (!isBold || !spaceChar))
 			{
@@ -206,7 +207,7 @@ class Alphabet extends FlxSpriteGroup
 
 				consecutiveSpaces = 0;
 
-				var letter:AlphaCharacter = new AlphaCharacter(xPos, 55 * yMulti, textSize);
+				var letter:AlphabetCharacter = new AlphabetCharacter(xPos, 55 * yMulti, textSize);
 				letter.curRow = curRow;
 
 				if (isNumber)
@@ -263,7 +264,7 @@ class Alphabet extends FlxSpriteGroup
 	}
 }
 
-class AlphaCharacter extends FlxSprite
+class AlphabetCharacter extends FlxSprite
 {
 	public static var alphabet:String = "abcdefghijklmnopqrstuvwxyz";
 	public static var numbers:String = "1234567890";

@@ -70,9 +70,8 @@ class CoolUtil
 
 	public static function truncateFloat(number:Float, precision:Int):Float
 	{
-		var num = number;
-		num = num * Math.pow(10, precision);
-		num = Math.round(num) / Math.pow(10, precision);
+		number = number * Math.pow(10, precision);
+		number = Math.round(number) / Math.pow(10, precision);
 		return num;
 	}
 }
