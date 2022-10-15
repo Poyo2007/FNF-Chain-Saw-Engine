@@ -421,8 +421,8 @@ class FlxSpine extends FlxSprite
 			shiftX += regionHeight * (regionAttachment.getWidth() / region.width);
 		}
 
-		wrapper.origin.x = regionAttachment.x + shiftX * cos - shiftY * sin;
-		wrapper.origin.y = -regionAttachment.y + shiftX * sin + shiftY * cos;
+		wrapper.origin.x = regionAttachment.getX() + shiftX * cos - shiftY * sin;
+		wrapper.origin.y = -regionAttachment.getY() + shiftX * sin + shiftY * cos;
 		_regionWrappers[regionAttachment] = wrapper;
 		return wrapper;
 	}
