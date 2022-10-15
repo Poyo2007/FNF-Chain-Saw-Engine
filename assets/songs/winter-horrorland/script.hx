@@ -3,6 +3,7 @@ import('flixel.FlxG');
 import('flixel.FlxSprite');
 import('flixel.tweens.FlxEase');
 import('flixel.tweens.FlxTween');
+import('flixel.util.FlxTimer');
 import('states.PlayState');
 
 var allowCountdown:Bool = false;
