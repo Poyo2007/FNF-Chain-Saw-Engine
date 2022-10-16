@@ -24,7 +24,7 @@ class Overlay extends TextField
 
 		addEventListener(Event.ENTER_FRAME, function(e:Event)
 		{
-			var now:Int = Timer.stamp();
+			var now = Timer.stamp();
 			times.push(now);
 			while (times[0] < now - 1)
 				times.shift();
