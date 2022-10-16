@@ -452,14 +452,7 @@ class PlayState extends MusicBeatState
 		startingSong = false;
 
 		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
-
-		if (SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song), false);
-		else
-			vocals = new FlxSound();
-
-		FlxG.sound.list.add(vocals);
-
+		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
 
 		if (paused)
@@ -467,8 +460,6 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.pause();
 			vocals.pause();
 		}
-
-		FlxG.sound.music.onComplete = endSong;
 
 		#if FUTURE_DISCORD_RCP
 		DiscordClient.changePresence(detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')', iconP2.curCharacter);
@@ -480,6 +471,13 @@ class PlayState extends MusicBeatState
 		Conductor.songPosition = -Conductor.crochet * 5;
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
+
+		if (SONG.needsVoices)
+			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song), false);
+		else
+			vocals = new FlxSound();
+
+		FlxG.sound.list.add(vocals);
 
 		for (section in SONG.notes)
 		{
