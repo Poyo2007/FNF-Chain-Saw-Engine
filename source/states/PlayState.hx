@@ -220,7 +220,6 @@ class PlayState extends MusicBeatState
 		add(notes);
 
 		generateSong();
-		Conductor.songPosition = 0; // :|
 
 		for (script in Assets.list(TEXT).filter(text -> text.contains('assets/scripts')))
 			if (script.endsWith('.hx'))
@@ -478,7 +477,7 @@ class PlayState extends MusicBeatState
 
 	private function generateSong():Void
 	{
-		Conductor.songPosition = 0;
+		Conductor.songPosition = -Conductor.crochet * 5;
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
