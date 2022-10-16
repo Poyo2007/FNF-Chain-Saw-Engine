@@ -57,14 +57,14 @@ class ScriptCore extends FlxBasic
 						Reflect.setField(daEnumField, daConstructor, daEnum.createByName(daConstructor));
 
 					if (asDa != null && asDa != '')
-						setVariable(asDaClass, daEnumField);
+						setVariable(asDa, daEnumField);
 					else
 						setVariable(splitClassName[splitClassName.length - 1], daEnumField);
 				}
 				else
 				{
 					if (asDa != null && asDa != '')
-						setVariable(asDaClass, daClass);
+						setVariable(asDa, daClass);
 					else
 						setVariable(splitClassName[splitClassName.length - 1], daClass);
 				}
