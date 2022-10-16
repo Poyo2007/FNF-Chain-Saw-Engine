@@ -1,6 +1,6 @@
 package;
 
-import openfl.Lib;
+import haxe.Timer;
 import openfl.events.Event;
 import openfl.system.System;
 import openfl.text.TextField;
@@ -24,7 +24,7 @@ class Overlay extends TextField
 
 		addEventListener(Event.ENTER_FRAME, function(e:Event)
 		{
-			var now:Int = Lib.getTimer();
+			var now:Int = Timer.stamp();
 			times.push(now);
 			while (times[0] < now - 1)
 				times.shift();
