@@ -34,7 +34,7 @@ class DialogueBox extends FlxSpriteGroup
 	private var handSelect:FlxSprite;
 	private var bgFade:FlxSprite;
 
-	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>)
+	public function new(?dialogueList:Array<String>)
 	{
 		super();
 
