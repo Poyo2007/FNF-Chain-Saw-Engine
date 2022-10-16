@@ -39,7 +39,7 @@ class ScriptCore extends FlxBasic
 
 		setVariable('super', daSuper);
 		setVariable('this', this);
-		setVariable('import', function(daClass:String)
+		setVariable('import', function(daClass:String, ?asDaClass:String)
 		{
 			final splitClassName:Array<String> = [for (e in daClass.split('.')) e.trim()];
 			final className:String = splitClassName.join('.');
@@ -55,10 +55,19 @@ class ScriptCore extends FlxBasic
 					var daEnumField = {};
 					for (daConstructor in daEnum.getConstructors())
 						Reflect.setField(daEnumField, daConstructor, daEnum.createByName(daConstructor));
-					setVariable(splitClassName[splitClassName.length - 1], daEnumField);
+
+					if (asDaClass != null)
+						setVariable(asDaClass, daEnumField);
+					else
+						setVariable(splitClassName[splitClassName.length - 1], daEnumField);
 				}
 				else
-					setVariable(splitClassName[splitClassName.length - 1], daClass);
+				{
+					if (asDaClass != null)
+						setVariable(asDaClass, daClass);
+					else
+						setVariable(splitClassName[splitClassName.length - 1], daClass);
+				}
 			}
 		});
 		setVariable('Function_Stop', Function_Stop);
