@@ -52,7 +52,8 @@ class DialogueBox extends FlxSpriteGroup
 
 		box = new FlxSprite(-20, 45);
 
-		var hasDialog = false;
+		var hasDialog:Bool = false;
+
 		switch (Paths.formatName(PlayState.SONG.song.toLowerCase()))
 		{
 			case 'senpai':
