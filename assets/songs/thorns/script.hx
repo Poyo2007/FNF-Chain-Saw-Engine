@@ -12,6 +12,9 @@ function startCountdown()
 {
 	if (!allowCountdown && PlayState.isStoryMode && !PlayState.seenCutscene)
 	{
+		FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
+		FlxG.sound.music.fadeIn(1, 0, 0.8);
+
 		var red:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xFFff1b31);
 		red.screenCenter();
 		red.scrollFactor.set();

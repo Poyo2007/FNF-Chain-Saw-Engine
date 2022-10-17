@@ -1,6 +1,7 @@
 import('Paths');
 import('CoolUtil');
 import('DialogueBox');
+import('flixel.FlxG');
 import('flixel.util.FlxTimer');
 import('states.PlayState');
 
@@ -10,6 +11,8 @@ function startCountdown()
 {
 	if (!allowCountdown && PlayState.isStoryMode && !PlayState.seenCutscene)
 	{
+		FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'));
+
 		new FlxTimer().start(0.3, function(tmr:FlxTimer)
 		{
             PlayState.instance.inCutscene = true;
