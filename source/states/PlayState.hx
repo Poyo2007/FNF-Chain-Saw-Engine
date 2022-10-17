@@ -86,7 +86,6 @@ class PlayState extends MusicBeatState
 	private var camFollowDad:Array<Float> = [0, 0];
 	private var camFollowBoyfriend:Array<Float> = [0, 0];
 	private var dialogue:Array<String> = ['dad:blah blah blah', 'bf:coolswag'];
-	private var singAnimations:Array<String> = ['singLEFT', 'singDOWN', 'singUP', 'singRIGHT'];
 	private var health:Float = 1;
 	private var notes:FlxTypedGroup<Note>;
 	private var vocals:FlxSound;
@@ -1250,8 +1249,8 @@ class PlayState extends MusicBeatState
 
 		FlxG.sound.play(Paths.sound('missnote' + FlxG.random.int(1, 3)), FlxG.random.float(0.1, 0.2));
 
-		if (boyfriend.animation.getByName(singAnimations[Std.int(Math.abs(direction) % 4)] + 'miss') != null)
-			boyfriend.playAnim(singAnimations[Std.int(Math.abs(direction) % 4)] + 'miss', true);
+		if (boyfriend.animation.getByName(boyfriend.singAnimations[Std.int(Math.abs(direction) % 4)] + 'miss') != null)
+			boyfriend.playAnim(boyfriend.singAnimations[Std.int(Math.abs(direction) % 4)] + 'miss', true);
 
 		vocals.volume = 0;
 		if (!autoplayMode)
@@ -1292,8 +1291,8 @@ class PlayState extends MusicBeatState
 			else
 				health += 0.004;
 
-			if (boyfriend.animation.getByName(singAnimations[Std.int(Math.abs(daNote.noteData) % 4)]) != null)
-				boyfriend.playAnim(singAnimations[Std.int(Math.abs(daNote.noteData) % 4)], true);
+			if (boyfriend.animation.getByName(boyfriend.singAnimations[Std.int(Math.abs(daNote.noteData) % 4)]) != null)
+				boyfriend.playAnim(boyfriend.singAnimations[Std.int(Math.abs(daNote.noteData) % 4)], true);
 
 			boyfriend.holdTimer = 0;
 
@@ -1329,8 +1328,8 @@ class PlayState extends MusicBeatState
 		if ((SONG.notes[Math.floor(curStep / 16)] != null && SONG.notes[Math.floor(curStep / 16)].altAnim) || daNote.altNote)
 			altAnim = '-alt';
 
-		if (dad.animation.getByName(singAnimations[Std.int(Math.abs(daNote.noteData) % 4)]) != null)
-			dad.playAnim(singAnimations[Std.int(Math.abs(daNote.noteData) % 4)], true);
+		if (dad.animation.getByName(dad.singAnimations[Std.int(Math.abs(daNote.noteData) % 4)] + altAnim) != null)
+			dad.playAnim(dad.singAnimations[Std.int(Math.abs(daNote.noteData) % 4)] + altAnim, true);
 
 		dad.holdTimer = 0;
 

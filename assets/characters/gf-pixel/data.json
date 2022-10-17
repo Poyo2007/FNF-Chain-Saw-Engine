@@ -72,6 +72,12 @@
 		"danceLeft",
 		"danceRight"
 	],
+	"singAnimations": [
+		"singLEFT",
+		"singDOWN",
+		"singUP",
+		"singRIGHT"
+	],
 	"scale": 6,
 	"singDuration": 4,
 	"antialiasing": false,

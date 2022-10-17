@@ -21,6 +21,7 @@ class Character extends FlxSprite
 	public var position:Array<Float> = [0, 0];
 	public var camPos:Array<Float> = [0, 0];
 	public var danceAnimation:Array<String> = ['idle'];
+	public var singAnimations:Array<String> = ['singLEFT', 'singDOWN', 'singUP', 'singRIGHT'];
 	public var singDuration:Float = 4;
 	public var colors:Array<Int> = [146, 113, 253];
 
@@ -81,10 +82,15 @@ class Character extends FlxSprite
 			updateHitbox();
 		}
 
-		if (character.danceAnimation != null)
-			danceAnimation = character.danceAnimation;
-		else if (character.danceAnimation != null && character.danceAnimation.length >= 2)
+		if (character.danceAnimation != null && character.danceAnimation.length >= 2)
 			Lib.application.window.alert("The Character $this.curCharacter can't use more then 2 animations for the default animations", "Character Error!");
+		else if (character.danceAnimation != null)
+			danceAnimation = character.danceAnimation;
+
+		if (character.singAnimations != null && character.singAnimations.length >= 5)
+			Lib.application.window.alert("The Character $this.curCharacter can't use more then 4 animations for singing animations", "Character Error!");
+		else if (character.singAnimations != null)
+			singAnimations = character.singAnimations;
 
 		singDuration = character.singDuration;
 

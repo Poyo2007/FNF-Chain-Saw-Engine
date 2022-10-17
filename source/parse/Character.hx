@@ -9,6 +9,7 @@ typedef SwagCharacter =
 	var camPos:Array<Float>;
 	var animations:Array<SwagAnimation>;
 	var danceAnimation:Array<String>;
+	var singAnimations:Array<String>;
 	var scale:Float;
 	var singDuration:Float;
 	var antialiasing:Bool;

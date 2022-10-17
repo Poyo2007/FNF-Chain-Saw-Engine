@@ -77,6 +77,12 @@
 	"danceAnimation": [
 		"idle"
 	],
+	"singAnimations": [
+		"singLEFT",
+		"singDOWN",
+		"singUP",
+		"singRIGHT"
+	],
 	"scale": 1,
 	"singDuration": 4,
 	"antialiasing": true,
