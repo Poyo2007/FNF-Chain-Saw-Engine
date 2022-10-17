@@ -324,6 +324,7 @@ class PlayState extends MusicBeatState
 			}
 
 			startedCountdown = true;
+			Conductor.songPosition = -Conductor.crochet * 5;
 			doIntro(Conductor.crochet / 1000, true);
 		}
 	}
@@ -468,9 +469,9 @@ class PlayState extends MusicBeatState
 
 	private function generateSong():Void
 	{
-		Conductor.songPosition = -Conductor.crochet * 5;
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
+		Conductor.songPosition = 0;
 
 		if (SONG.needsVoices)
 			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song), false);
@@ -554,8 +555,7 @@ class PlayState extends MusicBeatState
 	}
 
 	private function updateAccuracy():Void
-		if (accuracy != 100)
-			accuracy = 100 * (hitNotes / totalNotes);
+		accuracy = 100 * (hitNotes / totalNotes);
 
 	override function openSubState(SubState:FlxSubState)
 	{
