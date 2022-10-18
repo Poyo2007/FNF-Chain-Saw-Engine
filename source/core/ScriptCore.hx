@@ -27,17 +27,10 @@ class ScriptCore extends FlxBasic
 		super();
 
 		parser = new Parser();
-		parser.allowJSON = true;
-		parser.allowTypes = true;
-		parser.allowMetadata = true;
+		parser.allowJSON = parser.allowTypes = parser.allowMetadata = true;
 
 		interp = new Interp();
 
-		var daSuper = {};
-		for (k => v in interp.variables)
-			Reflect.setField(daSuper, k, v);
-
-		setVariable('super', daSuper);
 		setVariable('this', this);
 		setVariable('import', function(daClass:String, ?asDa:String)
 		{
@@ -70,6 +63,7 @@ class ScriptCore extends FlxBasic
 				}
 			}
 		});
+
 		setVariable('Function_Stop', Function_Stop);
 		setVariable('Function_Continue', Function_Continue);
 
@@ -164,7 +158,7 @@ class ScriptCore extends FlxBasic
 		return false;
 	}
 
-	public function executeFunc(funcName:String, args:Array<Dynamic>):Dynamic
+	public function executeFunc(funcName:String, ?args:Array<Dynamic>):Dynamic
 	{
 		if (interp == null)
 			return null;
@@ -173,7 +167,7 @@ class ScriptCore extends FlxBasic
 		{
 			try
 			{
-				return Reflect.callMethod(this, getVariable(funcName), args);
+				return Reflect.callMethod(this, getVariable(funcName), args == null ? [] : args);
 			}
 			catch (e:Dynamic)
 				Lib.application.window.alert(e, 'Hscript Error!');
