@@ -82,7 +82,7 @@ class Character extends FlxSprite
 			updateHitbox();
 		}
 
-		if (character.danceAnimation != null && character.danceAnimation.length >= 2)
+		if (character.danceAnimation != null && character.danceAnimation.length >= 3)
 			Lib.application.window.alert("The Character $this.curCharacter can't use more then 2 animations for the default animations", "Character Error!");
 		else if (character.danceAnimation != null)
 			danceAnimation = character.danceAnimation;
