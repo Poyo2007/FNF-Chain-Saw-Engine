@@ -81,7 +81,7 @@ class StoryCharacter extends FlxSprite
 			else
 				animation.addByPrefix(danceAnimation[0], 'idle', 24, false);
 
-			if (daCharacter.danceAnimation != null && daCharacter.danceAnimation.length >= 2)
+			if (daCharacter.danceAnimation != null && daCharacter.danceAnimation.length >= 3)
 				Lib.application.window.alert("The Character $char can't use more then 2 animations for the default animations", "StoryCharacter Error!");
 			else if (daCharacter.danceAnimation != null)
 				danceAnimation = daCharacter.danceAnimation;
