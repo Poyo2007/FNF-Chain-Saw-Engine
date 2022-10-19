@@ -694,11 +694,7 @@ class PlayState extends MusicBeatState
 		if (health > maxHealth)
 			health = maxHealth;
 
-		if (iconP1.animation.curAnim != null)
-			iconP1.animation.curAnim.curFrame = healthBar.percent < 20 ? 1 : 0;
-
-		if (iconP2.animation.curAnim != null)
-			iconP2.animation.curAnim.curFrame = healthBar.percent > 80 ? 1 : 0;
+		updateIcons();
 
 		if (startedCountdown)
 			Conductor.songPosition += elapsed * 1000;
@@ -819,6 +815,59 @@ class PlayState extends MusicBeatState
 			DiscordClient.changePresence('Game Over - ' + detailsText, SONG.song + ' (' + CoolUtil.difficultyString(storyDifficulty) + ')',
 				iconP2.curCharacter);
 			#end
+		}
+	}
+
+	private function updateIcons()
+	{
+		switch (iconP1.animation.frames)
+		{
+			case 0:
+				if (iconP1.animation.curAnim != null)
+					iconP1.animation.curAnim.curFrame = 0;
+			case 1:
+				if (iconP1.animation.curAnim != null)
+				{
+					if (healthBar.percent <= 20)
+						iconP1.animation.curAnim.curFrame = 1;
+					else
+						iconP1.animation.curAnim.curFrame = 0;
+				}
+			case 2:
+				if (iconP1.animation.curAnim != null)
+				{
+					if (healthBar.percent >= 80)
+						iconP1.animation.curAnim.curFrame = 2;
+					else if (healthBar.percent <= 20)
+						iconP1.animation.curAnim.curFrame = 1;
+					else
+						iconP1.animation.curAnim.curFrame = 0;
+				}
+		}
+
+		switch (iconP2.animation.frames)
+		{
+			case 0:
+				if (iconP2.animation.curAnim != null)
+					iconP2.animation.curAnim.curFrame = 0;
+			case 1:
+				if (iconP2.animation.curAnim != null)
+				{
+					if (healthBar.percent >= 80)
+						iconP2.animation.curAnim.curFrame = 1;
+					else
+						iconP2.animation.curAnim.curFrame = 0;
+				}
+			case 2:
+				if (iconP2.animation.curAnim != null)
+				{
+					if (healthBar.percent <= 20)
+						iconP2.animation.curAnim.curFrame = 2;
+					else if (healthBar.percent >= 80)
+						iconP2.animation.curAnim.curFrame = 1;
+					else
+						iconP2.animation.curAnim.curFrame = 0;
+				}
 		}
 	}
 

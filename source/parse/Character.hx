@@ -16,6 +16,7 @@ typedef SwagCharacter =
 	var flipX:Bool;
 	var flipY:Bool;
 	var colors:Array<Int>;
+	var icons:Array<>;
 }
 
 typedef SwagAnimation =
@@ -28,6 +29,14 @@ typedef SwagAnimation =
 	var flipX:Bool;
 	var flipY:Bool;
 	var offset:Array<Float>;
+}
+
+typedef SwagIcons =
+{
+	var antialiasing:String;
+	var frames:Array<Int>;
+	var flipX:Bool;
+	var flipY:Bool;
 }
 
 class Character
