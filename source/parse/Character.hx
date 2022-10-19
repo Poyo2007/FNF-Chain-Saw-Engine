@@ -16,7 +16,7 @@ typedef SwagCharacter =
 	var flipX:Bool;
 	var flipY:Bool;
 	var colors:Array<Int>;
-	var icons:Array<>;
+	var icons:Array<SwagIcons>;
 }
 
 typedef SwagAnimation =
