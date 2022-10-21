@@ -78,6 +78,9 @@ class ScriptState extends MusicBeatState
 
 	public override function create()
 	{
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+
 		daScript.executeFunc("create", []);
 		super.create();
 	}

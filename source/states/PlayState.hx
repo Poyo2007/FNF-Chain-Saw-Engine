@@ -1100,7 +1100,7 @@ class PlayState extends MusicBeatState
 
 		rating.updateHitbox();
 		rating.cameras = [camHUD];
-		add(rating);
+		insert(members.indexOf(grpNoteSplashes), rating);
 
 		var comboSpr:FlxSprite = new FlxSprite(0, 0);
 		if (!PlayState.isPixelAssets)
@@ -1120,7 +1120,7 @@ class PlayState extends MusicBeatState
 
 		comboSpr.updateHitbox();
 		comboSpr.cameras = [camHUD];
-		add(comboSpr);
+		insert(members.indexOf(grpNoteSplashes), comboSpr);
 
 		var comboSplit:Array<String> = Std.string(combo).split('');
 		var seperatedScore:Array<Int> = [];
@@ -1149,7 +1149,7 @@ class PlayState extends MusicBeatState
 
 			numScore.updateHitbox();
 			numScore.cameras = [camHUD];
-			add(numScore);
+			insert(members.indexOf(grpNoteSplashes), numScore);
 
 			FlxTween.tween(numScore, {alpha: 0}, 0.2, {
 				onComplete: function(tween:FlxTween)
