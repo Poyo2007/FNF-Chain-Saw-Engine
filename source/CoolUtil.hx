@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+import flixel.math.FlxMath;
 import openfl.utils.Assets;
 
 using StringTools;
@@ -9,38 +10,25 @@ class CoolUtil
 {
 	public static var difficultyArray:Array<Dynamic> = [['Easy', '-easy'], ['Normal', ''], ['Hard', '-hard']];
 
-	public static function difficultyString(curDifficulty:Int):String
+	public static inline function difficultyString(curDifficulty:Int):String
 		return difficultyArray[curDifficulty][0];
 
 	public static function coolTextFile(path:String):Array<String>
 	{
-		var daList:Array<String> = [];
-
 		if (Assets.exists(path))
-			daList = Assets.getText(path).trim().split('\n');
-
-		for (i in 0...daList.length)
-			daList[i] = daList[i].trim();
-
-		return daList;
+			return [for (i in Assets.getText(path).trim().split('\n')) i.trim()];
+		return [];
 	}
 
-	public static function numberArray(max:Int, ?min = 0):Array<Int>
-	{
-		var dumbArray:Array<Int> = [];
+	public inline static function numberArray(max:Int, ?min = 0):Array<Int>
+		return [for (i in min...max) i];
 
-		for (i in min...max)
-			dumbArray.push(i);
-
-		return dumbArray;
-	}
-
-	public static function camLerpShit(ratio:Float):Float
+	public static inline function camLerpShit(ratio:Float):Float
 		return FlxG.elapsed / (1 / 60) * ratio;
 
-	public static function coolLerp(a:Float, b:Float, ratio:Float):Float
+	public static inline function coolLerp(a:Float, b:Float, ratio:Float):Float
 		return a + camLerpShit(ratio) * (b - a);
-
+	
 	public static function boundTo(value:Float, min:Float, max:Float):Float
 	{
 		var newValue:Float = value;
@@ -68,10 +56,6 @@ class CoolUtil
 		return size + ' ' + intervalArray[data];
 	}
 
-	public static function truncateFloat(number:Float, precision:Int):Float
-	{
-		number = number * Math.pow(10, precision);
-		number = Math.round(number) / Math.pow(10, precision);
-		return number;
-	}
+	public static inline function truncateFloat(number:Float, precision:Int):Float
+		return FlxMath.roundDecimal(number, precision);
 }
