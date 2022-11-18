@@ -1,6 +1,7 @@
 package;
 
 import haxe.Timer;
+import openfl.Lib;
 import openfl.events.Event;
 import openfl.system.System;
 import openfl.text.TextField;
@@ -9,7 +10,7 @@ import openfl.text.TextFormat;
 class Overlay extends TextField
 {
 	private var times:Array<Float> = [];
-	private var memPeak:Float = 0;
+	private var totalMemoryPeak:Int = 0;
 
 	public function new(x:Float, y:Float, color:Int)
 	{
@@ -40,20 +41,12 @@ class Overlay extends TextField
 			else
 				textColor = 0xFFFFFFFF;
 
-			var mem:Float = System.totalMemory;
+			var totalMemory:Int = System.totalMemory;
+			if (totalMemory > totalMemoryPeak)
+				totalMemoryPeak = totalMemory;
 
-			if (mem > memPeak)
-				memPeak = mem;
-
-			text = 'FPS: '
-				+ currentFrames
-				+ '\n'
-				+ 'RAM: '
-				+ CoolUtil.getInterval(mem)
-				+ '\n'
-				+ 'RAM Peak: '
-				+ CoolUtil.getInterval(memPeak)
-				+ '\n';
+			if (visible)
+				text = currentFrames + ' FPS\n' + CoolUtil.getInterval(totalMemory) + ' / ' + CoolUtil.getInterval(totalMemoryPeak) + '\n';
 		});
 	}
 }
