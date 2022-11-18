@@ -10,7 +10,7 @@ import openfl.text.TextFormat;
 class Overlay extends TextField
 {
 	private var times:Array<Float> = [];
-	private var totalMemoryPeak:Int = 0;
+	private var totalMemoryPeak:Float = 0;
 
 	public function new(x:Float, y:Float, color:Int)
 	{
@@ -41,7 +41,7 @@ class Overlay extends TextField
 			else
 				textColor = 0xFFFFFFFF;
 
-			var totalMemory:Int = System.totalMemory;
+			var totalMemory:Float = System.totalMemory;
 			if (totalMemory > totalMemoryPeak)
 				totalMemoryPeak = totalMemory;
 
