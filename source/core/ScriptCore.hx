@@ -80,6 +80,10 @@ class ScriptCore extends FlxBasic
 		setVariable('Type', Type);
 		setVariable('Xml', Xml);
 
+		setVariable('boyfriend', PlayState.instance.boyfriend);
+		setVariable('dad', PlayState.instance.dad);
+		setVariable('gf', PlayState.instance.gf);
+
 		setVariable('ScriptState', ScriptState);
 		setVariable('ScriptSubState', ScriptSubState);
 
